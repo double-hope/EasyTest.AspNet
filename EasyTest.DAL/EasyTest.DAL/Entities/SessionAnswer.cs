@@ -3,17 +3,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EasyTest.DAL.Entities
 {
-	public class SessionAnswer
+	public class SessionAnswer<TKey> where TKey : IEquatable<TKey>
 	{
 		[Required]
 		public int AnswerId { get; set; }
 		[ForeignKey(nameof(AnswerId))]
-		public Answer Answer { get; set; }
+		public Answer<TKey> Answer { get; set; }
 
 		[Required]
 		public int SessionId { get; set; }
 		[ForeignKey(nameof(SessionId))]
-		public TestSession Session { get; set; }
+		public TestSession<TKey> Session { get; set; }
 		public bool IsCorrect{ get; set; }
 	}
 }

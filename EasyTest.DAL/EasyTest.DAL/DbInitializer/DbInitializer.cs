@@ -2,11 +2,11 @@
 
 namespace EasyTest.DAL.DbInitializer
 {
-	public class DbInitializer : IDbInitializer
+	public class DbInitializer<TKey> : IDbInitializer where TKey : IEquatable<TKey>
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext<TKey> _context;
 
-		public DbInitializer(ApplicationDbContext context)
+		public DbInitializer(ApplicationDbContext<TKey> context)
 		{
 			_context = context;
 		}
@@ -20,7 +20,10 @@ namespace EasyTest.DAL.DbInitializer
 					_context.Database.Migrate();
 				}
 			}
-			catch (Exception e) { }
+			catch (Exception)
+			{
+				throw;
+			}
 
 			return;
 		}

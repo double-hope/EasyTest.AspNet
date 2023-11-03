@@ -3,15 +3,15 @@ using EasyTest.DAL.Repository.IRepository;
 
 namespace EasyTest.DAL.Repository
 {
-	public class AnswerRepository : Repository<Answer>, IAnswerRepository
+	public class AnswerRepository<TKey> : Repository<Answer<TKey>, TKey>, IAnswerRepository<TKey> where TKey : IEquatable<TKey>
 	{
-		public readonly ApplicationDbContext _context;
-		public AnswerRepository(ApplicationDbContext context) : base(context)
+		public readonly ApplicationDbContext<TKey> _context;
+		public AnswerRepository(ApplicationDbContext<TKey> context) : base(context)
 		{
 			_context = context;
 		}
 
-		public void Update(Answer answer)
+		public void Update(Answer<TKey> answer)
 		{
 			_context.Answers.Update(answer);
 		}

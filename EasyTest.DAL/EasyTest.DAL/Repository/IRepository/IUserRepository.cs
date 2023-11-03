@@ -2,8 +2,8 @@
 
 namespace EasyTest.DAL.Repository.IRepository
 {
-	public interface IUserRepository : IRepository<User>
+	public interface IUserRepository<TKey> : IRepository<User<TKey>, TKey> where TKey : IEquatable<TKey>
 	{
-		void Update(User user);
+		void Update(User<TKey> user);
 	}
 }

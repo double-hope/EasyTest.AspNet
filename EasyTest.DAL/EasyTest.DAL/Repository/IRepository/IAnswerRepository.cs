@@ -2,8 +2,8 @@
 
 namespace EasyTest.DAL.Repository.IRepository
 {
-	public interface IAnswerRepository : IRepository<Answer>
+	public interface IAnswerRepository<TKey> : IRepository<Answer<TKey>, TKey> where TKey : IEquatable<TKey>
 	{
-		void Update(Answer answer);
+		void Update(Answer<TKey> answer);
 	}
 }

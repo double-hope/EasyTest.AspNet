@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EasyTest.DAL.Entities
 {
-	public class Test
+	public class Test<TKey> where TKey : IEquatable<TKey>
 	{
 		[Key]
 		public int Id { get; set; }
@@ -13,6 +13,6 @@ namespace EasyTest.DAL.Entities
 		[Required]
 		[DisplayName("Test Decription")]
 		public string Description { get; set; }
-		public List<QuestionTest> QuestionTests { get; set; } = new();
+		public List<QuestionTest<TKey>> QuestionTests { get; set; } = new();
 	}
 }

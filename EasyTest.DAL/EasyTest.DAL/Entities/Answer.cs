@@ -4,20 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyTest.DAL.Entities
 {
-	public class Answer
+	public class Answer<TKey> where TKey : IEquatable<TKey>
 	{
 		[Key] 
-		public int Id { get; set; }
+		public TKey Id { get; set; }
 		[Required]
 		public int QuestionId { get; set; }
 		[ForeignKey(nameof(QuestionId))]
-		public Question Question { get; set; }
+		public Question<TKey> Question { get; set; }
 		[Required]
 		[DisplayName("Answer Text")]
 		public string Text { get; set; }
 		[Required]
 		[DisplayName("Is Answer Correct")]
 		public bool IsCorrect { get; set; }
-		public List<SessionAnswer> SessionAnswers { get; set; } = new();
+		public List<SessionAnswer<TKey>> SessionAnswers { get; set; } = new();
 	}
 }

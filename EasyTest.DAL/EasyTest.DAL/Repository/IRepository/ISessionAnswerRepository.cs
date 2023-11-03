@@ -2,8 +2,8 @@
 
 namespace EasyTest.DAL.Repository.IRepository
 {
-	public interface ISessionAnswerRepository : IRepository<SessionAnswer>
+	public interface ISessionAnswerRepository<TKey> : IRepository<SessionAnswer<TKey>, TKey> where TKey : IEquatable<TKey>
 	{
-		void Update(SessionAnswer sessionAnswer);
+		void Update(SessionAnswer<TKey> sessionAnswer);
 	}
 }
