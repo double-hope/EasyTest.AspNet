@@ -35,6 +35,11 @@ namespace EasyTest.DAL.Repository
 			dbSet.Add(entity);
 		}
 
+		public void Update(T entity)
+		{
+			dbSet.Update(entity);
+		}
+
 		public void Remove(T entity)
 		{
 			dbSet.Remove(entity);
