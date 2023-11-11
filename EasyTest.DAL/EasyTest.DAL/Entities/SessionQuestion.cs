@@ -6,12 +6,12 @@ namespace EasyTest.DAL.Entities
 	public class SessionQuestion
 	{
 		[Required]
-		public int QuestionId { get; set; }
+		public Guid QuestionId { get; set; }
 		[ForeignKey(nameof(QuestionId))]
 		public Question Question { get; set; }
 
 		[Required]
-		public int SessionId { get; set; }
+		public Guid SessionId { get; set; }
 		[ForeignKey(nameof(SessionId))]
 		public TestSession Session { get; set; }
 		public bool IsAnswered { get; set; }

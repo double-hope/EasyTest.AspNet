@@ -7,7 +7,7 @@ namespace EasyTest.DAL.Entities
 	public class Answer
 	{
 		[Key] 
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 		[Required]
 		public int QuestionId { get; set; }
 		[ForeignKey(nameof(QuestionId))]

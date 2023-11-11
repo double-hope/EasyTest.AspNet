@@ -6,7 +6,7 @@ namespace EasyTest.DAL.Entities
 	public class Question
 	{
 		[Key]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 		[Required]
 		[DisplayName("Question Title")]
 		public string Title { get; set; }
