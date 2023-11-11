@@ -3,7 +3,7 @@
   <PropertyGroup>
     <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>07ba502f-4bb8-4536-91db-c64c0e917589</SharedGUID>
+    <SharedGUID>37700adc-d392-4cfe-b898-3dfaa6a7c2ff</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>EasyTest.Shared</Import_RootNamespace>

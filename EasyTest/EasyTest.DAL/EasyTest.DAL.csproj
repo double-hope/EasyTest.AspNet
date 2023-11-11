@@ -16,4 +16,6 @@
     </PackageReference>
   </ItemGroup>
 
+  <Import Project="..\EasyTest.Shared\EasyTest.Shared.projitems" Label="Shared" />
+
 </Project>
