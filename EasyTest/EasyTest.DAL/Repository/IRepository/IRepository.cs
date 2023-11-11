@@ -7,6 +7,7 @@ namespace EasyTest.DAL.Repository.IRepository
 		IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null);
 		T GetFirstOrDefault(Expression<Func<T, bool>> filter);
 		void Add(T entity);
+		void Update(T entity);
 		void Remove(T entity);
 		void RemoveRange(IEnumerable<T> entities);
 	}
