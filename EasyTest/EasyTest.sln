@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTest.DAL", "EasyTest.DA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTest.BLL", "EasyTest.BLL\EasyTest.BLL.csproj", "{1DD2FFDC-9EE6-44C5-96CC-003D72B5F2D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTest.PL", "EasyTest.PL\EasyTest.PL.csproj", "{5DA7021F-567D-4035-89C5-7C036890C762}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTest.PL", "EasyTest.PL\EasyTest.PL.csproj", "{5DA7021F-567D-4035-89C5-7C036890C762}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
