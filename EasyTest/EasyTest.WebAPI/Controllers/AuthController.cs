@@ -14,7 +14,8 @@ namespace EasyTest.WebAPI.Controllers
         {
             _authService = authService;
         }
-        [HttpPost]
+
+        [HttpPost("login")]
         public async Task<ActionResult> LoginUser([FromBody]UserLoginDto userDto)
         {
             var response = await _authService.Login(userDto);
