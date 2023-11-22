@@ -1,9 +1,10 @@
-﻿using EasyTest.Shared.DTO.User;
+﻿using EasyTest.Shared.DTO.Response;
+using EasyTest.Shared.DTO.User;
 
 namespace EasyTest.BLL.Interfaces
 {
     public interface IAuthService
     {
-        Task<UserDto> Login(UserLoginDto userDto);
+        Task<Response> Login(UserLoginDto userDto);
     }
 }
