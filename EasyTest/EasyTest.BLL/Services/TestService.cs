@@ -16,10 +16,9 @@ namespace EasyTest.BLL.Services
         public async Task<Response> CreateTest(TestCreateDto testDto)
         {
             var testE = _mapper.Map<Test>(testDto);
-            var testQuestions = await _unitOfWork.QuestionRepository.GetAll(q => testDto.QuestionTestsIds.Any(x => x.Equals(q.Id)));
-            testE.Title = testDto.Title;
-            testE.Description = testDto.Description;
-            testE.QuestionTests = testQuestions.Select(q => new QuestionTest { QuestionId = q.Id }).ToList();
+            var testQuestions = await _unitOfWork.QuestionRepository.GetAll(q => testDto.QuestionIds.Any(x => x.Equals(q.Id)));
+            testE.QuestionTests = testQuestions.Select(q => new QuestionTest { QuestionId = q.Id, Test = testE }).ToList();
+
             await _unitOfWork.TestRepository.Add(testE);
             await _unitOfWork.Save();
 
