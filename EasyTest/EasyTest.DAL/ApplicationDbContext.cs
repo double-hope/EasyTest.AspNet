@@ -17,5 +17,9 @@ namespace EasyTest.DAL
 		public DbSet<Test> Tests {  get; set; }
 		public DbSet<TestSession> TestSessions {  get; set; }
 		public DbSet<User> Users {  get; set; }
-	}
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
+    }
 }
