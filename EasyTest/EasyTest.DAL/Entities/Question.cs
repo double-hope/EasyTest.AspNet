@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EasyTest.DAL.Entities
 {
-	public class Question
-	{
-		[Key]
-		public Guid Id { get; set; }
+	public class Question : BaseEntity<Guid>
+    {
 		[Required]
 		[DisplayName("Question Title")]
 		public string Title { get; set; }

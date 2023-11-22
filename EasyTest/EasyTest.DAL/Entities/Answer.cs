@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyTest.DAL.Entities
 {
-	public class Answer
+	public class Answer : BaseEntity<Guid>
 	{
-		[Key] 
-		public Guid Id { get; set; }
 		[Required]
 		public int QuestionId { get; set; }
 		[ForeignKey(nameof(QuestionId))]

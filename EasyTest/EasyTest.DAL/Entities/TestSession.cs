@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EasyTest.DAL.Entities
 {
-	public class TestSession
-	{
-		[Key]
-		public Guid Id { get; set; }
+	public class TestSession : BaseEntity<Guid>
+    {
 		[Required]
 		public Guid UserId { get; set; }
 		[ForeignKey(nameof(UserId))]
