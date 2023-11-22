@@ -18,7 +18,7 @@ namespace EasyTest.BLL.Services
 
         public async Task<Response> Login(UserLoginDto userDto)
         {
-            var user = _unitOfWork.UserRepository.GetFirstOrDefault(user => user.Email.Equals(userDto.Email));
+            var user = await _unitOfWork.UserRepository.GetFirstOrDefault(user => user.Email.Equals(userDto.Email));
             if(user == null)
             {
                 return ErrorResponse("User does not found");
@@ -26,7 +26,6 @@ namespace EasyTest.BLL.Services
 
             if(!await _userManager.CheckPasswordAsync(user, userDto.Password))
             {
-
                 return ErrorResponse("Provided password is wrong");
             }
 

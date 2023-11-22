@@ -12,5 +12,5 @@ namespace EasyTest.DAL.Entities
 		[DisplayName("Test Decription")]
 		public string Description { get; set; }
 		public List<QuestionTest> QuestionTests { get; set; } = new();
-	}
+    }
 }
