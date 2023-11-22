@@ -16,8 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EasyTest.DAL\EasyTest.DAL.csproj" />
+    <ProjectReference Include="..\EasyTest.Shared\EasyTest.Shared.csproj" />
   </ItemGroup>
-
-  <Import Project="..\EasyTest.Shared\EasyTest.Shared.projitems" Label="Shared" />
 
 </Project>
