@@ -15,4 +15,10 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EasyTest.BLL\EasyTest.BLL.csproj" />
+    <ProjectReference Include="..\EasyTest.DAL\EasyTest.DAL.csproj" />
+    <ProjectReference Include="..\EasyTest.Shared\EasyTest.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

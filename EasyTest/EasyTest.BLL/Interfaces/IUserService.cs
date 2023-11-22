@@ -4,6 +4,5 @@ namespace EasyTest.BLL.Interfaces
 {
 	public interface IUserService
 	{
-		Task<UserDto> RegisterUser(UserRegisterDto userDto);
 	}
 }
