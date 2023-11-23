@@ -1,5 +1,5 @@
 ﻿using EasyTest.BLL.Interfaces;
-using EasyTest.Shared.DTO.Response;
+using EasyTest.Shared.Constants;
 using EasyTest.Shared.DTO.User;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,7 +20,7 @@ namespace EasyTest.WebAPI.Controllers
         {
             var response = await _authService.Login(userDto);
 
-            if(response.Status == Status.Success)
+            if(response.Status == ResponseStatusCodes.Success)
             {
                 return Ok(response);
             }

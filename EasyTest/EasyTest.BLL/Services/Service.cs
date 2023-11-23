@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EasyTest.DAL.Repository.IRepository;
+using EasyTest.Shared.Constants;
 using EasyTest.Shared.DTO.Response;
 
 namespace EasyTest.BLL.Services
@@ -19,7 +20,7 @@ namespace EasyTest.BLL.Services
 		{
             return new Response
             {
-                Status = Status.Error,
+                Status = ResponseStatusCodes.Success,
                 Message = message,
 				Data = data
             };
@@ -29,7 +30,7 @@ namespace EasyTest.BLL.Services
         {
 			return new Response
 			{
-				Status = Status.Error,
+				Status = ResponseStatusCodes.Error,
 				Message = message,
 				Errors = errors
 			};
