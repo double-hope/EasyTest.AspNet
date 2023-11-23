@@ -64,17 +64,19 @@ namespace EasyTest.WebAPI.Extensions
         }
         public static void RegisterIdentity(this IServiceCollection services, IConfiguration config)
         {
-            services.AddIdentity<User, IdentityRole<Guid>>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredLength = 6;
+            //services.AddIdentity<User, IdentityRole<Guid>>(options =>
+            //{
+            //    options.Password.RequireDigit = true;
+            //    options.Password.RequireLowercase = true;
+            //    options.Password.RequireUppercase = true;
+            //    options.Password.RequiredLength = 6;
 
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedEmail = false;
-            })
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            //    options.User.RequireUniqueEmail = true;
+            //    options.SignIn.RequireConfirmedEmail = false;
+            //})
+            //.AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+            services.AddIdentity<User, IdentityRole<Guid>>()
+            .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
         }
     }
 }

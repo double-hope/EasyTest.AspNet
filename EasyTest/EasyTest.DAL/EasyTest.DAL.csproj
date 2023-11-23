@@ -16,4 +16,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EasyTest.Shared\EasyTest.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
