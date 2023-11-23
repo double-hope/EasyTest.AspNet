@@ -37,6 +37,17 @@ namespace EasyTest.DAL.DbInitializer
                 _roleManager.CreateAsync(new IdentityRole<Guid>(UserRoles.AdminRole)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole<Guid>(UserRoles.TeacherRole)).GetAwaiter().GetResult();
                 _roleManager.CreateAsync(new IdentityRole<Guid>(UserRoles.StudentRole)).GetAwaiter().GetResult();
+
+                _userManager.CreateAsync(new User
+                {
+                    UserName = "double_hope",
+                    Email = "nadia.prohorchuk@gmail.com",
+                    Name = "Nadiia",
+                    PhoneNumber = "0683907957",
+                }, "qwQW!@12").GetAwaiter().GetResult();
+
+                User user = _context.Users.FirstOrDefault(x => x.Email.Equals("nadia.prohorchuk@gmail.com"));
+                _userManager.AddToRoleAsync(user, UserRoles.AdminRole).GetAwaiter().GetResult();
             }
 
             return;
