@@ -3,11 +3,13 @@ using EasyTest.WebAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.RegisterDatabase(builder.Configuration);
+builder.Services.RegisterIdentity(builder.Configuration);
+builder.Services.RegisterServices(builder.Configuration);
 builder.Services.RegisterCustomServices(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
