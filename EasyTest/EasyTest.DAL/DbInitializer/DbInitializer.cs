@@ -32,11 +32,11 @@ namespace EasyTest.DAL.DbInitializer
                 throw;
             }
 
-            if (!_roleManager.RoleExistsAsync(UserRoles.AdminRole).GetAwaiter().GetResult())
+            if (!_roleManager.RoleExistsAsync(UserRolesConst.AdminRole).GetAwaiter().GetResult())
             {
-                _roleManager.CreateAsync(new IdentityRole<Guid>(UserRoles.AdminRole)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole<Guid>(UserRoles.TeacherRole)).GetAwaiter().GetResult();
-                _roleManager.CreateAsync(new IdentityRole<Guid>(UserRoles.StudentRole)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole<Guid>(UserRolesConst.AdminRole)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole<Guid>(UserRolesConst.TeacherRole)).GetAwaiter().GetResult();
+                _roleManager.CreateAsync(new IdentityRole<Guid>(UserRolesConst.StudentRole)).GetAwaiter().GetResult();
 
                 _userManager.CreateAsync(new User
                 {
@@ -47,7 +47,7 @@ namespace EasyTest.DAL.DbInitializer
                 }, "qwQW!@12").GetAwaiter().GetResult();
 
                 User user = _context.Users.FirstOrDefault(x => x.Email.Equals("nadia.prohorchuk@gmail.com"));
-                _userManager.AddToRoleAsync(user, UserRoles.AdminRole).GetAwaiter().GetResult();
+                _userManager.AddToRoleAsync(user, UserRolesConst.AdminRole).GetAwaiter().GetResult();
             }
 
             return;

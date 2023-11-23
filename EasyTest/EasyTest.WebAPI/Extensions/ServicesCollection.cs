@@ -31,7 +31,8 @@ namespace EasyTest.WebAPI.Extensions
                 conf.AddProfiles(
                     new List<Profile>()
                     {
-                        new TestMapperProfile()
+                        new TestMapperProfile(),
+                        new UserMapperProfile()
                     });
             });
         }

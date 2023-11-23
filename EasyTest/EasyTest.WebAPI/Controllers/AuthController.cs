@@ -20,7 +20,20 @@ namespace EasyTest.WebAPI.Controllers
         {
             var response = await _authService.Login(userDto);
 
-            if(response.Status == ResponseStatusCodes.Success)
+            if(response.Status == ResponseStatusCodesConst.Success)
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(response);
+        }
+
+        [HttpPost("register")]
+        public async Task<ActionResult> RegisterUser([FromBody] UserRegisterDto userDto)
+        {
+            var response = await _authService.Register(userDto);
+
+            if (response.Status == ResponseStatusCodesConst.Success)
             {
                 return Ok(response);
             }

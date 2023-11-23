@@ -20,7 +20,7 @@ namespace EasyTest.BLL.Services
 		{
             return new Response
             {
-                Status = ResponseStatusCodes.Success,
+                Status = ResponseStatusCodesConst.Success,
                 Message = message,
 				Data = data
             };
@@ -30,7 +30,7 @@ namespace EasyTest.BLL.Services
         {
 			return new Response
 			{
-				Status = ResponseStatusCodes.Error,
+				Status = ResponseStatusCodesConst.Error,
 				Message = message,
 				Errors = errors
 			};

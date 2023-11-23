@@ -9,9 +9,7 @@ namespace EasyTest.BLL.Services
 {
     public class TestService : Service, ITestService
     {
-        public TestService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
-        {
-        }
+        public TestService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
 
         public async Task<Response> CreateTest(TestCreateDto testDto)
         {
