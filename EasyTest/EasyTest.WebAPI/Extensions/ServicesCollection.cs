@@ -1,11 +1,17 @@
 ﻿using EasyTest.BLL.Interfaces;
 using EasyTest.BLL.Services;
+using EasyTest.DAL;
 using EasyTest.DAL.DbInitializer;
+using EasyTest.DAL.Entities;
 using EasyTest.DAL.Repository;
 using EasyTest.DAL.Repository.IRepository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AutoMapper;
+using EasyTest.BLL.Mappers;
 
 namespace EasyTest.WebAPI.Extensions
 {
@@ -16,6 +22,18 @@ namespace EasyTest.WebAPI.Extensions
             services.AddScoped<IDbInitializer, DbInitializer>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ITestService, TestService>();
+        }
+        public static void RegisterServices(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddAutoMapper(conf =>
+            {
+                conf.AddProfiles(
+                    new List<Profile>()
+                    {
+                        new TestMapperProfile()
+                    });
+            });
         }
 
         public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration config)
@@ -38,6 +56,25 @@ namespace EasyTest.WebAPI.Extensions
                     ValidateIssuerSigningKey = true
                 };
             });
+        }
+
+        public static void RegisterDatabase(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+        }
+        public static void RegisterIdentity(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddIdentity<User, IdentityRole<Guid>>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+
+                options.User.RequireUniqueEmail = true;
+                options.SignIn.RequireConfirmedEmail = false;
+            })
+            .AddEntityFrameworkStores<ApplicationDbContext>();
         }
     }
 }

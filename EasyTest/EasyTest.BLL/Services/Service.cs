@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using EasyTest.DAL;
 using EasyTest.DAL.Repository.IRepository;
+using EasyTest.Shared.DTO.Response;
 
 namespace EasyTest.BLL.Services
 {
@@ -14,5 +14,25 @@ namespace EasyTest.BLL.Services
 			_unitOfWork = unitOfWork;
 			_mapper = mapper;
 		}
-	}
+
+		public Response SuccessResponse<T>(T data, string message)
+		{
+            return new Response
+            {
+                Status = Status.Error,
+                Message = message,
+				Data = data
+            };
+        }
+
+        public Response ErrorResponse(string message, List<string>? errors = null)
+        {
+			return new Response
+			{
+				Status = Status.Error,
+				Message = message,
+				Errors = errors
+			};
+        }
+    }
 }

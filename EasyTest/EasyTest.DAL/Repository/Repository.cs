@@ -15,27 +15,31 @@ namespace EasyTest.DAL.Repository
 			dbSet = _context.Set<T>();
 		}
 
-		public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null)
+		public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null)
 		{
 			IQueryable<T> query = dbSet;
 			if (filter != null) query = query.Where(filter);
 
-			return query.ToList();
+			return await query.ToListAsync();
 		}
 
-		public T GetFirstOrDefault(Expression<Func<T, bool>> filter)
+		public async Task<T> GetFirstOrDefault(Expression<Func<T, bool>> filter)
 		{
 			IQueryable<T> query = dbSet;
 			query = query.Where(filter);
-			
-			return query.FirstOrDefault();
-		}
-		public void Add(T entity)
-		{
-			dbSet.Add(entity);
-		}
 
-		public void Update(T entity)
+            return await query.FirstOrDefaultAsync();
+		}
+		public async Task Add(T entity)
+		{
+			await dbSet.AddAsync(entity);
+		}
+        public async Task AddRange(IEnumerable<T> entities)
+        {
+            await dbSet.AddRangeAsync(entities);
+        }
+
+        public void Update(T entity)
 		{
 			dbSet.Update(entity);
 		}
