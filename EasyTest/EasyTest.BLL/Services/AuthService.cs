@@ -2,9 +2,8 @@
 using EasyTest.BLL.Interfaces;
 using EasyTest.DAL.Entities;
 using EasyTest.DAL.Repository.IRepository;
-using EasyTest.Shared.Constants;
+using EasyTest.Shared.Enums;
 using EasyTest.Shared.DTO.Response;
-using EasyTest.Shared.DTO.Test;
 using EasyTest.Shared.DTO.User;
 using Microsoft.AspNetCore.Identity;
 
@@ -36,6 +35,11 @@ namespace EasyTest.BLL.Services
 
         public async Task<Response> Register(UserRegisterDto userDto)
         {
+            if (userDto.Role == UserRoles.Admin)
+            {
+                return ErrorResponse("You cannot register user with role admin");
+            }
+
             var user = await _unitOfWork.UserRepository.GetFirstOrDefault(user => user.Email.Equals(userDto.Email));
             if (user != null)
             {
@@ -50,7 +54,14 @@ namespace EasyTest.BLL.Services
                 return ErrorResponse("Failed to register user", res.Errors.Select(e => e.Description).ToList());
             }
 
-            return SuccessResponse(user, "You succesfully logged in");
+            res = _userManager.AddToRoleAsync(userE, userDto.Role.ToString().ToLower()).GetAwaiter().GetResult();
+            
+            if (!res.Succeeded)
+            {
+                return ErrorResponse("Failed to associate user with provided role", res.Errors.Select(e => e.Description).ToList());
+            }
+
+            return SuccessResponse(userE, "You succesfully register user");
         }
     }
 }
