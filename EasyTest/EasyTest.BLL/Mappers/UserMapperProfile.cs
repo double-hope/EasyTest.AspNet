@@ -12,6 +12,7 @@ namespace EasyTest.BLL.Mappers
             CreateMap<UserRegisterDto, User>()
                 .ForMember(dest => dest.Role, opt => opt.Ignore())
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(u => u.Name));
+            CreateMap<User, UserResponseDto>();
         }
     }
 }

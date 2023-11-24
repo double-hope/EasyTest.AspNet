@@ -30,7 +30,8 @@ namespace EasyTest.BLL.Services
                 return ErrorResponse("Provided password is wrong");
             }
 
-            return SuccessResponse(user, "You succesfully logged in");
+            var userResponse = _mapper.Map<UserResponseDto>(user);
+            return SuccessResponse(userResponse, "You succesfully logged in");
         }
 
         public async Task<Response> Register(UserRegisterDto userDto)
@@ -54,14 +55,15 @@ namespace EasyTest.BLL.Services
                 return ErrorResponse("Failed to register user", res.Errors.Select(e => e.Description).ToList());
             }
 
-            res = _userManager.AddToRoleAsync(userE, userDto.Role.ToString().ToLower()).GetAwaiter().GetResult();
+            res = await _userManager.AddToRoleAsync(userE, userDto.Role.ToString().ToLower());
             
             if (!res.Succeeded)
             {
                 return ErrorResponse("Failed to associate user with provided role", res.Errors.Select(e => e.Description).ToList());
             }
 
-            return SuccessResponse(userE, "You succesfully register user");
+            var userResponse = _mapper.Map<UserResponseDto>(userE);
+            return SuccessResponse(userResponse, "You succesfully register user");
         }
     }
 }
