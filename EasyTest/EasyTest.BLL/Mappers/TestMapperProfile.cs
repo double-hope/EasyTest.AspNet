@@ -11,6 +11,7 @@ namespace EasyTest.BLL.Mappers
             CreateMap<TestCreateDto, Test>()
                 .ForMember(dest => dest.Questions, opt => opt.Ignore())
                 .ForMember(dest => dest.QuestionTests, opt => opt.Ignore());
+            CreateMap<Test, TestDto>();
         }
     }
 }

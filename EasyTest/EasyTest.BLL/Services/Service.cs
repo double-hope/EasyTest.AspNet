@@ -16,7 +16,7 @@ namespace EasyTest.BLL.Services
 			_mapper = mapper;
 		}
 
-		public Response SuccessResponse<T>(T data, string message)
+		public Response SuccessResponse<T>(T data, string? message = null)
 		{
             return new Response
             {
