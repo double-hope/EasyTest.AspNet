@@ -9,20 +9,25 @@ namespace EasyTest.BLL.Services
 {
     public class TestService : Service, ITestService
     {
-        public TestService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        public TestService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
+        public async Task<Response<IEnumerable<TestDto>>> GetAll()
         {
+            var res = await _unitOfWork.TestRepository.GetAll();
+			return Response<IEnumerable<TestDto>>.Success(_mapper.Map<IEnumerable<TestDto>>(res));
         }
-
-        public async Task<Response> CreateTest(TestCreateDto testDto)
+        public async Task<Response<TestDto>> Get(Guid id)
+        {
+            var res = await _unitOfWork.TestRepository.GetFirstOrDefault(x => x.Id == id);
+			return Response<TestDto>.Success(_mapper.Map<TestDto>(res));
+        }
+        public async Task<Response<TestDto>> Create(TestCreateDto testDto)
         {
             var testE = _mapper.Map<Test>(testDto);
-            var testQuestions = await _unitOfWork.QuestionRepository.GetAll(q => testDto.QuestionIds.Any(x => x.Equals(q.Id)));
             
-            await _unitOfWork.QuestionTestRepository.AddRange(testQuestions.Select(q => new QuestionTest { QuestionId = q.Id, Test = testE }));
             await _unitOfWork.TestRepository.Add(testE);
             await _unitOfWork.Save();
 
-            return SuccessResponse(_mapper.Map<TestDto>(testE), "Test created successfully");
+			return Response<TestDto>.Success(_mapper.Map<TestDto>(testE), "Test created successfully");
         }
     }
 }

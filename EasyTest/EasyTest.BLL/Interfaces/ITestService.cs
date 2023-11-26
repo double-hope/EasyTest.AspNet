@@ -5,6 +5,8 @@ namespace EasyTest.BLL.Interfaces
 {
     public interface ITestService
     {
-        Task<Response> CreateTest(TestCreateDto testDto);
+        Task<Response<IEnumerable<TestDto>>> GetAll();
+        Task<Response<TestDto>> Get(Guid id);
+        Task<Response<TestDto>> Create(TestCreateDto testDto);
     }
 }
