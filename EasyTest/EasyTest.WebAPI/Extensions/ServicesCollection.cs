@@ -23,7 +23,8 @@ namespace EasyTest.WebAPI.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITestService, TestService>();
-        }
+            services.AddScoped<IQuestionService, QuestionService>();
+		}
         public static void RegisterServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddAutoMapper(conf =>
@@ -32,7 +33,9 @@ namespace EasyTest.WebAPI.Extensions
                     new List<Profile>()
                     {
                         new TestMapperProfile(),
-                        new UserMapperProfile()
+                        new UserMapperProfile(),
+                        new QuestionMapperProfile(),
+                        new QuestionTestMapperProfile()
                     });
             });
         }
