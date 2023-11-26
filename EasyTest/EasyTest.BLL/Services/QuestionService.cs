@@ -16,7 +16,7 @@ namespace EasyTest.BLL.Services
 			_answerService = answerService;
 		}
 
-		public async Task<Response<QuestionDto>> Create(QuestionDto questionDto, Guid testId)
+		public async Task<Response<QuestionResponseDto>> Create(QuestionDto questionDto, Guid testId)
 		{
 			var questionE = _mapper.Map<Question>(questionDto);
 
@@ -26,7 +26,7 @@ namespace EasyTest.BLL.Services
 
 			if (testE == null)
 			{
-				return Response<QuestionDto>.Error("Test not found");
+				return Response<QuestionResponseDto>.Error("Test not found");
 			}
 
 			var questionTest = new QuestionTest
@@ -39,12 +39,13 @@ namespace EasyTest.BLL.Services
 
 			var res = await _answerService.CreateRange(questionDto.Answers, questionE.Id);
 
-			if (res.Status == ResponseStatusCodesConst.Success)
+			if (res.Status == ResponseStatusCodesConst.Error)
 			{
-				await _unitOfWork.Save();
+				return Response<QuestionResponseDto>.Error("Fail adding question");
 			}
 
-			return Response<QuestionDto>.Success(_mapper.Map<QuestionDto>(questionE));
+			await _unitOfWork.Save();
+			return Response<QuestionResponseDto>.Success(_mapper.Map<QuestionResponseDto>(questionE));
 		}
 	}
 }

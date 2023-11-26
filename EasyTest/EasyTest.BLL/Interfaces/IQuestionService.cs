@@ -5,6 +5,6 @@ namespace EasyTest.BLL.Interfaces
 {
 	public interface IQuestionService
 	{
-		Task<Response<QuestionDto>> Create(QuestionDto questionDto, Guid testId);
+		Task<Response<QuestionResponseDto>> Create(QuestionDto questionDto, Guid testId);
 	}
 }

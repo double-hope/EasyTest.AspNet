@@ -10,6 +10,7 @@ namespace EasyTest.BLL.Mappers
         {
             CreateMap<QuestionDto, Question>();
             CreateMap<Question, QuestionDto>();
-        }
+            CreateMap<Question, QuestionResponseDto>();
+		}
     }
 }

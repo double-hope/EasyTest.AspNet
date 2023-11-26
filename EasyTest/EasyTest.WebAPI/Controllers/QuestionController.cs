@@ -20,7 +20,7 @@ namespace EasyTest.WebAPI.Controllers
 		}
         
         [HttpPost("testId/{id}")]
-		[ProducesResponseType(typeof(Response<TestDto>), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(Response<QuestionResponseDto>), (int)HttpStatusCode.OK)]
 		public async Task<ActionResult> CreateTest(Guid id, [FromBody]QuestionDto questionDto)
         {
             var response = await _questionService.Create(questionDto, id);

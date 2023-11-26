@@ -24,6 +24,7 @@ namespace EasyTest.WebAPI.Extensions
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITestService, TestService>();
             services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IAnswerService, AnswerService>();
 		}
         public static void RegisterServices(this IServiceCollection services, IConfiguration config)
         {
@@ -35,7 +36,7 @@ namespace EasyTest.WebAPI.Extensions
                         new TestMapperProfile(),
                         new UserMapperProfile(),
                         new QuestionMapperProfile(),
-                        new QuestionTestMapperProfile()
+                        new AnswerMapperProfile()
                     });
             });
         }
