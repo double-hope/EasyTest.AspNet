@@ -5,7 +5,7 @@ namespace EasyTest.BLL.Interfaces
 {
     public interface IAuthService
     {
-        Task<Response> Login(UserLoginDto userDto);
-        Task<Response> Register(UserRegisterDto userDto);
+        Task<Response<UserResponseDto>> Login(UserLoginDto userDto);
+        Task<Response<UserResponseDto>> Register(UserRegisterDto userDto);
     }
 }

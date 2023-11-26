@@ -12,7 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
     {
         c.SchemaFilter<EnumSchemaFilter>();
-    });
+	});
 
 builder.Services.RegisterDatabase(builder.Configuration);
 builder.Services.RegisterIdentity(builder.Configuration);

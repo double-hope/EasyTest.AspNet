@@ -1,7 +1,9 @@
 ﻿using EasyTest.BLL.Interfaces;
 using EasyTest.Shared.Constants;
+using EasyTest.Shared.DTO.Response;
 using EasyTest.Shared.DTO.Test;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace EasyTest.WebAPI.Controllers
 {
@@ -14,9 +16,10 @@ namespace EasyTest.WebAPI.Controllers
         public TestController(ITestService testService)
         {
             _testService = testService;
-        }
+		}
         [HttpGet]
-        public async Task<ActionResult> GetTests()
+		[ProducesResponseType(typeof(Response<IEnumerable<TestDto>>), (int)HttpStatusCode.OK)]
+		public async Task<ActionResult> GetTests()
         {
             var response = await _testService.GetAll();
 
@@ -28,7 +31,8 @@ namespace EasyTest.WebAPI.Controllers
             return BadRequest(response);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetTest(Guid id)
+		[ProducesResponseType(typeof(Response<TestDto>), (int)HttpStatusCode.OK)]
+		public async Task<ActionResult> GetTest(Guid id)
         {
             var response = await _testService.Get(id);
 
@@ -40,7 +44,8 @@ namespace EasyTest.WebAPI.Controllers
             return BadRequest(response);
         }
         [HttpPost]
-        public async Task<ActionResult> CreateTest([FromBody]TestCreateDto testDto)
+		[ProducesResponseType(typeof(Response<TestDto>), (int)HttpStatusCode.OK)]
+		public async Task<ActionResult> CreateTest([FromBody]TestCreateDto testDto)
         {
             var response = await _testService.Create(testDto);
 

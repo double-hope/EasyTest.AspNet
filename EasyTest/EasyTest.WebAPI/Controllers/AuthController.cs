@@ -1,7 +1,9 @@
 ﻿using EasyTest.BLL.Interfaces;
 using EasyTest.Shared.Constants;
+using EasyTest.Shared.DTO.Response;
 using EasyTest.Shared.DTO.User;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace EasyTest.WebAPI.Controllers
 {
@@ -16,7 +18,8 @@ namespace EasyTest.WebAPI.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult> LoginUser([FromBody]UserLoginDto userDto)
+		[ProducesResponseType(typeof(Response<UserResponseDto>), (int)HttpStatusCode.OK)]
+		public async Task<ActionResult> LoginUser([FromBody]UserLoginDto userDto)
         {
             var response = await _authService.Login(userDto);
 
@@ -29,7 +32,8 @@ namespace EasyTest.WebAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult> RegisterUser([FromBody] UserRegisterDto userDto)
+		[ProducesResponseType(typeof(Response<UserResponseDto>), (int)HttpStatusCode.OK)]
+		public async Task<ActionResult> RegisterUser([FromBody] UserRegisterDto userDto)
         {
             var response = await _authService.Register(userDto);
 
