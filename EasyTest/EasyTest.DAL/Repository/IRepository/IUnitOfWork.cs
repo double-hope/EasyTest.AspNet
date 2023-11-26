@@ -12,6 +12,6 @@ namespace EasyTest.DAL.Repository.IRepository
 		IRepository<Test> TestRepository { get; }
 		IRepository<TestSession> TestSessionRepository { get; }
 		IRepository<User> UserRepository { get; }
-		void Save();
+		Task Save();
 	}
 }

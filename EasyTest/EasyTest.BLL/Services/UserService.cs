@@ -1,20 +1,14 @@
 ﻿using AutoMapper;
 using EasyTest.BLL.Interfaces;
-using EasyTest.DAL;
-using EasyTest.Shared.DTO.User;
+using EasyTest.DAL.Repository.IRepository;
 
 namespace EasyTest.BLL.Services
 {
 	public class UserService : Service, IUserService
 	{
-		public UserService(ApplicationDbContext context, IMapper mapper) : base(context, mapper)
+		public UserService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
 		{
 			
-		}
-
-		public Task<UserDto> RegisterUser(UserRegisterDto userDto)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }
