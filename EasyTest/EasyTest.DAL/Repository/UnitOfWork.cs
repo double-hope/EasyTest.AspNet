@@ -1,5 +1,6 @@
 ﻿using EasyTest.DAL.Entities;
 using EasyTest.DAL.Repository.IRepository;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EasyTest.DAL.Repository
 {
@@ -15,7 +16,8 @@ namespace EasyTest.DAL.Repository
 		private IRepository<Test> testRepository;
 		private IRepository<TestSession> testSessionRepository;
 		private IRepository<User> userRepository;
-		public UnitOfWork(ApplicationDbContext context)
+		private IDbContextTransaction _transaction;
+        public UnitOfWork(ApplicationDbContext context)
 		{
 			_context = context;
 		}
@@ -108,7 +110,34 @@ namespace EasyTest.DAL.Repository
 			}
 		}
 
-		public async Task Save()
+        public async Task<IDbContextTransaction> BeginTransaction()
+        {
+            _transaction = await _context.Database.BeginTransactionAsync();
+			return _transaction;
+        }
+
+        public async Task Commit()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+                await _transaction.CommitAsync();
+            }
+            catch
+            {
+                await Rollback().ConfigureAwait(false);
+                throw;
+            }
+        }
+
+        public async Task Rollback()
+        {
+            if (_transaction != null)
+            {
+                await _transaction.RollbackAsync();
+            }
+        }
+        public async Task Save()
 		{
 			await _context.SaveChangesAsync();
 		}

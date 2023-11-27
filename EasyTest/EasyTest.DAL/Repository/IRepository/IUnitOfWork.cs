@@ -1,4 +1,5 @@
 ﻿using EasyTest.DAL.Entities;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EasyTest.DAL.Repository.IRepository
 {
@@ -12,6 +13,9 @@ namespace EasyTest.DAL.Repository.IRepository
 		IRepository<Test> TestRepository { get; }
 		IRepository<TestSession> TestSessionRepository { get; }
 		IRepository<User> UserRepository { get; }
-		Task Save();
+		Task<IDbContextTransaction> BeginTransaction();
+		Task Commit();
+		Task Rollback();
+        Task Save();
 	}
 }

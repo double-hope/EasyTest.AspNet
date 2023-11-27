@@ -23,7 +23,9 @@ namespace EasyTest.WebAPI.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITestService, TestService>();
-        }
+            services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IAnswerService, AnswerService>();
+		}
         public static void RegisterServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddAutoMapper(conf =>
@@ -32,7 +34,9 @@ namespace EasyTest.WebAPI.Extensions
                     new List<Profile>()
                     {
                         new TestMapperProfile(),
-                        new UserMapperProfile()
+                        new UserMapperProfile(),
+                        new QuestionMapperProfile(),
+                        new AnswerMapperProfile()
                     });
             });
         }
@@ -44,9 +48,9 @@ namespace EasyTest.WebAPI.Extensions
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
+            }).AddJwtBearer(options =>
             {
-                o.TokenValidationParameters = new TokenValidationParameters
+				options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidIssuer = config["Jwt:Issuer"],
                     ValidAudience = config["Jwt:Audience"],
