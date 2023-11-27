@@ -15,7 +15,35 @@ namespace EasyTest.BLL.Services
 		{
 			_answerService = answerService;
 		}
+		public async Task<Response<IEnumerable<QuestionResponseDto>>> CreateMany(IEnumerable<QuestionDto>questionsDto, Guid testId)
+		{
+            try
+            {
+                using var transaction = await _unitOfWork.BeginTransaction();
 
+                var responses = new List<QuestionResponseDto>();
+
+                foreach (var q in questionsDto)
+                {
+                    var response = await Create(q, testId);
+                    responses.Add(response.Data);
+
+                    if (response.Status == ResponseStatusCodesConst.Error)
+                    {
+                        await _unitOfWork.Rollback();
+						return Response<IEnumerable<QuestionResponseDto>>.Error(response.Message);
+                    }
+                }
+
+                await _unitOfWork.Commit().ConfigureAwait(false);
+
+                return Response<IEnumerable<QuestionResponseDto>>.Success(responses);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 		public async Task<Response<QuestionResponseDto>> Create(QuestionDto questionDto, Guid testId)
 		{
 			var questionE = _mapper.Map<Question>(questionDto);
@@ -47,5 +75,5 @@ namespace EasyTest.BLL.Services
 			await _unitOfWork.Save();
 			return Response<QuestionResponseDto>.Success(_mapper.Map<QuestionResponseDto>(questionE));
 		}
-	}
+    }
 }
