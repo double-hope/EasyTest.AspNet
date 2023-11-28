@@ -2,12 +2,14 @@
 using EasyTest.Shared.Constants;
 using EasyTest.Shared.DTO.Question;
 using EasyTest.Shared.DTO.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace EasyTest.WebAPI.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("/api/question")]
     public class QuestionController : ControllerBase
     {
@@ -33,7 +35,8 @@ namespace EasyTest.WebAPI.Controllers
         //}
         [HttpPost("testId/{id}")]
         [ProducesResponseType(typeof(Response<IEnumerable<QuestionResponseDto>>), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult> CreateTests(Guid id, [FromBody]IEnumerable<QuestionDto> questionsDto)
+		[Authorize(Roles = $"{UserRolesConst.AdminRole},{UserRolesConst.TeacherRole}")]
+		public async Task<ActionResult> CreateTests(Guid id, [FromBody]IEnumerable<QuestionDto> questionsDto)
         {
             var response = await _questionService.CreateMany(questionsDto, id);
 
