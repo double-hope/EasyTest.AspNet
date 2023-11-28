@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AutoMapper;
 using EasyTest.BLL.Mappers;
+using EasyTest.Shared.Helpers;
 
 namespace EasyTest.WebAPI.Extensions
 {
@@ -28,7 +29,8 @@ namespace EasyTest.WebAPI.Extensions
 		}
         public static void RegisterServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddAutoMapper(conf =>
+			services.Configure<AuthOptions>(config.GetSection("Jwt"));
+			services.AddAutoMapper(conf =>
             {
                 conf.AddProfiles(
                     new List<Profile>()

@@ -2,12 +2,14 @@
 using EasyTest.Shared.Constants;
 using EasyTest.Shared.DTO.Response;
 using EasyTest.Shared.DTO.Test;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace EasyTest.WebAPI.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("/api/test")]
     public class TestController : ControllerBase
     {
@@ -45,6 +47,7 @@ namespace EasyTest.WebAPI.Controllers
         }
         [HttpPost]
 		[ProducesResponseType(typeof(Response<TestDto>), (int)HttpStatusCode.OK)]
+		[Authorize(Roles = $"{UserRolesConst.AdminRole},{UserRolesConst.TeacherRole}")]
 		public async Task<ActionResult> CreateTest([FromBody]TestCreateDto testDto)
         {
             var response = await _testService.Create(testDto);
