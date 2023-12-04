@@ -13,6 +13,7 @@ namespace EasyTest.DAL.Repository.IRepository
 		IRepository<Test> TestRepository { get; }
 		IRepository<TestSession> TestSessionRepository { get; }
 		IRepository<User> UserRepository { get; }
+		IRepository<UserTest> UserTestRepository { get; }
 		Task<IDbContextTransaction> BeginTransaction();
 		Task Commit();
 		Task Rollback();

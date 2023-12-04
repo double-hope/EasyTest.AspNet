@@ -16,6 +16,7 @@ namespace EasyTest.DAL.Repository
 		private IRepository<Test> testRepository;
 		private IRepository<TestSession> testSessionRepository;
 		private IRepository<User> userRepository;
+		private IRepository<UserTest> userTestRepository;
 		private IDbContextTransaction _transaction;
         public UnitOfWork(ApplicationDbContext context)
 		{
@@ -109,8 +110,19 @@ namespace EasyTest.DAL.Repository
 				return userRepository;
 			}
 		}
+		public IRepository<UserTest> UserTestRepository
+		{
+			get
+			{
+				if (userTestRepository == null)
+				{
+					userTestRepository = new Repository<UserTest>(_context);
+				}
+				return userTestRepository;
+			}
+		}
 
-        public async Task<IDbContextTransaction> BeginTransaction()
+		public async Task<IDbContextTransaction> BeginTransaction()
         {
             _transaction = await _context.Database.BeginTransactionAsync();
 			return _transaction;

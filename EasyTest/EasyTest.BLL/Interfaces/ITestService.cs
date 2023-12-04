@@ -8,5 +8,6 @@ namespace EasyTest.BLL.Interfaces
         Task<Response<IEnumerable<TestDto>>> GetAll();
         Task<Response<TestDto>> Get(Guid id);
         Task<Response<TestDto>> Create(TestCreateDto testDto);
-    }
+        Task<Response<TestDto>> Edit(TestEditDto testDto);
+	}
 }
