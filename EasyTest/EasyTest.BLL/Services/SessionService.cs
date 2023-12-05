@@ -14,9 +14,15 @@ namespace EasyTest.BLL.Services
 
 		public async Task<Response<SessionDto>> Create(SessionCreateDto sessionDto)
 		{
+			var inProgressSession = await _unitOfWork.TestSessionRepository.GetInProgressSession(sessionDto.UserId, sessionDto.TestId);
+			
+			if(inProgressSession != null)
+			{
+				return Response<SessionDto>.Success(_mapper.Map<SessionDto>(inProgressSession), "Return session created early");
+			}
 			var sessionE = _mapper.Map<TestSession>(sessionDto);
 
-			sessionE.Status = TestStatusConst.InProgress;
+			sessionE.Status = TestStatus.InProgress;
 			await _unitOfWork.TestSessionRepository.Add(sessionE);
 			await _unitOfWork.Save();
 

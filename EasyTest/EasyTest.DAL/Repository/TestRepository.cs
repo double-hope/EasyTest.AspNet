@@ -1,8 +1,6 @@
 ﻿using EasyTest.DAL.Entities;
 using EasyTest.DAL.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
-using System.Linq;
 
 namespace EasyTest.DAL.Repository
 {

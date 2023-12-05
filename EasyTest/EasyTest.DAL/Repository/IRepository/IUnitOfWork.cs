@@ -11,7 +11,7 @@ namespace EasyTest.DAL.Repository.IRepository
 		IRepository<SessionAnswer> SessionAnswerRepository { get; }
 		IRepository<SessionQuestion> SessionQuestionRepository { get; }
 		ITestRepository TestRepository { get; }
-		IRepository<TestSession> TestSessionRepository { get; }
+		ITestSessionRepository TestSessionRepository { get; }
 		IUserRepository UserRepository { get; }
 		IRepository<UserTest> UserTestRepository { get; }
 		Task<IDbContextTransaction> BeginTransaction();

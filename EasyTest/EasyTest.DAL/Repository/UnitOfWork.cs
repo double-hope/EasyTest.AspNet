@@ -14,7 +14,7 @@ namespace EasyTest.DAL.Repository
 		private IRepository<SessionAnswer> sessionAnswerRepository;
 		private IRepository<SessionQuestion> sessionQuestionRepository;
 		private ITestRepository testRepository;
-		private IRepository<TestSession> testSessionRepository;
+		private ITestSessionRepository testSessionRepository;
 		private IUserRepository userRepository;
 		private IRepository<UserTest> userTestRepository;
 		private IDbContextTransaction _transaction;
@@ -88,13 +88,13 @@ namespace EasyTest.DAL.Repository
 				return testRepository;
 			}
 		}
-		public IRepository<TestSession> TestSessionRepository
+		public ITestSessionRepository TestSessionRepository
 		{
 			get
 			{
 				if (testSessionRepository == null)
 				{
-					testSessionRepository = new Repository<TestSession>(_context);
+					testSessionRepository = new TestSessionRepository(_context);
 				}
 				return testSessionRepository;
 			}
