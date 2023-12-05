@@ -59,7 +59,7 @@ namespace EasyTest.WebAPI.Controllers
 
             return BadRequest(response);
         }
-		[HttpPatch]
+		[HttpPut]
 		[ProducesResponseType(typeof(Response<TestDto>), (int)HttpStatusCode.OK)]
 		[Authorize(Roles = $"{UserRolesConst.AdminRole},{UserRolesConst.TeacherRole}")]
 		public async Task<ActionResult> EditTest([FromBody] TestEditDto testDto)
