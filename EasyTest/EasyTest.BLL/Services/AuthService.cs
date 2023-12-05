@@ -12,7 +12,6 @@ using System.Security.Claims;
 using EasyTest.Shared.Helpers;
 using System.Text;
 using Microsoft.Extensions.Options;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace EasyTest.BLL.Services
 {

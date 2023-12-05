@@ -7,7 +7,6 @@ namespace EasyTest.DAL.Entities
         public required Guid UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
-
 		public required Guid TestId { get; set; }
         [ForeignKey(nameof(TestId))]
         public Test Test { get; set; }
