@@ -13,9 +13,9 @@ namespace EasyTest.DAL.Repository
 		private IRepository<QuestionTest> questionTestRepository;
 		private IRepository<SessionAnswer> sessionAnswerRepository;
 		private IRepository<SessionQuestion> sessionQuestionRepository;
-		private IRepository<Test> testRepository;
+		private ITestRepository testRepository;
 		private IRepository<TestSession> testSessionRepository;
-		private IRepository<User> userRepository;
+		private IUserRepository userRepository;
 		private IRepository<UserTest> userTestRepository;
 		private IDbContextTransaction _transaction;
         public UnitOfWork(ApplicationDbContext context)
@@ -77,13 +77,13 @@ namespace EasyTest.DAL.Repository
 				return sessionQuestionRepository;
 			}
 		}
-		public IRepository<Test> TestRepository
+		public ITestRepository TestRepository
 		{
 			get
 			{
 				if (testRepository == null)
 				{
-					testRepository = new Repository<Test>(_context);
+					testRepository = new TestRepository(_context);
 				}
 				return testRepository;
 			}
@@ -99,13 +99,13 @@ namespace EasyTest.DAL.Repository
 				return testSessionRepository;
 			}
 		}
-		public IRepository<User> UserRepository
+		public IUserRepository UserRepository
 		{
 			get
 			{
 				if (userRepository == null)
 				{
-					userRepository = new Repository<User>(_context);
+					userRepository = new UserRepository(_context);
 				}
 				return userRepository;
 			}

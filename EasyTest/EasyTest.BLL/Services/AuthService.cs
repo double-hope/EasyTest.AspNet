@@ -27,7 +27,7 @@ namespace EasyTest.BLL.Services
 
 		public async Task<Response<UserResponseDto>> Login(UserLoginDto userDto)
 		{
-			var user = await _unitOfWork.UserRepository.GetFirstOrDefault(user => user.Email.Equals(userDto.Email));
+			var user = await _unitOfWork.UserRepository.GetByEmail(userDto.Email);
 			if (user == null)
 			{
 				return Response<UserResponseDto>.Error("User does not found");
@@ -53,7 +53,7 @@ namespace EasyTest.BLL.Services
 				return Response<UserResponseDto>.Error("You cannot register user with role admin");
 			}
 
-			var user = await _unitOfWork.UserRepository.GetFirstOrDefault(user => user.Email.Equals(userDto.Email));
+			var user = await _unitOfWork.UserRepository.GetByEmail(userDto.Email);
 			if (user != null)
 			{
 				return Response<UserResponseDto>.Error("User with this email already exists");

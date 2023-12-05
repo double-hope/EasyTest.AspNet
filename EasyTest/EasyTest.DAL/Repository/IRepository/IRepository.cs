@@ -4,9 +4,8 @@ namespace EasyTest.DAL.Repository.IRepository
 {
 	public interface IRepository<T> where T : class
 	{
-		Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null);
-
-        Task<T> GetFirstOrDefault(Expression<Func<T, bool>> filter);
+		Task<IEnumerable<T>> GetAll();
+        Task<T> GetFirstOrDefault();
 		Task Add(T entity);
         Task AddRange(IEnumerable<T> entities);
         void Update(T entity);
