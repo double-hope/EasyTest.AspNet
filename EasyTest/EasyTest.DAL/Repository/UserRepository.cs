@@ -11,7 +11,7 @@ namespace EasyTest.DAL.Repository
 		public async Task<User> GetByEmail(string email)
 		{
 			IQueryable<User> query = dbSet;
-			dbSet.Where(x => x.Email.Equals(email));
+			query.Where(x => x.Email.Equals(email));
 
 			return await query.FirstOrDefaultAsync();
 		}

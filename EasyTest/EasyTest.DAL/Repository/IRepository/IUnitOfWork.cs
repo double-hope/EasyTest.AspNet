@@ -5,11 +5,11 @@ namespace EasyTest.DAL.Repository.IRepository
 {
 	public interface IUnitOfWork
 	{
-		IRepository<Answer> AnswerRepository { get; }
+		IAnswerRepository AnswerRepository { get; }
 		IRepository<Question> QuestionRepository { get; }
-		IRepository<QuestionTest> QuestionTestRepository { get; }
+		IQuestionTestRepository QuestionTestRepository { get; }
 		IRepository<SessionAnswer> SessionAnswerRepository { get; }
-		IRepository<SessionQuestion> SessionQuestionRepository { get; }
+		ISessionQuestionRepository SessionQuestionRepository { get; }
 		ITestRepository TestRepository { get; }
 		ITestSessionRepository TestSessionRepository { get; }
 		IUserRepository UserRepository { get; }

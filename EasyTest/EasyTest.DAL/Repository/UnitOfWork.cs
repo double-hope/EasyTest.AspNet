@@ -8,11 +8,11 @@ namespace EasyTest.DAL.Repository
 	{
 		private readonly ApplicationDbContext _context;
 
-		private IRepository<Answer> answerRepository;
+		private IAnswerRepository answerRepository;
 		private IRepository<Question> questionRepository;
-		private IRepository<QuestionTest> questionTestRepository;
+		private IQuestionTestRepository questionTestRepository;
 		private IRepository<SessionAnswer> sessionAnswerRepository;
-		private IRepository<SessionQuestion> sessionQuestionRepository;
+		private ISessionQuestionRepository sessionQuestionRepository;
 		private ITestRepository testRepository;
 		private ITestSessionRepository testSessionRepository;
 		private IUserRepository userRepository;
@@ -22,13 +22,13 @@ namespace EasyTest.DAL.Repository
 		{
 			_context = context;
 		}
-		public IRepository<Answer> AnswerRepository
+		public IAnswerRepository AnswerRepository
 		{
 			get
 			{
 				if (answerRepository == null)
 				{
-					answerRepository = new Repository<Answer>(_context);
+					answerRepository = new AnswerRepository(_context);
 				}
 				return answerRepository;
 			}
@@ -44,13 +44,13 @@ namespace EasyTest.DAL.Repository
 				return questionRepository;
 			}
 		}
-		public IRepository<QuestionTest> QuestionTestRepository
+		public IQuestionTestRepository QuestionTestRepository
 		{
 			get
 			{
 				if (questionTestRepository == null)
 				{
-					questionTestRepository = new Repository<QuestionTest>(_context);
+					questionTestRepository = new QuestionTestRepository(_context);
 				}
 				return questionTestRepository;
 			}
@@ -66,13 +66,13 @@ namespace EasyTest.DAL.Repository
 				return sessionAnswerRepository;
 			}
 		}
-		public IRepository<SessionQuestion> SessionQuestionRepository
+		public ISessionQuestionRepository SessionQuestionRepository
 		{
 			get
 			{
 				if (sessionQuestionRepository == null)
 				{
-					sessionQuestionRepository = new Repository<SessionQuestion>(_context);
+					sessionQuestionRepository = new SessionQuestionRepository(_context);
 				}
 				return sessionQuestionRepository;
 			}
