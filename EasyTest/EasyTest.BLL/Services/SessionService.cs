@@ -71,5 +71,21 @@ namespace EasyTest.BLL.Services
 
 			return Response<QuestionDto>.Success(questionE, "New question");
 		}
+		public async Task<Response<SessionAnswerDto>> AnswerTheQuestion(Guid sessionId, Guid answerId)
+		{
+			var answer = await _unitOfWork.AnswerRepository.GetById(answerId);
+
+			var sessionAnswer = new SessionAnswer()
+			{
+				AnswerId = answerId,
+				SessionId = sessionId,
+				IsCorrect = answer.IsCorrect
+			};
+
+			await _unitOfWork.SessionAnswerRepository.Add(sessionAnswer);
+			await _unitOfWork.Save();
+
+			return Response<SessionAnswerDto>.Success(_mapper.Map<SessionAnswerDto>(sessionAnswer), "New question");
+		}
 	}
 }

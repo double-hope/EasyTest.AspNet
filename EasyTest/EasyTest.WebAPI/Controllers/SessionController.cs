@@ -45,5 +45,18 @@ namespace EasyTest.WebAPI.Controllers
 
 			return BadRequest(response);
 		}
+		[HttpPost("{id}/answer/{answerId}")]
+		[ProducesResponseType(typeof(Response<SessionDto>), (int)HttpStatusCode.OK)]
+		public async Task<ActionResult> AnswerTheQuestion(Guid id, Guid answerId)
+		{
+			var response = await _sessionService.AnswerTheQuestion(id, answerId);
+
+			if (response.Status == ResponseStatusCodesConst.Success)
+			{
+				return Ok(response);
+			}
+
+			return BadRequest(response);
+		}
 	}
 }

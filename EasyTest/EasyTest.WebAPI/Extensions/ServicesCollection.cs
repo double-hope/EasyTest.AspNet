@@ -40,7 +40,8 @@ namespace EasyTest.WebAPI.Extensions
                         new UserMapperProfile(),
                         new QuestionMapperProfile(),
                         new AnswerMapperProfile(),
-                        new SessionMapperProfile()
+                        new SessionMapperProfile(),
+                        new SessionAnswerMapperProfile(),
 					});
             });
         }
