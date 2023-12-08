@@ -29,9 +29,15 @@ namespace EasyTest.BLL.Services
 
 			return Response<TestDto>.Success(_mapper.Map<TestDto>(testE), "Test created successfully");
         }
-		public async Task<Response<TestDto>> Edit(TestEditDto testDto)
+		public async Task<Response<TestDto>> Edit(Guid testId, TestEditDto testDto)
 		{
-			var testE = _mapper.Map<Test>(testDto);
+
+			var testE = new Test()
+            {
+                Id = testId,
+                Title = testDto.Title,
+                Description = testDto.Description,
+            };
 
 			_unitOfWork.TestRepository.Update(testE);
 			await _unitOfWork.Save();
