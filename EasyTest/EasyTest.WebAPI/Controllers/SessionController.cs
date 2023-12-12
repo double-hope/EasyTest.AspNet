@@ -36,6 +36,11 @@ namespace EasyTest.WebAPI.Controllers
 		[ProducesResponseType(typeof(Response<SessionDto>), (int)HttpStatusCode.OK)]
 		public async Task<ActionResult> GetNextQuestion(Guid id)
 		{
+			if (await _sessionService.IfGetResult(id))
+			{
+				return RedirectToAction(nameof(GetResult), new { id = id });
+			}
+
 			var response = await _sessionService.NextQuestion(id);
 
 			if (response.Status == ResponseStatusCodesConst.Success)
@@ -50,6 +55,19 @@ namespace EasyTest.WebAPI.Controllers
 		public async Task<ActionResult> AnswerTheQuestion(Guid id, Guid answerId)
 		{
 			var response = await _sessionService.AnswerTheQuestion(id, answerId);
+
+			if (response.Status == ResponseStatusCodesConst.Success)
+			{
+				return Ok(response);
+			}
+
+			return BadRequest(response);
+		}
+		[HttpGet("{id}/result")]
+		[ProducesResponseType(typeof(Response<SessionResultDto>), (int)HttpStatusCode.OK)]
+		public async Task<ActionResult> GetResult(Guid id)
+		{
+			var response = await _sessionService.GetResult(id);
 
 			if (response.Status == ResponseStatusCodesConst.Success)
 			{
