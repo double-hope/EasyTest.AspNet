@@ -4,7 +4,6 @@ using EasyTest.DAL.Entities;
 using EasyTest.DAL.Repository.IRepository;
 using EasyTest.Shared.DTO.Answer;
 using EasyTest.Shared.DTO.Response;
-using System.Collections.Generic;
 
 namespace EasyTest.BLL.Services
 {

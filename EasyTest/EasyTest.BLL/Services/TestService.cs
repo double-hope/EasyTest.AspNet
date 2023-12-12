@@ -17,7 +17,7 @@ namespace EasyTest.BLL.Services
         }
         public async Task<Response<TestDto>> Get(Guid id)
         {
-            var res = await _unitOfWork.TestRepository.GetFirstOrDefault(x => x.Id == id);
+            var res = await _unitOfWork.TestRepository.GetById(id);
 			return Response<TestDto>.Success(_mapper.Map<TestDto>(res));
         }
         public async Task<Response<TestDto>> Create(TestCreateDto testDto)
@@ -29,9 +29,9 @@ namespace EasyTest.BLL.Services
 
 			return Response<TestDto>.Success(_mapper.Map<TestDto>(testE), "Test created successfully");
         }
-		public async Task<Response<TestDto>> Edit(TestEditDto testDto)
+		public async Task<Response<TestDto>> Edit(Guid testId, TestEditDto testDto)
 		{
-			var testE = _mapper.Map<Test>(testDto);
+            var testE = _mapper.Map<Test>(testDto);
 
 			_unitOfWork.TestRepository.Update(testE);
 			await _unitOfWork.Save();

@@ -5,6 +5,7 @@
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public int NumberOfAttempts { get; set; } = 1;
-        public List<string> QuestionTests { get; set; }
+        public int QuestionsAttempted { get; set; }
+		public List<string> QuestionTests { get; set; }
     }
 }

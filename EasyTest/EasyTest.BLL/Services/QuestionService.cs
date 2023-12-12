@@ -50,7 +50,7 @@ namespace EasyTest.BLL.Services
 
 			await _unitOfWork.QuestionRepository.Add(questionE);
 
-			var testE = await _unitOfWork.TestRepository.GetFirstOrDefault(x => x.Id == testId);
+			var testE = await _unitOfWork.TestRepository.GetById(testId);
 
 			if (testE == null)
 			{
