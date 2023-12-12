@@ -31,13 +31,7 @@ namespace EasyTest.BLL.Services
         }
 		public async Task<Response<TestDto>> Edit(Guid testId, TestEditDto testDto)
 		{
-
-			var testE = new Test()
-            {
-                Id = testId,
-                Title = testDto.Title,
-                Description = testDto.Description,
-            };
+            var testE = _mapper.Map<Test>(testDto);
 
 			_unitOfWork.TestRepository.Update(testE);
 			await _unitOfWork.Save();
