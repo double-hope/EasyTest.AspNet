@@ -8,7 +8,7 @@ namespace EasyTest.DAL.Repository.IRepository
 		IAnswerRepository AnswerRepository { get; }
 		IRepository<Question> QuestionRepository { get; }
 		IQuestionTestRepository QuestionTestRepository { get; }
-		IRepository<SessionAnswer> SessionAnswerRepository { get; }
+		ISessionAnswerRepository SessionAnswerRepository { get; }
 		ISessionQuestionRepository SessionQuestionRepository { get; }
 		ITestRepository TestRepository { get; }
 		ITestSessionRepository TestSessionRepository { get; }
