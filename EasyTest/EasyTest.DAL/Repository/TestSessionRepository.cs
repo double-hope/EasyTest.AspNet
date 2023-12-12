@@ -29,5 +29,16 @@ namespace EasyTest.DAL.Repository
 
 			return await query.FirstOrDefaultAsync();
 		}
+
+		public async Task<List<TestSession>> GetAllUserSessions(Guid userId, Guid testId)
+		{
+			IQueryable<TestSession> query = dbSet;
+
+			query = query
+				.Include(ts => ts.Test)
+				.Where(x => x.UserId == userId && x.TestId == testId);
+
+			return await query.ToListAsync();
+		}
 	}
 }

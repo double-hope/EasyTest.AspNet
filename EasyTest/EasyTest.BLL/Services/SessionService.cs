@@ -22,6 +22,15 @@ namespace EasyTest.BLL.Services
 			{
 				return Response<SessionDto>.Success(_mapper.Map<SessionDto>(inProgressSession), "Return session created early");
 			}
+
+			var userSessions = await _unitOfWork.TestSessionRepository.GetAllUserSessions(sessionDto.UserId, sessionDto.TestId);
+			var test = await _unitOfWork.TestRepository.GetById(sessionDto.TestId);
+			
+			if(userSessions.Count >= test.NumberOfAttempts)
+			{
+				return Response<SessionDto>.Error("You have used all your attempts");
+			}
+
 			var sessionE = _mapper.Map<TestSession>(sessionDto);
 
 			sessionE.Status = TestStatus.InProgress;

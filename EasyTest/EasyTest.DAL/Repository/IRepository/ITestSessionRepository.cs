@@ -6,5 +6,7 @@ namespace EasyTest.DAL.Repository.IRepository
 	{
 		public Task<TestSession> GetInProgressSession(Guid userId, Guid testId);
 		public Task<TestSession> GetSession(Guid sessionId);
+		public Task<List<TestSession>> GetAllUserSessions(Guid userId, Guid testId);
+
 	}
 }
