@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AutoMapper;
 using EasyTest.BLL.Mappers;
+using EasyTest.Shared.Helpers;
 
 namespace EasyTest.WebAPI.Extensions
 {
@@ -23,17 +24,25 @@ namespace EasyTest.WebAPI.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<ITestService, TestService>();
-        }
+            services.AddScoped<IQuestionService, QuestionService>();
+            services.AddScoped<IAnswerService, AnswerService>();
+            services.AddScoped<ISessionService, SessionService>();
+		}
         public static void RegisterServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddAutoMapper(conf =>
+			services.Configure<AuthOptions>(config.GetSection("Jwt"));
+			services.AddAutoMapper(conf =>
             {
                 conf.AddProfiles(
                     new List<Profile>()
                     {
                         new TestMapperProfile(),
-                        new UserMapperProfile()
-                    });
+                        new UserMapperProfile(),
+                        new QuestionMapperProfile(),
+                        new AnswerMapperProfile(),
+                        new SessionMapperProfile(),
+                        new SessionAnswerMapperProfile(),
+					});
             });
         }
 
@@ -44,9 +53,9 @@ namespace EasyTest.WebAPI.Extensions
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
+            }).AddJwtBearer(options =>
             {
-                o.TokenValidationParameters = new TokenValidationParameters
+				options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidIssuer = config["Jwt:Issuer"],
                     ValidAudience = config["Jwt:Audience"],

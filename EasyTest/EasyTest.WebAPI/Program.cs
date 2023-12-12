@@ -1,5 +1,6 @@
 using EasyTest.DAL.DbInitializer;
 using EasyTest.WebAPI.Extensions;
+using EasyTest.WebAPI.Middlewares;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +19,8 @@ builder.Services.RegisterDatabase(builder.Configuration);
 builder.Services.RegisterIdentity(builder.Configuration);
 builder.Services.RegisterServices(builder.Configuration);
 builder.Services.RegisterCustomServices(builder.Configuration);
-builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddAuthorization();
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
@@ -31,6 +32,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<TokenValidationMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 

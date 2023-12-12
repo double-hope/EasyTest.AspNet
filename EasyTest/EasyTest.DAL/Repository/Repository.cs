@@ -1,12 +1,11 @@
 ﻿using EasyTest.DAL.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace EasyTest.DAL.Repository
 {
 	public class Repository<T> : IRepository<T> where T : class
 	{
-		private readonly ApplicationDbContext _context;
+		protected readonly ApplicationDbContext _context;
 		internal DbSet<T> dbSet;
 
 		public Repository(ApplicationDbContext context)
@@ -15,18 +14,16 @@ namespace EasyTest.DAL.Repository
 			dbSet = _context.Set<T>();
 		}
 
-		public async Task<IEnumerable<T>> GetAll(Expression<Func<T, bool>>? filter = null)
+		public async Task<IEnumerable<T>> GetAll()
 		{
 			IQueryable<T> query = dbSet;
-			if (filter != null) query = query.Where(filter);
 
 			return await query.ToListAsync();
 		}
 
-		public async Task<T> GetFirstOrDefault(Expression<Func<T, bool>> filter)
+		public async Task<T> GetFirstOrDefault()
 		{
 			IQueryable<T> query = dbSet;
-			query = query.Where(filter);
 
             return await query.FirstOrDefaultAsync();
 		}

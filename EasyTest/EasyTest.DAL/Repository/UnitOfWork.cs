@@ -1,5 +1,6 @@
 ﻿using EasyTest.DAL.Entities;
 using EasyTest.DAL.Repository.IRepository;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EasyTest.DAL.Repository
 {
@@ -7,25 +8,27 @@ namespace EasyTest.DAL.Repository
 	{
 		private readonly ApplicationDbContext _context;
 
-		private IRepository<Answer> answerRepository;
+		private IAnswerRepository answerRepository;
 		private IRepository<Question> questionRepository;
-		private IRepository<QuestionTest> questionTestRepository;
-		private IRepository<SessionAnswer> sessionAnswerRepository;
-		private IRepository<SessionQuestion> sessionQuestionRepository;
-		private IRepository<Test> testRepository;
-		private IRepository<TestSession> testSessionRepository;
-		private IRepository<User> userRepository;
-		public UnitOfWork(ApplicationDbContext context)
+		private IQuestionTestRepository questionTestRepository;
+		private ISessionAnswerRepository sessionAnswerRepository;
+		private ISessionQuestionRepository sessionQuestionRepository;
+		private ITestRepository testRepository;
+		private ITestSessionRepository testSessionRepository;
+		private IUserRepository userRepository;
+		private IRepository<UserTest> userTestRepository;
+		private IDbContextTransaction _transaction;
+        public UnitOfWork(ApplicationDbContext context)
 		{
 			_context = context;
 		}
-		public IRepository<Answer> AnswerRepository
+		public IAnswerRepository AnswerRepository
 		{
 			get
 			{
 				if (answerRepository == null)
 				{
-					answerRepository = new Repository<Answer>(_context);
+					answerRepository = new AnswerRepository(_context);
 				}
 				return answerRepository;
 			}
@@ -41,74 +44,112 @@ namespace EasyTest.DAL.Repository
 				return questionRepository;
 			}
 		}
-		public IRepository<QuestionTest> QuestionTestRepository
+		public IQuestionTestRepository QuestionTestRepository
 		{
 			get
 			{
 				if (questionTestRepository == null)
 				{
-					questionTestRepository = new Repository<QuestionTest>(_context);
+					questionTestRepository = new QuestionTestRepository(_context);
 				}
 				return questionTestRepository;
 			}
 		}
-		public IRepository<SessionAnswer> SessionAnswerRepository
+		public ISessionAnswerRepository SessionAnswerRepository
 		{
 			get
 			{
 				if (sessionAnswerRepository == null)
 				{
-					sessionAnswerRepository = new Repository<SessionAnswer>(_context);
+					sessionAnswerRepository = new SessionAnswerRepository(_context);
 				}
 				return sessionAnswerRepository;
 			}
 		}
-		public IRepository<SessionQuestion> SessionQuestionRepository
+		public ISessionQuestionRepository SessionQuestionRepository
 		{
 			get
 			{
 				if (sessionQuestionRepository == null)
 				{
-					sessionQuestionRepository = new Repository<SessionQuestion>(_context);
+					sessionQuestionRepository = new SessionQuestionRepository(_context);
 				}
 				return sessionQuestionRepository;
 			}
 		}
-		public IRepository<Test> TestRepository
+		public ITestRepository TestRepository
 		{
 			get
 			{
 				if (testRepository == null)
 				{
-					testRepository = new Repository<Test>(_context);
+					testRepository = new TestRepository(_context);
 				}
 				return testRepository;
 			}
 		}
-		public IRepository<TestSession> TestSessionRepository
+		public ITestSessionRepository TestSessionRepository
 		{
 			get
 			{
 				if (testSessionRepository == null)
 				{
-					testSessionRepository = new Repository<TestSession>(_context);
+					testSessionRepository = new TestSessionRepository(_context);
 				}
 				return testSessionRepository;
 			}
 		}
-		public IRepository<User> UserRepository
+		public IUserRepository UserRepository
 		{
 			get
 			{
 				if (userRepository == null)
 				{
-					userRepository = new Repository<User>(_context);
+					userRepository = new UserRepository(_context);
 				}
 				return userRepository;
 			}
 		}
+		public IRepository<UserTest> UserTestRepository
+		{
+			get
+			{
+				if (userTestRepository == null)
+				{
+					userTestRepository = new Repository<UserTest>(_context);
+				}
+				return userTestRepository;
+			}
+		}
 
-		public async Task Save()
+		public async Task<IDbContextTransaction> BeginTransaction()
+        {
+            _transaction = await _context.Database.BeginTransactionAsync();
+			return _transaction;
+        }
+
+        public async Task Commit()
+        {
+            try
+            {
+                await _context.SaveChangesAsync();
+                await _transaction.CommitAsync();
+            }
+            catch
+            {
+                await Rollback().ConfigureAwait(false);
+                throw;
+            }
+        }
+
+        public async Task Rollback()
+        {
+            if (_transaction != null)
+            {
+                await _transaction.RollbackAsync();
+            }
+        }
+        public async Task Save()
 		{
 			await _context.SaveChangesAsync();
 		}
