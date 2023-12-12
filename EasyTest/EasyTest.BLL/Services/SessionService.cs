@@ -31,7 +31,7 @@ namespace EasyTest.BLL.Services
 			return Response<SessionDto>.Success(_mapper.Map<SessionDto>(sessionE), "Session created successfully");
 		}
 
-		public async Task<Response<QuestionDto>> NextQuestion(Guid sessionId)
+		public async Task<Response<QuestionNextDto>> NextQuestion(Guid sessionId)
 		{
 			var testSession = await _unitOfWork.TestSessionRepository.GetSession(sessionId);
 			var testQuestions = await _unitOfWork.QuestionTestRepository.GetQuestionsByTestId(testSession.TestId);
@@ -43,7 +43,12 @@ namespace EasyTest.BLL.Services
 
 			if (availableQuestions.Count == 0)
 			{
-				return Response<QuestionDto>.Error("No more questions for this test");
+				return Response<QuestionNextDto>.Error("No more questions for this test");
+			}
+
+			if(!await CheckIfAnyQuestionAvailable(testSession.TestId, assignedQuestions.Count))
+			{
+				return Response<QuestionNextDto>.Error("No more questions for this test");
 			}
 
 			var random = new Random();
@@ -62,14 +67,14 @@ namespace EasyTest.BLL.Services
 
 			var answers = await _unitOfWork.AnswerRepository.GetByQuestionId(randomQuestion.Id);
 
-			var questionE = new QuestionDto()
+			var questionE = new QuestionNextDto()
 			{
 				Title = randomQuestion.Title,
 				Text = randomQuestion.Text,
-				Answers = _mapper.Map<List<AnswerDto>>(answers)
+				Answers = _mapper.Map<List<AnswerNextDto>>(answers)
 			};
 
-			return Response<QuestionDto>.Success(questionE, "New question");
+			return Response<QuestionNextDto>.Success(questionE, "New question");
 		}
 		public async Task<Response<SessionAnswerDto>> AnswerTheQuestion(Guid sessionId, Guid answerId)
 		{
@@ -86,6 +91,42 @@ namespace EasyTest.BLL.Services
 			await _unitOfWork.Save();
 
 			return Response<SessionAnswerDto>.Success(_mapper.Map<SessionAnswerDto>(sessionAnswer), "New question");
+		}
+
+		private async Task<bool> CheckIfAnyQuestionAvailable(Guid testId, int assignedQuestionNumber)
+		{
+			var test = await _unitOfWork.TestRepository.GetById(testId);
+			return test.QuestionsAttempted > assignedQuestionNumber;
+		}
+
+		public async Task<bool> IfGetResult(Guid sessionId)
+		{
+			var testSession = await _unitOfWork.TestSessionRepository.GetSession(sessionId);
+			var assignedQuestions = testSession.SessionQuestions.Select(sq => sq.QuestionId).ToList();
+
+			return !await CheckIfAnyQuestionAvailable(testSession.TestId, assignedQuestions.Count);
+		}
+
+		public async Task<Response<SessionResultDto>> GetResult(Guid sessionId)
+		{
+			var testSession = await _unitOfWork.TestSessionRepository.GetSession(sessionId);
+
+			testSession.Status = TestStatus.Completed;
+
+			_unitOfWork.TestSessionRepository.Update(testSession);
+			await _unitOfWork.Save();
+
+			var assignedQuestions = testSession.SessionQuestions.Select(sq => sq.QuestionId).ToList();
+			var correctAnswers = await _unitOfWork.SessionAnswerRepository.GetCorrectAnswers(sessionId);
+
+			var result = new SessionResultDto()
+			{
+				QuestionNumber = assignedQuestions.Count,
+				CorrectAnswerNumber = correctAnswers.Count,
+				Grade = (double)correctAnswers.Count / assignedQuestions.Count * 100
+			};
+
+			return Response<SessionResultDto>.Success(result, "Results");
 		}
 	}
 }
