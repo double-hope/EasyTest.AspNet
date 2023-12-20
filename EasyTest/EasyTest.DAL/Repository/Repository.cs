@@ -30,25 +30,30 @@ namespace EasyTest.DAL.Repository
 		public async Task Add(T entity)
 		{
 			await dbSet.AddAsync(entity);
+			await _context.SaveChangesAsync();
 		}
         public async Task AddRange(IEnumerable<T> entities)
         {
             await dbSet.AddRangeAsync(entities);
-        }
+			await _context.SaveChangesAsync();
+		}
 
         public void Update(T entity)
 		{
 			dbSet.Update(entity);
+			_context.SaveChanges();
 		}
 
 		public void Remove(T entity)
 		{
 			dbSet.Remove(entity);
+			_context.SaveChanges();
 		}
 
 		public void RemoveRange(IEnumerable<T> entities)
 		{
 			dbSet.RemoveRange(entities);
+			_context.SaveChanges();
 		}
 	}
 }
