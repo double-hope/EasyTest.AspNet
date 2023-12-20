@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTest.WebAPI.Tests.Controllers
 {
-	public class QuestionControllerTest
+	public class QuestionControllerTests
 	{
 		private readonly IQuestionService _questionService;
-		public QuestionControllerTest()
+		public QuestionControllerTests()
 		{
 			_questionService = A.Fake<IQuestionService>();
 		}

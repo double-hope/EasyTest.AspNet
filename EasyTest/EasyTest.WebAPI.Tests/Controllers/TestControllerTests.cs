@@ -8,11 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTest.WebAPI.Tests.Controllers
 {
-	public class TestControllerTest
+	public class TestControllerTests
 	{
 		private readonly ITestService _testService;
 
-		public TestControllerTest()
+		public TestControllerTests()
 		{
 			_testService = A.Fake<ITestService>();
 		}

@@ -10,10 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTest.WebAPI.Tests.Controllers
 {
-	public class SessionControllerTest
+	public class SessionControllerTests
 	{
 		private readonly ISessionService _sessionService;
-		public SessionControllerTest()
+		public SessionControllerTests()
 		{
 			_sessionService = A.Fake<ISessionService>();
 		}

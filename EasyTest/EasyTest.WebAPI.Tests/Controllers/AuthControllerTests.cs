@@ -5,14 +5,13 @@ using EasyTest.Shared.DTO.User;
 using EasyTest.WebAPI.Controllers;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
-using EasyTest.Shared.Enums;
 
 namespace EasyTest.WebAPI.Tests.Controllers
 {
-	public class AuthControllerTest
+	public class AuthControllerTests
 	{
 		private readonly IAuthService _authService;
-		public AuthControllerTest()
+		public AuthControllerTests()
 		{
 			_authService = A.Fake<IAuthService>();
 		}
