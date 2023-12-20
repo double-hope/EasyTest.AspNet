@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EasyTest.DAL\EasyTest.DAL.csproj" />
+  </ItemGroup>
+
 </Project>
