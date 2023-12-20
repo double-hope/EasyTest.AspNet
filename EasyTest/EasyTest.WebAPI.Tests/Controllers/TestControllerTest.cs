@@ -107,24 +107,13 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		public async Task TestController_CreateTest_ReturnsOk()
 		{
 			var controller = new TestController(_testService);
-			var testDto = new TestCreateDto
-			{
-				Title = "Title",
-				Description = "Description"
-			};
+			var testDto = A.Fake<TestCreateDto>();
 
 			A.CallTo(() => _testService.Create(testDto))
 				.Returns(new Response<TestDto>
 				{
 					Status = ResponseStatusCodesConst.Success,
-					Data = new TestDto()
-					{
-						Title = "Title",
-						Description = "Description",
-						NumberOfAttempts = 1,
-						QuestionsAttempted = 0,
-						QuestionTests = new List<string>()
-					}
+					Data = A.Fake<TestDto>()
 				});
 
 			var result = await controller.CreateTest(testDto);
@@ -140,11 +129,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		public async Task TestController_CreateTest_ReturnsBadRequest()
 		{
 			var controller = new TestController(_testService);
-			var testDto = new TestCreateDto
-			{
-				Title = "Title",
-				Description = "Description"
-			};
+			var testDto = A.Fake<TestCreateDto>();
 
 			A.CallTo(() => _testService.Create(testDto))
 				.Returns(new Response<TestDto>
@@ -167,25 +152,13 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		{
 			var controller = new TestController(_testService);
 			var testId = Guid.NewGuid();
-			var testDto = new TestEditDto
-			{
-				Title = "Title",
-				Description = "Description",
-				NumberOfAttempts = 2
-			};
+			var testDto = A.Fake<TestEditDto>();
 
 			A.CallTo(() => _testService.Edit(testId, testDto))
 				.Returns(new Response<TestDto>
 				{
 					Status = ResponseStatusCodesConst.Success,
-					Data = new TestDto()
-					{
-						Title = "Title",
-						Description = "Description",
-						NumberOfAttempts = 2,
-						QuestionsAttempted = 0,
-						QuestionTests = new List<string>()
-					},
+					Data = A.Fake<TestDto>()
 				});
 
 			var result = await controller.EditTest(testId, testDto);
@@ -202,12 +175,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		{
 			var controller = new TestController(_testService);
 			var testId = Guid.NewGuid();
-			var testDto = new TestEditDto
-			{
-				Title = "Title",
-				Description = "Description",
-				NumberOfAttempts = 2
-			};
+			var testDto = A.Fake<TestEditDto>();
 
 			A.CallTo(() => _testService.Edit(testId, testDto))
 				.Returns(new Response<TestDto>

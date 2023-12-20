@@ -21,11 +21,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		public async Task AuthController_LoginUser_ReturnsOk()
 		{
 			var controller = new AuthController(_authService);
-			var userDto = new UserLoginDto
-			{
-				Email = "email@gmail.com",
-				Password = "12#$qwER"
-			};
+			var userDto = A.Fake<UserLoginDto>();
 
 			A.CallTo(() => _authService.Login(userDto))
 				.Returns(new Response<UserResponseDto>
@@ -47,11 +43,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		public async Task AuthController_LoginUser_ReturnsBadRequest()
 		{
 			var controller = new AuthController(_authService);
-			var userDto = new UserLoginDto
-			{
-				Email = "email@gmail.com",
-				Password = "12#$qwER"
-			};
+			var userDto = A.Fake<UserLoginDto>();
 
 			A.CallTo(() => _authService.Login(userDto))
 				.Returns(new Response<UserResponseDto>
@@ -73,13 +65,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		public async Task AuthController_RegisterUser_ReturnsOk()
 		{
 			var controller = new AuthController(_authService);
-			var userDto = new UserRegisterDto 
-			{
-				Name = "Test",
-				Email = "email@gmail.com",
-				Password = "12#$qwER",
-				Role = UserRoles.Student
-			};
+			var userDto = A.Fake<UserRegisterDto>();
 
 			A.CallTo(() => _authService.Register(userDto))
 				.Returns(new Response<UserResponseDto>
@@ -101,13 +87,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		public async Task AuthController_RegisterUser_ReturnsBadRequest()
 		{
 			var controller = new AuthController(_authService);
-			var userDto = new UserRegisterDto
-			{
-				Name = "Test",
-				Email = "email@gmail.com",
-				Password = "12#$qwER",
-				Role = UserRoles.Student
-			};
+			var userDto = A.Fake<UserRegisterDto>();
 
 			A.CallTo(() => _authService.Register(userDto))
 				.Returns(new Response<UserResponseDto>

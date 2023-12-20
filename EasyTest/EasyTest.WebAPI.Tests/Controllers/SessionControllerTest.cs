@@ -22,7 +22,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		public async Task SessionController_StartSession_ReturnsOk()
 		{
 			var controller = new SessionController(_sessionService);
-			var sessionCreateDto = new SessionCreateDto();
+			var sessionCreateDto = A.Fake<SessionCreateDto>();
 
 			A.CallTo(() => _sessionService.Create(A<SessionCreateDto>.Ignored))
 				.Returns(new Response<SessionDto>
@@ -43,7 +43,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		public async Task SessionController_StartSession_ReturnsBadRequest()
 		{
 			var controller = new SessionController(_sessionService);
-			var sessionCreateDto = new SessionCreateDto();
+			var sessionCreateDto = A.Fake<SessionCreateDto>();
 
 			A.CallTo(() => _sessionService.Create(A<SessionCreateDto>.Ignored))
 				.Returns(new Response<SessionDto>

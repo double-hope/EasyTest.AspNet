@@ -22,29 +22,9 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		{
 			var controller = new QuestionController(_questionService);
 			var testId = Guid.NewGuid();
-			var questionsDto = new List<QuestionDto>
-			{
-				new QuestionDto
-				{
-					Title = "Question",
-					Text = "Which question?",
-					Answers = new List<AnswerDto>
-					{
-						new AnswerDto { Text = "1", IsCorrect = false },
-						new AnswerDto { Text = "2", IsCorrect = false },
-						new AnswerDto { Text = "3", IsCorrect = true }
-					}
-				}
-			};
+			var questionsDto = A.Fake<List<QuestionDto>>();
 
-			var sampleData = new List<QuestionResponseDto>
-			{
-				new QuestionResponseDto
-				{
-					Title = "Empty",
-					Text = "Which type is empty?"
-				}
-			};
+			var sampleData = A.Fake<List<QuestionResponseDto>>();
 
 			A.CallTo(() => _questionService.CreateMany(questionsDto, testId))
 				.Returns(new Response<IEnumerable<QuestionResponseDto>>
@@ -68,20 +48,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		{
 			var controller = new QuestionController(_questionService);
 			var testId = Guid.NewGuid();
-			var questionsDto = new List<QuestionDto>
-			{
-				new QuestionDto
-				{
-					Title = "Question",
-					Text = "Which question?",
-					Answers = new List<AnswerDto>
-					{
-						new AnswerDto { Text = "1", IsCorrect = false },
-						new AnswerDto { Text = "2", IsCorrect = false },
-						new AnswerDto { Text = "3", IsCorrect = true }
-					}
-				}
-			};
+			var questionsDto = A.Fake<List<QuestionDto>>();
 
 			A.CallTo(() => _questionService.CreateMany(questionsDto, testId))
 				.Returns(new Response<IEnumerable<QuestionResponseDto>>
