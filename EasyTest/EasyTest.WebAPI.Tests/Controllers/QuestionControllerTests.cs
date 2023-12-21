@@ -19,8 +19,9 @@ namespace EasyTest.WebAPI.Tests.Controllers
 
 		[Fact]
 		public async Task QuestionController_CreateTests_ReturnsOk()
-		{
-			var controller = new QuestionController(_questionService);
+        {
+            // Arrange
+            var controller = new QuestionController(_questionService);
 			var testId = Guid.NewGuid();
 			var questionsDto = A.Fake<List<QuestionDto>>();
 
@@ -33,9 +34,11 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Data = sampleData,
 				});
 
-			var result = await controller.CreateTests(testId, questionsDto);
+            // Act
+            var result = await controller.CreateTests(testId, questionsDto);
 
-			var okObjectResult = Assert.IsType<OkObjectResult>(result);
+            // Assert
+            var okObjectResult = Assert.IsType<OkObjectResult>(result);
 			var response = Assert.IsType<Response<IEnumerable<QuestionResponseDto>>>(okObjectResult.Value);
 
 			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
@@ -45,8 +48,9 @@ namespace EasyTest.WebAPI.Tests.Controllers
 
 		[Fact]
 		public async Task QuestionController_CreateTests_ReturnsBadRequest()
-		{
-			var controller = new QuestionController(_questionService);
+        {
+            // Arrange
+            var controller = new QuestionController(_questionService);
 			var testId = Guid.NewGuid();
 			var questionsDto = A.Fake<List<QuestionDto>>();
 
@@ -57,9 +61,11 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Message = "Error creating questions",
 				});
 
-			var result = await controller.CreateTests(testId, questionsDto);
+            // Act
+            var result = await controller.CreateTests(testId, questionsDto);
 
-			var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
 			var response = Assert.IsType<Response<IEnumerable<QuestionResponseDto>>>(badRequestObjectResult.Value);
 
 			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);

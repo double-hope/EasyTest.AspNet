@@ -28,12 +28,15 @@ namespace EasyTest.BLL.Tests.Services
         [Fact]
         public async Task AnswerService_CreateRange_ReturnSuccessWithEmptyAnswers()
         {
+            // Arrange
             var questionId = Guid.NewGuid();
             var answerDtos = A.Fake<List<AnswerDto>>();
             var service = new AnswerService(_unitOfWork, _mapper);
 
+            // Act
             var result = await service.CreateRange(answerDtos, questionId);
 
+            // Assert
             Assert.NotNull(result);
             Assert.True(result.Status.Equals(ResponseStatusCodesConst.Success));
             Assert.Equal(answerDtos.Count, result.Data.Count());
@@ -43,6 +46,7 @@ namespace EasyTest.BLL.Tests.Services
         [MemberData(nameof(Data))]
         public async Task AnswerService_CreateRange_ReturnSuccessWithAnswers(List<AnswerDto> answerDtos)
         {
+            // Arrange
             var questionId = Guid.NewGuid();
             var expectedAnswers = _mapper.Map<IEnumerable<Answer>>(answerDtos)
                 .Select(answer =>
@@ -52,8 +56,10 @@ namespace EasyTest.BLL.Tests.Services
                 });
             var service = new AnswerService(_unitOfWork, _mapper);
 
+            // Act
             var result = await service.CreateRange(answerDtos, questionId);
 
+            // Assert
             Assert.NotNull(result);
             Assert.True(result.Status.Equals(ResponseStatusCodesConst.Success));
             Assert.Equal(answerDtos.Count, result.Data.Count());

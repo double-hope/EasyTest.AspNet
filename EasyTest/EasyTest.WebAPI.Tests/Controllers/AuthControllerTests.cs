@@ -18,8 +18,9 @@ namespace EasyTest.WebAPI.Tests.Controllers
 
 		[Fact]
 		public async Task AuthController_LoginUser_ReturnsOk()
-		{
-			var controller = new AuthController(_authService);
+        {
+            // Arrange
+            var controller = new AuthController(_authService);
 			var userDto = A.Fake<UserLoginDto>();
 
 			A.CallTo(() => _authService.Login(userDto))
@@ -29,9 +30,11 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Data = new UserResponseDto(),
 				});
 
-			var result = await controller.LoginUser(userDto);
+            // Act
+            var result = await controller.LoginUser(userDto);
 
-			var okObjectResult = Assert.IsType<OkObjectResult>(result);
+            // Assert
+            var okObjectResult = Assert.IsType<OkObjectResult>(result);
 			var response = Assert.IsType<Response<UserResponseDto>>(okObjectResult.Value);
 
 			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
@@ -40,8 +43,9 @@ namespace EasyTest.WebAPI.Tests.Controllers
 
 		[Fact]
 		public async Task AuthController_LoginUser_ReturnsBadRequest()
-		{
-			var controller = new AuthController(_authService);
+        {
+            // Arrange
+            var controller = new AuthController(_authService);
 			var userDto = A.Fake<UserLoginDto>();
 
 			A.CallTo(() => _authService.Login(userDto))
@@ -51,9 +55,11 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Message = "Error logging in",
 				});
 
-			var result = await controller.LoginUser(userDto);
+            // Act
+            var result = await controller.LoginUser(userDto);
 
-			var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
 			var response = Assert.IsType<Response<UserResponseDto>>(badRequestObjectResult.Value);
 
 			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
@@ -62,8 +68,9 @@ namespace EasyTest.WebAPI.Tests.Controllers
 
 		[Fact]
 		public async Task AuthController_RegisterUser_ReturnsOk()
-		{
-			var controller = new AuthController(_authService);
+        {
+            // Arrange
+            var controller = new AuthController(_authService);
 			var userDto = A.Fake<UserRegisterDto>();
 
 			A.CallTo(() => _authService.Register(userDto))
@@ -73,9 +80,11 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Data = new UserResponseDto()
 				});
 
-			var result = await controller.RegisterUser(userDto);
+            // Act
+            var result = await controller.RegisterUser(userDto);
 
-			var okObjectResult = Assert.IsType<OkObjectResult>(result);
+            // Assert
+            var okObjectResult = Assert.IsType<OkObjectResult>(result);
 			var response = Assert.IsType<Response<UserResponseDto>>(okObjectResult.Value);
 
 			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
@@ -84,8 +93,9 @@ namespace EasyTest.WebAPI.Tests.Controllers
 
 		[Fact]
 		public async Task AuthController_RegisterUser_ReturnsBadRequest()
-		{
-			var controller = new AuthController(_authService);
+        {
+            // Arrange
+            var controller = new AuthController(_authService);
 			var userDto = A.Fake<UserRegisterDto>();
 
 			A.CallTo(() => _authService.Register(userDto))
@@ -95,9 +105,11 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Message = "Error registering user",
 				});
 
-			var result = await controller.RegisterUser(userDto);
+            // Act
+            var result = await controller.RegisterUser(userDto);
 
-			var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
 			var response = Assert.IsType<Response<UserResponseDto>>(badRequestObjectResult.Value);
 
 			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);

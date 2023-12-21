@@ -26,14 +26,17 @@ namespace EasyTest.DAL.Tests.Repository
 
 		[Fact]
 		public async Task TestRepository_GetById_ReturnTest()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var testRepository = new TestRepository(dbContext);
 			var testId = dbContext.Tests.First().Id;
 
-			var resultTest = await testRepository.GetById(testId);
+            // Act
+            var resultTest = await testRepository.GetById(testId);
 
-			Assert.NotNull(resultTest);
+            // Assert
+            Assert.NotNull(resultTest);
 			Assert.Equal(testId, resultTest.Id);
 			Assert.Equal("Test Title", resultTest.Title);
 			Assert.Equal("Test Description", resultTest.Description);

@@ -29,8 +29,9 @@ namespace EasyTest.DAL.Tests.Repository
 
 		[Fact]
 		public async Task QuestionTestRepository_GetQuestionsByTestId_ReturnQuestions()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var questionTestRepository = new QuestionTestRepository(dbContext);
 
 			var testId = dbContext.Tests.First().Id;
@@ -60,9 +61,11 @@ namespace EasyTest.DAL.Tests.Repository
 			);
 			await dbContext.SaveChangesAsync();
 
-			var result = await questionTestRepository.GetQuestionsByTestId(testId);
+            // Act
+            var result = await questionTestRepository.GetQuestionsByTestId(testId);
 
-			Assert.NotNull(result);
+            // Assert
+            Assert.NotNull(result);
 			Assert.Equal(questions.Count, result.Count);
 			foreach (var expectedQuestion in questions)
 			{

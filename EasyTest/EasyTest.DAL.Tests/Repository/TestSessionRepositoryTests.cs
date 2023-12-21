@@ -57,68 +57,83 @@ namespace EasyTest.DAL.Tests.Repository
 
 		[Fact]
 		public async Task TestSessionRepository_GetInProgressSession_ReturnInProgressSession()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var testSessionRepository = new TestSessionRepository(dbContext);
 			var userId = dbContext.TestSessions.First().UserId;
 			var testId = dbContext.TestSessions.First().TestId;
 
-			var resultSession = await testSessionRepository.GetInProgressSession(userId, testId);
+            // Act
+            var resultSession = await testSessionRepository.GetInProgressSession(userId, testId);
 
-			Assert.NotNull(resultSession);
+            // Assert
+            Assert.NotNull(resultSession);
 			Assert.Equal(TestStatus.InProgress, resultSession.Status);
 		}
 
 		[Fact]
 		public async Task TestSessionRepository_GetSession_ReturnSession()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var testSessionRepository = new TestSessionRepository(dbContext);
 			var sessionId = dbContext.TestSessions.First().Id;
 
-			var resultSession = await testSessionRepository.GetSession(sessionId);
+            // Act
+            var resultSession = await testSessionRepository.GetSession(sessionId);
 
-			Assert.NotNull(resultSession);
+            // Assert
+            Assert.NotNull(resultSession);
 			Assert.Equal(sessionId, resultSession.Id);
 		}
 
 		[Fact]
 		public async Task TestSessionRepository_GetSession_ReturnNull ()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var testSessionRepository = new TestSessionRepository(dbContext);
 			var sessionId = Guid.NewGuid();
 
-			var resultSession = await testSessionRepository.GetSession(sessionId);
+            // Act
+            var resultSession = await testSessionRepository.GetSession(sessionId);
 
-			Assert.Null(resultSession);
+            // Assert
+            Assert.Null(resultSession);
 		}
 
 		[Fact]
 		public async Task TestSessionRepository_GetAllUserSessions_ReturnAllSessions()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var testSessionRepository = new TestSessionRepository(dbContext);
 			var userId = dbContext.TestSessions.First().UserId;
 			var testId = dbContext.TestSessions.First().TestId;
 
-			var resultSessions = await testSessionRepository.GetAllUserSessions(userId, testId);
+            // Act
+            var resultSessions = await testSessionRepository.GetAllUserSessions(userId, testId);
 
-			Assert.NotNull(resultSessions);
+            // Assert
+            Assert.NotNull(resultSessions);
 			Assert.Equal(3, resultSessions.Count);
 		}
 
 		[Fact]
 		public async Task TestSessionRepository_GetAllUserSessions_ReturnEmpty()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var testSessionRepository = new TestSessionRepository(dbContext);
 			var userId = Guid.NewGuid();
 			var testId = Guid.NewGuid();
 
-			var resultSessions = await testSessionRepository.GetAllUserSessions(userId, testId);
+            // Act
+            var resultSessions = await testSessionRepository.GetAllUserSessions(userId, testId);
 
-			Assert.NotNull(resultSessions);
+            // Assert
+            Assert.NotNull(resultSessions);
 			Assert.Empty(resultSessions);
 		}
 	}

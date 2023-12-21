@@ -38,15 +38,18 @@ namespace EasyTest.DAL.Tests.Repository
 
 		[Fact]
 		public async Task SessionQuestionRepository_GetAssignedQuestions_ReturnAssignedQuestions()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var sessionQuestionRepository = new SessionQuestionRepository(dbContext);
 			var testSessionId = dbContext.SessionQuestions.First().SessionId;
 			var questionIds = dbContext.SessionQuestions.Select(q => q.QuestionId);
 
-			var assignedQuestions = await sessionQuestionRepository.GetAssignedQuestions(testSessionId);
+            // Act
+            var assignedQuestions = await sessionQuestionRepository.GetAssignedQuestions(testSessionId);
 
-			Assert.NotNull(assignedQuestions);
+            // Assert
+            Assert.NotNull(assignedQuestions);
 			Assert.Equal(questionIds.Count(), assignedQuestions.Count);
 			Assert.All(questionIds, id => Assert.Contains(id, assignedQuestions));
 		}

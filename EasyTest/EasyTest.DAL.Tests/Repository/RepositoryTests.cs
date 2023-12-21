@@ -27,47 +27,56 @@ namespace EasyTest.DAL.Tests.Repository
 
 		[Fact]
 		public async Task Repository_GetAll_ReturnsAllEntities()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var entities = dbContext.Set<User>().ToList();
 			var repository = new Repository<User>(dbContext);
 
-			var result = await repository.GetAll();
+            // Act
+            var result = await repository.GetAll();
 
-			Assert.NotNull(result);
+            // Assert
+            Assert.NotNull(result);
 			Assert.Equal(entities.Count, result.Count());
 		}
 
 		[Fact]
 		public async Task Repository_GetFirstOrDefault_ReturnsFirstOrDefault()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var repository = new Repository<User>(dbContext);
 
 			var result = await repository.GetFirstOrDefault();
 
-			Assert.NotNull(result);
+            // Assert
+            Assert.NotNull(result);
 		}
 
 		[Fact]
 		public async Task Repository_Add_AddsEntity()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var repository = new Repository<User>(dbContext);
 
-			var user = new User { Email = "user3@example.com", Name = "Test3" };
+            // Act
+            var user = new User { Email = "user3@example.com", Name = "Test3" };
 			await repository.Add(user);
             await dbContext.SaveChangesAsync();
 
             var addedUser = dbContext.Users.FirstOrDefault(u => u.Email == user.Email);
 
-			Assert.NotNull(addedUser);
+            // Assert
+            Assert.NotNull(addedUser);
 		}
 
 		[Fact]
 		public async Task Repository_AddRange_AddsRangeOfEntities()
-		{
-			var dbContext = await GetApplicationDbContext(); 
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext(); 
 			var repository = new Repository<User>(dbContext);
 
 			var users = new List<User>
@@ -76,60 +85,71 @@ namespace EasyTest.DAL.Tests.Repository
 				new User { Email = "user4@example.com", Name = "Test4" },
 			};
 
-			await repository.AddRange(users);
+            // Act
+            await repository.AddRange(users);
             await dbContext.SaveChangesAsync();
 
             var addedUsers = dbContext.Users.Where(u => users.Select(us => us.Email).Contains(u.Email)).ToList();
 
-			Assert.Equal(users.Count, addedUsers.Count);
+            // Assert
+            Assert.Equal(users.Count, addedUsers.Count);
 		}
 
 		[Fact]
 		public async Task Repository_Update_UpdatesEntity()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var repository = new Repository<User>(dbContext);
 
 			var user = dbContext.Users.First();
 			user.Name = "UpdatedName";
 
-			repository.Update(user);
+            // Act
+            repository.Update(user);
 
 			var updatedUser = dbContext.Users.First(u => u.Id == user.Id);
 
-			Assert.Equal("UpdatedName", updatedUser.Name);
+            // Assert
+            Assert.Equal("UpdatedName", updatedUser.Name);
 		}
 
 		[Fact]
 		public async Task Repository_Remove_RemovesEntity()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var repository = new Repository<User>(dbContext);
 
 			var user = dbContext.Users.First();
 
-			repository.Remove(user);
+            // Act
+            repository.Remove(user);
 			await dbContext.SaveChangesAsync();
 
 			var removedUser = dbContext.Users.FirstOrDefault(u => u.Id == user.Id);
 
-			Assert.Null(removedUser);
+            // Assert
+            Assert.Null(removedUser);
 		}
 
 		[Fact]
 		public async Task Repository_RemoveRange_RemovesRangeOfEntities()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var repository = new Repository<User>(dbContext);
 
 			var usersToRemove = dbContext.Users.Take(2).ToList();
 
-			repository.RemoveRange(usersToRemove);
+            // Act
+            repository.RemoveRange(usersToRemove);
             await dbContext.SaveChangesAsync();
 
             var remainingUsers = dbContext.Users.Where(u => usersToRemove.Select(ur => ur.Id).Contains(u.Id)).ToList();
 
-			Assert.Empty(remainingUsers);
+            // Assert
+            Assert.Empty(remainingUsers);
 		}
 	}
 }

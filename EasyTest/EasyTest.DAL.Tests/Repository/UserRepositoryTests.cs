@@ -26,14 +26,17 @@ namespace EasyTest.DAL.Tests.Repository
 
 		[Fact]
 		public async Task UserRepository_GetByEmail_ReturnUser()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var userRepository = new UserRepository(dbContext);
 			var userEmail = dbContext.Users.First().Email;
 
-			var resultUser = await userRepository.GetByEmail(userEmail);
+            // Act
+            var resultUser = await userRepository.GetByEmail(userEmail);
 
-			Assert.NotNull(resultUser);
+            // Assert
+            Assert.NotNull(resultUser);
 			Assert.Equal(userEmail, resultUser.Email);
 		}
 	}

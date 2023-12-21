@@ -14,13 +14,16 @@ namespace EasyTest.WebAPI.Extensions
     {
 		[Fact]
 		public void RegisterCustomServices_Adds_Services_To_Collection()
-		{
-			var services = new ServiceCollection();
+        {
+            // Arrange
+            var services = new ServiceCollection();
 			var config = new Mock<IConfiguration>();
 
-			services.RegisterCustomServices(config.Object);
+            // Act
+            services.RegisterCustomServices(config.Object);
 
-			Assert.Contains(services, serviceDescriptor => serviceDescriptor.ServiceType == typeof(IDbInitializer));
+            // Assert
+            Assert.Contains(services, serviceDescriptor => serviceDescriptor.ServiceType == typeof(IDbInitializer));
 			Assert.Contains(services, serviceDescriptor => serviceDescriptor.ServiceType == typeof(IUnitOfWork));
 			Assert.Contains(services, serviceDescriptor => serviceDescriptor.ServiceType == typeof(IAuthService));
 			Assert.Contains(services, serviceDescriptor => serviceDescriptor.ServiceType == typeof(ITestService));
@@ -31,25 +34,31 @@ namespace EasyTest.WebAPI.Extensions
 
 		[Fact]
 		public void RegisterDatabase_Adds_DbContext_To_Collection()
-		{
-			var services = new ServiceCollection();
+        {
+            // Arrange
+            var services = new ServiceCollection();
 			var config = new Mock<IConfiguration>();
 
-			services.RegisterDatabase(config.Object);
+            // Act
+            services.RegisterDatabase(config.Object);
 
-			Assert.Contains(services, serviceDescriptor => serviceDescriptor.ServiceType == typeof(ApplicationDbContext));
+            // Assert
+            Assert.Contains(services, serviceDescriptor => serviceDescriptor.ServiceType == typeof(ApplicationDbContext));
 		}
 
 		[Fact]
 		public void RegisterIdentity_Adds_Identity_Options()
-		{
-			var services = new ServiceCollection();
+        {
+            // Arrange
+            var services = new ServiceCollection();
 			var config = new Mock<IConfiguration>();
 
-			services.RegisterIdentity(config.Object);
-
+            // Act
+            services.RegisterIdentity(config.Object)
 			var identityOptions = services.BuildServiceProvider().GetService<IOptions<IdentityOptions>>();
-			Assert.NotNull(identityOptions);
+
+            // Assert
+            Assert.NotNull(identityOptions);
 		}
 	}
 }

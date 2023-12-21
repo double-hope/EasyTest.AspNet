@@ -42,14 +42,17 @@ namespace EasyTest.DAL.Tests.Repository
 
 		[Fact]
 		public async void SessionAnswerRepository_GetCorrectAnswers_ReturnCorrectAnswers()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var sessionAnswerRepository = new SessionAnswerRepository(dbContext);
 			var sessionId = dbContext.SessionAnswers.First().SessionId;
 
-			var result = await sessionAnswerRepository.GetCorrectAnswers(sessionId);
+            // Act
+            var result = await sessionAnswerRepository.GetCorrectAnswers(sessionId);
 
-			Assert.NotNull(result);
+            // Assert
+            Assert.NotNull(result);
 			Assert.Equal(2, result.Count);
 		}
 	}

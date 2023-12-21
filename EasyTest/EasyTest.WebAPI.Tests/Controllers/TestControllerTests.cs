@@ -19,8 +19,9 @@ namespace EasyTest.WebAPI.Tests.Controllers
 
 		[Fact]
 		public async Task TestController_GetTests_ReturnsOk()
-		{
-			var controller = new TestController(_testService);
+        {
+            // Arrange
+            var controller = new TestController(_testService);
 
 			A.CallTo(() => _testService.GetAll())
 				.Returns(new Response<IEnumerable<TestDto>>
@@ -29,19 +30,22 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Data = new List<TestDto>(),
 				});
 
-			var result = await controller.GetTests();
+            // Act
+            var result = await controller.GetTests();
 
+            // Assert
 			var okObjectResult = Assert.IsType<OkObjectResult>(result);
 			var response = Assert.IsType<Response<IEnumerable<TestDto>>>(okObjectResult.Value);
 
-			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
+            Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
 			Assert.NotNull(response.Data);
 		}
 
 		[Fact]
 		public async Task TestController_GetTests_ReturnsBadRequest()
-		{
-			var controller = new TestController(_testService);
+        {
+            // Arrange
+            var controller = new TestController(_testService);
 
 			A.CallTo(() => _testService.GetAll())
 				.Returns(new Response<IEnumerable<TestDto>>
@@ -50,19 +54,22 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Message = "Error getting tests",
 				});
 
-			var result = await controller.GetTests();
+            // Act
+            var result = await controller.GetTests();
 
+            // Assert
 			var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
 			var response = Assert.IsType<Response<IEnumerable<TestDto>>>(badRequestObjectResult.Value);
 
-			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
+            Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
 			Assert.Equal("Error getting tests", response.Message);
 		}
 
 		[Fact]
 		public async Task TestController_GetTest_ReturnsOk()
-		{
-			var controller = new TestController(_testService);
+        {
+            // Arrange
+            var controller = new TestController(_testService);
 			var testId = Guid.NewGuid();
 
 			A.CallTo(() => _testService.Get(testId))
@@ -72,19 +79,22 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Data = new TestDto()
 				});
 
-			var result = await controller.GetTest(testId);
+            // Act
+            var result = await controller.GetTest(testId);
 
+            // Assert
 			var okObjectResult = Assert.IsType<OkObjectResult>(result);
 			var response = Assert.IsType<Response<TestDto>>(okObjectResult.Value);
 
-			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
+            Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
 			Assert.NotNull(response.Data);
 		}
 
 		[Fact]
 		public async Task TestController_GetTest_ReturnsBadRequest()
-		{
-			var controller = new TestController(_testService);
+        {
+            // Arrange
+            var controller = new TestController(_testService);
 			var testId = Guid.NewGuid();
 
 			A.CallTo(() => _testService.Get(testId))
@@ -94,19 +104,22 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Message = "Error getting test",
 				});
 
-			var result = await controller.GetTest(testId);
+            // Act
+            var result = await controller.GetTest(testId);
 
+            // Assert
 			var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
 			var response = Assert.IsType<Response<TestDto>>(badRequestObjectResult.Value);
 
-			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
+            Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
 			Assert.Equal("Error getting test", response.Message);
 		}
 
 		[Fact]
 		public async Task TestController_CreateTest_ReturnsOk()
-		{
-			var controller = new TestController(_testService);
+        {
+            // Arrange
+            var controller = new TestController(_testService);
 			var testDto = A.Fake<TestCreateDto>();
 
 			A.CallTo(() => _testService.Create(testDto))
@@ -116,19 +129,22 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Data = A.Fake<TestDto>()
 				});
 
-			var result = await controller.CreateTest(testDto);
+            // Act
+            var result = await controller.CreateTest(testDto);
 
+            // Assert
 			var okObjectResult = Assert.IsType<OkObjectResult>(result);
 			var response = Assert.IsType<Response<TestDto>>(okObjectResult.Value);
 
-			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
+            Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
 			Assert.NotNull(response.Data);
 		}
 
 		[Fact]
 		public async Task TestController_CreateTest_ReturnsBadRequest()
-		{
-			var controller = new TestController(_testService);
+        {
+            // Arrange
+            var controller = new TestController(_testService);
 			var testDto = A.Fake<TestCreateDto>();
 
 			A.CallTo(() => _testService.Create(testDto))
@@ -138,19 +154,22 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Message = "Error creating test",
 				});
 
-			var result = await controller.CreateTest(testDto);
+            // Act
+            var result = await controller.CreateTest(testDto);
 
+            // Assert
 			var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
 			var response = Assert.IsType<Response<TestDto>>(badRequestObjectResult.Value);
 
-			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
+            Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
 			Assert.Equal("Error creating test", response.Message);
 		}
 
 		[Fact]
 		public async Task TestController_EditTest_ReturnsOk()
-		{
-			var controller = new TestController(_testService);
+        {
+            // Arrange
+            var controller = new TestController(_testService);
 			var testId = Guid.NewGuid();
 			var testDto = A.Fake<TestEditDto>();
 
@@ -161,19 +180,22 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Data = A.Fake<TestDto>()
 				});
 
-			var result = await controller.EditTest(testId, testDto);
+            // Act
+            var result = await controller.EditTest(testId, testDto);
 
+            // Assert
 			var okObjectResult = Assert.IsType<OkObjectResult>(result);
 			var response = Assert.IsType<Response<TestDto>>(okObjectResult.Value);
 
-			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
+            Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
 			Assert.NotNull(response.Data);
 		}
 
 		[Fact]
 		public async Task TestController_EditTest_ReturnsBadRequest()
-		{
-			var controller = new TestController(_testService);
+        {
+            // Arrange
+            var controller = new TestController(_testService);
 			var testId = Guid.NewGuid();
 			var testDto = A.Fake<TestEditDto>();
 
@@ -184,12 +206,14 @@ namespace EasyTest.WebAPI.Tests.Controllers
 					Message = "Error editing test",
 				});
 
-			var result = await controller.EditTest(testId, testDto);
+            // Act
+            var result = await controller.EditTest(testId, testDto);
 
+            // Assert
 			var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
 			var response = Assert.IsType<Response<TestDto>>(badRequestObjectResult.Value);
 
-			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
+            Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
 			Assert.Equal("Error editing test", response.Message);
 		}
 	}

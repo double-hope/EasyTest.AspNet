@@ -31,8 +31,9 @@ namespace EasyTest.DAL.Tests.Repository
 
 		[Fact]
 		public async Task AnswerRepository_GetById_ReturnAnswer()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var answerRepository = new AnswerRepository(dbContext);
 
 			var answerId = Guid.NewGuid();
@@ -47,16 +48,19 @@ namespace EasyTest.DAL.Tests.Repository
 			dbContext.Answers.Add(answer);
 			await dbContext.SaveChangesAsync();
 
-			var result = await answerRepository.GetById(answerId);
+            // Act
+            var result = await answerRepository.GetById(answerId);
 
-			Assert.NotNull(result);
+            // Assert
+            Assert.NotNull(result);
 			Assert.Equal(answerId, result.Id);
 		}
 
 		[Fact]
 		public async Task AnswerRepository_GetByQuestionId_ReturnAnswers()
-		{
-			var dbContext = await GetApplicationDbContext();
+        {
+            // Arrange
+            var dbContext = await GetApplicationDbContext();
 			var answerRepository = new AnswerRepository(dbContext);
 
 			var questionId = dbContext.Questions.First().Id;
@@ -81,9 +85,11 @@ namespace EasyTest.DAL.Tests.Repository
 			dbContext.Answers.AddRange(answers);
 			await dbContext.SaveChangesAsync();
 
-			var result = await answerRepository.GetByQuestionId(questionId);
+            // Act
+            var result = await answerRepository.GetByQuestionId(questionId);
 
-			Assert.NotNull(result);
+            // Assert
+            Assert.NotNull(result);
 			Assert.Equal(answers.Count, result.Count);
 			foreach (var expectedAnswer in answers)
 			{
