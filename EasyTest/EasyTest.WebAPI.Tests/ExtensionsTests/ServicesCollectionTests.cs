@@ -5,8 +5,8 @@ using EasyTest.DAL.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Moq;
 using Microsoft.Extensions.Configuration;
+using FakeItEasy;
 
 namespace EasyTest.WebAPI.Extensions
 {
@@ -17,10 +17,10 @@ namespace EasyTest.WebAPI.Extensions
         {
             // Arrange
             var services = new ServiceCollection();
-			var config = new Mock<IConfiguration>();
+			var config = A.Fake<IConfiguration>();
 
             // Act
-            services.RegisterCustomServices(config.Object);
+            services.RegisterCustomServices(config);
 
             // Assert
             Assert.Contains(services, serviceDescriptor => serviceDescriptor.ServiceType == typeof(IDbInitializer));
@@ -37,10 +37,10 @@ namespace EasyTest.WebAPI.Extensions
         {
             // Arrange
             var services = new ServiceCollection();
-			var config = new Mock<IConfiguration>();
+			var config = A.Fake<IConfiguration>();
 
             // Act
-            services.RegisterDatabase(config.Object);
+            services.RegisterDatabase(config);
 
             // Assert
             Assert.Contains(services, serviceDescriptor => serviceDescriptor.ServiceType == typeof(ApplicationDbContext));
@@ -51,10 +51,10 @@ namespace EasyTest.WebAPI.Extensions
         {
             // Arrange
             var services = new ServiceCollection();
-			var config = new Mock<IConfiguration>();
+			var config = A.Fake<IConfiguration>();
 
             // Act
-            services.RegisterIdentity(config.Object);
+            services.RegisterIdentity(config);
 			var identityOptions = services.BuildServiceProvider().GetService<IOptions<IdentityOptions>>();
 
             // Assert

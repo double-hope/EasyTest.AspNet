@@ -1,7 +1,6 @@
 ﻿using EasyTest.DAL.Entities;
 using EasyTest.DAL.Repository;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 
 namespace EasyTest.DAL.Tests.Repository
 {
