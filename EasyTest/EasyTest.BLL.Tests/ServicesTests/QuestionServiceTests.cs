@@ -32,7 +32,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task CreateMany_SuccessfullyCreatesQuestions()
+        public async Task QuestionService_CreateMany_SuccessfullyCreatesQuestions()
         {
             // Arrange
             var questionService = new QuestionService(_unitOfWork, _mapper, _answerService);
@@ -57,7 +57,7 @@ namespace EasyTest.BLL.Tests.Services
 
         [Theory]
         [MemberData(nameof(Data))]
-        public async Task CreateMany_SuccessfullyCreatesRealQuestions(List<QuestionDto> questionsDto)
+        public async Task QuestionService_CreateMany_SuccessfullyCreatesRealQuestions(List<QuestionDto> questionsDto)
         {
             // Arrange
             var questionService = new QuestionService(_unitOfWork, _mapper, _answerService);
@@ -81,7 +81,7 @@ namespace EasyTest.BLL.Tests.Services
 
         [Theory]
         [MemberData(nameof(Data))]
-        public async Task CreateMany_FailsOnCreateQuestionError(List<QuestionDto> questionsDto)
+        public async Task QuestionService_CreateMany_FailsOnCreateQuestionError(List<QuestionDto> questionsDto)
         {
             // Arrange
             var questionService = new QuestionService(_unitOfWork, _mapper, _answerService);
@@ -118,7 +118,7 @@ namespace EasyTest.BLL.Tests.Services
         };
 
         [Fact]
-        public async Task CreateMany_ThrowsExceptionOnCreate()
+        public async Task QuestionService_CreateMany_ThrowsExceptionOnCreate()
         {
             // Arrange
             var questionService = new QuestionService(_unitOfWork, _mapper, _answerService);
@@ -139,7 +139,7 @@ namespace EasyTest.BLL.Tests.Services
 
 
         [Fact]
-        public async Task Create_SuccessfullyCreatesQuestion()
+        public async Task QuestionService_Create_SuccessfullyCreatesQuestion()
         {
             // Arrange
             var questionService = new QuestionService(_unitOfWork, _mapper, _answerService);
@@ -159,7 +159,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task Create_FailsWhenTestNotFound()
+        public async Task QuestionService_Create_FailsWhenTestNotFound()
         {
             // Arrange
             var questionService = new QuestionService(_unitOfWork, _mapper, _answerService);
@@ -177,7 +177,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task Create_FailsWhenAnswerServiceFails()
+        public async Task QuestionService_Create_FailsWhenAnswerServiceFails()
         {
             // Arrange
             var questionService = new QuestionService(_unitOfWork, _mapper, _answerService);

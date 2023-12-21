@@ -18,7 +18,7 @@ namespace EasyTest.DAL.Tests.Repository
         }
 
         [Fact]
-        public async Task Save_SavesChanges()
+        public async Task UnitOfWork_Save_SavesChanges()
         {
             // Arrange
             var dbContext = await GetApplicationDbContext();

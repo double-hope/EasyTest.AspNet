@@ -31,7 +31,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task CreateSession_ReturnsNewSession()
+        public async Task SessionService_CreateSession_ReturnsNewSession()
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
@@ -48,7 +48,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task CreateSession_ReturnsInProgressSession()
+        public async Task SessionService_CreateSession_ReturnsInProgressSession()
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
@@ -65,7 +65,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task CreateSession_ReturnsNoMoreAttempts()
+        public async Task SessionService_CreateSession_ReturnsNoMoreAttempts()
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
@@ -87,7 +87,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task AnswerTheQuestion_WithIncorrectAnswer_ReturnsSuccessResponse()
+        public async Task SessionService_AnswerTheQuestion_WithIncorrectAnswer_ReturnsSuccessResponse()
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
@@ -109,7 +109,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task IfGetResult_WithAllQuestionsAnswered_ReturnsTrue()
+        public async Task SessionService_IfGetResult_WithAllQuestionsAnswered_ReturnsTrue()
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
@@ -127,7 +127,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task IfGetResult_WithUnansweredQuestions_ReturnsFalse()
+        public async Task SessionService_IfGetResult_WithUnansweredQuestions_ReturnsFalse()
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
@@ -152,7 +152,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task GetResult_ReturnsSessionResult()
+        public async Task SessionService_GetResult_ReturnsSessionResult()
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
@@ -194,7 +194,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task NextQuestion_WithAvailableQuestions_ReturnsQuestionDto()
+        public async Task SessionService_NextQuestion_WithAvailableQuestions_ReturnsQuestionDto()
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
@@ -225,7 +225,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task NextQuestion_WithAvailableQuestions_ReturnsNoAvailableQuestions()
+        public async Task SessionService_NextQuestion_WithAvailableQuestions_ReturnsNoAvailableQuestions()
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
@@ -246,7 +246,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task NextQuestion_WithAvailableQuestions_ReturnsNoMoreQuestions()
+        public async Task SessionService_NextQuestion_WithAvailableQuestions_ReturnsNoMoreQuestions()
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);

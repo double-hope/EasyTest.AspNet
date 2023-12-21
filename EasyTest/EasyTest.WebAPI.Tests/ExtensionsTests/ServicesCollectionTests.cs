@@ -13,7 +13,7 @@ namespace EasyTest.WebAPI.Extensions
     public class ServicesCollectionTests
     {
 		[Fact]
-		public void RegisterCustomServices_Adds_Services_To_Collection()
+		public void ServicesCollection_RegisterCustomServices_Adds_Services_To_Collection()
         {
             // Arrange
             var services = new ServiceCollection();
@@ -33,7 +33,7 @@ namespace EasyTest.WebAPI.Extensions
 		}
 
 		[Fact]
-		public void RegisterDatabase_Adds_DbContext_To_Collection()
+		public void ServicesCollection_RegisterDatabase_Adds_DbContext_To_Collection()
         {
             // Arrange
             var services = new ServiceCollection();
@@ -47,7 +47,7 @@ namespace EasyTest.WebAPI.Extensions
 		}
 
 		[Fact]
-		public void RegisterIdentity_Adds_Identity_Options()
+		public void ServicesCollection_RegisterIdentity_Adds_Identity_Options()
         {
             // Arrange
             var services = new ServiceCollection();

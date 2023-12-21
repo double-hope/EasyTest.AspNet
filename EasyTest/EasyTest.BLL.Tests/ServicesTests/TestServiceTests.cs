@@ -25,7 +25,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task GetAll_ReturnsAllTests()
+        public async Task TestService_GetAll_ReturnsAllTests()
         {
             // Arrange
             var testEntities = A.Fake<List<Test>>();
@@ -41,7 +41,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task Get_ReturnsTestById()
+        public async Task TestService_Get_ReturnsTestById()
         {
             // Arrange
             var testId = Guid.NewGuid();
@@ -58,7 +58,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task Create_ReturnsCreatedTest()
+        public async Task TestService_Create_ReturnsCreatedTest()
         {
             // Arrange
             var testCreateDto = new TestCreateDto { Title = "Title", Description = "Description" };
@@ -78,7 +78,7 @@ namespace EasyTest.BLL.Tests.Services
             Assert.Equal("Test created successfully", result.Message);
         }
         [Fact]
-        public async Task Edit_ReturnsUpdatedTest()
+        public async Task TestService_Edit_ReturnsUpdatedTest()
         {
             // Arrange
             var testId = Guid.NewGuid();

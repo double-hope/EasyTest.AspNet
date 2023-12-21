@@ -31,8 +31,8 @@ namespace EasyTest.BLL.Tests.Services
             _userManager = A.Fake<UserManager<User>>();
             _authOptions = Options.Create(new AuthOptions
             {
-                Issuer = "your_issuer",
-                Audience = "your_audience",
+                Issuer = "Issuer",
+                Audience = "Audience",
                 Key = "FqsadawdJ8coFHGFAQNuzfmksft",
                 TokenExpiration = 60
             });
@@ -94,7 +94,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task Register_WithAdminRole_ReturnsErrorResponse()
+        public async Task AuthService_Register_WithAdminRole_ReturnsErrorResponse()
         {
             // Arrange
             var authService = new AuthService(_unitOfWork, _mapper, _userManager, _authOptions);
@@ -109,7 +109,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task Register_WithExistingEmail_ReturnsErrorResponse()
+        public async Task AuthService_Register_WithExistingEmail_ReturnsErrorResponse()
         {
             // Arrange
             var existingUser = new User { Email = "existinguser@example.com", Name = "ExistingUser" };
@@ -127,7 +127,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task Register_WithInvalidRegistration_ReturnsErrorResponse()
+        public async Task AuthService_Register_WithInvalidRegistration_ReturnsErrorResponse()
         {
             // Arrange
             A.CallTo(() => _unitOfWork.UserRepository.GetByEmail(A<string>.Ignored)).Returns(Task.FromResult<User>(null));
@@ -146,7 +146,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task Register_WithInvalidRoleAssociation_ReturnsErrorResponse()
+        public async Task AuthService_Register_WithInvalidRoleAssociation_ReturnsErrorResponse()
         {
             // Arrange
             A.CallTo(() => _unitOfWork.UserRepository.GetByEmail(A<string>.Ignored)).Returns(Task.FromResult<User>(null));
@@ -165,7 +165,7 @@ namespace EasyTest.BLL.Tests.Services
         }
 
         [Fact]
-        public async Task Register_WithValidRegistration_ReturnsSuccessResponse()
+        public async Task AuthService_Register_WithValidRegistration_ReturnsSuccessResponse()
         {
             // Arrange
             A.CallTo(() => _unitOfWork.UserRepository.GetByEmail(A<string>.Ignored)).Returns(Task.FromResult<User>(null));
