@@ -54,7 +54,7 @@ namespace EasyTest.WebAPI.Extensions
 			var config = new Mock<IConfiguration>();
 
             // Act
-            services.RegisterIdentity(config.Object)
+            services.RegisterIdentity(config.Object);
 			var identityOptions = services.BuildServiceProvider().GetService<IOptions<IdentityOptions>>();
 
             // Assert
