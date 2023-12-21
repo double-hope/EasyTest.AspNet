@@ -57,8 +57,9 @@ namespace EasyTest.DAL.Tests.Repository
 
 			var user = new User { Email = "user3@example.com", Name = "Test3" };
 			await repository.Add(user);
+            await dbContext.SaveChangesAsync();
 
-			var addedUser = dbContext.Users.FirstOrDefault(u => u.Email == user.Email);
+            var addedUser = dbContext.Users.FirstOrDefault(u => u.Email == user.Email);
 
 			Assert.NotNull(addedUser);
 		}
@@ -76,8 +77,9 @@ namespace EasyTest.DAL.Tests.Repository
 			};
 
 			await repository.AddRange(users);
+            await dbContext.SaveChangesAsync();
 
-			var addedUsers = dbContext.Users.Where(u => users.Select(us => us.Email).Contains(u.Email)).ToList();
+            var addedUsers = dbContext.Users.Where(u => users.Select(us => us.Email).Contains(u.Email)).ToList();
 
 			Assert.Equal(users.Count, addedUsers.Count);
 		}
@@ -107,6 +109,7 @@ namespace EasyTest.DAL.Tests.Repository
 			var user = dbContext.Users.First();
 
 			repository.Remove(user);
+			await dbContext.SaveChangesAsync();
 
 			var removedUser = dbContext.Users.FirstOrDefault(u => u.Id == user.Id);
 
@@ -122,8 +125,9 @@ namespace EasyTest.DAL.Tests.Repository
 			var usersToRemove = dbContext.Users.Take(2).ToList();
 
 			repository.RemoveRange(usersToRemove);
+            await dbContext.SaveChangesAsync();
 
-			var remainingUsers = dbContext.Users.Where(u => usersToRemove.Select(ur => ur.Id).Contains(u.Id)).ToList();
+            var remainingUsers = dbContext.Users.Where(u => usersToRemove.Select(ur => ur.Id).Contains(u.Id)).ToList();
 
 			Assert.Empty(remainingUsers);
 		}

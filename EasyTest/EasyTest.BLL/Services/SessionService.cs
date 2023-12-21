@@ -52,7 +52,7 @@ namespace EasyTest.BLL.Services
 
 			if (availableQuestions.Count == 0)
 			{
-				return Response<QuestionNextDto>.Error("No more questions for this test");
+				return Response<QuestionNextDto>.Error("No more available questions for this test");
 			}
 
 			if(!await CheckIfAnyQuestionAvailable(testSession.TestId, assignedQuestions.Count))
