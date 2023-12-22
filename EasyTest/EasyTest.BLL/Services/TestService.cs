@@ -18,6 +18,9 @@ namespace EasyTest.BLL.Services
         public async Task<Response<TestDto>> Get(Guid id)
         {
             var res = await _unitOfWork.TestRepository.GetById(id);
+
+            if(res == null) return Response<TestDto>.Error("Test does not found");
+
 			return Response<TestDto>.Success(_mapper.Map<TestDto>(res));
         }
         public async Task<Response<TestDto>> Create(TestCreateDto testDto)

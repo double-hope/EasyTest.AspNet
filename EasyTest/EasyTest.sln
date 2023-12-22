@@ -17,9 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTest.DAL.Tests", "EasyT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTest.WebAPI.Tests", "EasyTest.WebAPI.Tests\EasyTest.WebAPI.Tests.csproj", "{97FDA1FC-382D-4ECD-A7C8-E5F36B0522BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTest.BLL.IntegrationTests", "EasyTest.BLL.IntegrationTests\EasyTest.BLL.IntegrationTests.csproj", "{18AD9952-4B34-44A3-AA12-2DE6A477DBB2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyTest.WebAPI.IntegrationTests", "EasyTest.WebAPI.IntegrationTests\EasyTest.WebAPI.IntegrationTests.csproj", "{96297130-0A25-48A3-A0B9-F3EE80C619D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyTest.WebAPI.IntegrationTests", "EasyTest.WebAPI.IntegrationTests\EasyTest.WebAPI.IntegrationTests.csproj", "{96297130-0A25-48A3-A0B9-F3EE80C619D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,10 +53,6 @@ Global
 		{97FDA1FC-382D-4ECD-A7C8-E5F36B0522BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97FDA1FC-382D-4ECD-A7C8-E5F36B0522BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97FDA1FC-382D-4ECD-A7C8-E5F36B0522BA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{18AD9952-4B34-44A3-AA12-2DE6A477DBB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18AD9952-4B34-44A3-AA12-2DE6A477DBB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18AD9952-4B34-44A3-AA12-2DE6A477DBB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18AD9952-4B34-44A3-AA12-2DE6A477DBB2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{96297130-0A25-48A3-A0B9-F3EE80C619D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{96297130-0A25-48A3-A0B9-F3EE80C619D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96297130-0A25-48A3-A0B9-F3EE80C619D2}.Release|Any CPU.ActiveCfg = Release|Any CPU

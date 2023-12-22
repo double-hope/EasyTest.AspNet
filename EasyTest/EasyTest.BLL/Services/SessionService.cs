@@ -16,18 +16,31 @@ namespace EasyTest.BLL.Services
 
 		public async Task<Response<SessionDto>> Create(SessionCreateDto sessionDto)
 		{
-			var userId = (await _unitOfWork.UserRepository.GetByEmail(sessionDto.UserEmail)).Id;
+			var user = (await _unitOfWork.UserRepository.GetByEmail(sessionDto.UserEmail));
+
+			if(user == null)
+			{
+				return Response<SessionDto>.Error("User not found");
+			}
+
+			var userId = user.Id;
+
 			var inProgressSession = await _unitOfWork.TestSessionRepository.GetInProgressSession(userId, sessionDto.TestId);
-			
-			if(inProgressSession != null)
+
+			if (inProgressSession != null)
 			{
 				return Response<SessionDto>.Success(_mapper.Map<SessionDto>(inProgressSession), "Return session created early");
 			}
 
 			var userSessions = await _unitOfWork.TestSessionRepository.GetAllUserSessions(userId, sessionDto.TestId);
 			var test = await _unitOfWork.TestRepository.GetById(sessionDto.TestId);
-			
-			if(userSessions.Count >= test.NumberOfAttempts)
+
+			if (test == null)
+			{
+				return Response<SessionDto>.Error("Test not found");
+			}
+
+			if (userSessions.Count >= test.NumberOfAttempts)
 			{
 				return Response<SessionDto>.Error("You have used all your attempts");
 			}
@@ -57,7 +70,7 @@ namespace EasyTest.BLL.Services
 				return Response<QuestionNextDto>.Error("No more available questions for this test");
 			}
 
-			if(!await CheckIfAnyQuestionAvailable(testSession.TestId, assignedQuestions.Count))
+			if (!await CheckIfAnyQuestionAvailable(testSession.TestId, assignedQuestions.Count))
 			{
 				return Response<QuestionNextDto>.Error("No more questions for this test");
 			}
