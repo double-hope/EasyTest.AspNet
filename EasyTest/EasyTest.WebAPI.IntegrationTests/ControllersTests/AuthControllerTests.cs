@@ -1,51 +1,110 @@
 ﻿using EasyTest.Shared.Constants;
 using EasyTest.Shared.DTO.User;
-using EasyTest.WebAPI.Controllers;
-using Microsoft.AspNetCore.Mvc;
 using FakeItEasy;
+using System.Net.Http.Json;
+using EasyTest.Shared.DTO.Response;
+using System.Net;
 
 namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 {
-	public class AuthControllerTests : IDisposable
+	public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>
 	{
-		private CustomWebApplicationFactory _factory;
-		private HttpClient _client;
+		private readonly CustomWebApplicationFactory _factory;
+		private readonly HttpClient _client;
 
-		public AuthControllerTests()
+		public AuthControllerTests(CustomWebApplicationFactory factory)
 		{
-			_factory = new CustomWebApplicationFactory();
+			_factory = factory;
 			_client = _factory.CreateClient();
 		}
 		[Fact]
 		public async Task AuthController_LoginUser_ReturnsOk()
 		{
 			// Arrange
-			//var controller = new AuthController(_authService);
-			//var userDto = A.Fake<UserLoginDto>();
+			var userDto = new UserLoginDto()
+			{
+				Email = "nadia.prohorchuk@gmail.com",
+				Password = "qwQW!@12"
+			};
 
-			//A.CallTo(() => _authService.Login(userDto))
-			//	.Returns(new Response<UserResponseDto>
-			//	{
-			//		Status = ResponseStatusCodesConst.Success,
-			//		Data = new UserResponseDto(),
-			//	});
-
-			//var response = await _client.PostAsync("/api/auth/login");
+			A.CallTo(() => _factory._authService.Login(A<UserLoginDto>._))
+			.Returns(new Response<UserResponseDto>
+			{
+				Status = ResponseStatusCodesConst.Success,
+				Data = new UserResponseDto()
+				{
+					AccessToken = "fake_token"
+				}
+			});
 
 			// Act
-			//var result = await controller.LoginUser(userDto);
+			var response = await _client.PostAsync("/api/auth/login", JsonContent.Create(userDto));
 
 			// Assert
-			//var okObjectResult = Assert.IsType<OkObjectResult>(result);
-			//var response = Assert.IsType<Response<UserResponseDto>>(okObjectResult.Value);
-
-			//Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
-			//Assert.NotNull(response.Data);
+			Assert.True(response.IsSuccessStatusCode);
 		}
-		public void Dispose()
+
+
+		[Fact]
+		public async Task AuthController_LoginUser_ReturnsBadRequest()
 		{
-			_client.Dispose();
-			_factory.Dispose();
+			// Arrange
+			var userDto = A.Fake<UserLoginDto>();
+
+			A.CallTo(() => _factory._authService.Login(A<UserLoginDto>._))
+				.Returns(new Response<UserResponseDto>
+				{
+					Status = ResponseStatusCodesConst.Error,
+					Message = "Error logging in",
+				});
+
+			// Act
+			var response = await _client.PostAsync("/api/auth/login", JsonContent.Create(userDto));
+
+			// Assert
+			Assert.False(response.IsSuccessStatusCode);
+			Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+		}
+
+		[Fact]
+		public async Task AuthController_RegisterUser_ReturnsOk()
+		{
+			// Arrange
+			var userDto = A.Fake<UserRegisterDto>();
+
+			A.CallTo(() => _factory._authService.Register(A<UserRegisterDto>._))
+				.Returns(new Response<UserResponseDto>
+				{
+					Status = ResponseStatusCodesConst.Success,
+					Data = new UserResponseDto()
+				});
+
+			// Act
+			var response = await _client.PostAsync("/api/auth/register", JsonContent.Create(userDto));
+
+			// Assert
+			Assert.True(response.IsSuccessStatusCode);
+		}
+
+		[Fact]
+		public async Task AuthController_RegisterUser_ReturnsBadRequest()
+		{
+			// Arrange
+			var userDto = A.Fake<UserRegisterDto>();
+
+			A.CallTo(() => _factory._authService.Register(A<UserRegisterDto>._))
+				.Returns(new Response<UserResponseDto>
+				{
+					Status = ResponseStatusCodesConst.Error,
+					Message = "Error registering user",
+				});
+
+			// Act
+			var response = await _client.PostAsync("/api/auth/register", JsonContent.Create(userDto));
+
+			// Assert
+			Assert.False(response.IsSuccessStatusCode);
+			Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 		}
 	}
 }

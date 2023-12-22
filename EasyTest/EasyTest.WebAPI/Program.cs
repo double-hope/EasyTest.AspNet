@@ -23,6 +23,7 @@ public class Program
 		builder.Services.RegisterServices(builder.Configuration);
 		builder.Services.RegisterCustomServices(builder.Configuration);
 		builder.Services.AddAuthorization();
+
 		builder.Services.AddJwtAuthentication(builder.Configuration);
 
 		var app = builder.Build();
