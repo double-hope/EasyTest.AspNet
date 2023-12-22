@@ -194,5 +194,71 @@ namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 			// Assert
 			Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 		}
+
+		[Fact]
+		public async Task QuestionController_DeleteQuestion_ReturnsOk()
+		{
+			// Arrange
+			var questionId = Guid.NewGuid();
+
+			A.CallTo(() => _factory._questionService.Delete(questionId))
+				.Returns(new Response<QuestionResponseDto>
+				{
+					Status = ResponseStatusCodesConst.Success,
+					Data = A.Fake<QuestionResponseDto>(),
+				});
+
+			// Act
+			var response = await _privilegedClient.DeleteAsync($"/api/question/{questionId}");
+
+			// Assert
+			Assert.True(response.IsSuccessStatusCode);
+		}
+
+		[Fact]
+		public async Task QuestionController_DeleteQuestion_Returns403()
+		{
+			// Arrange
+			var questionId = Guid.NewGuid();
+
+			// Act
+			var response = await _authorizedClient.DeleteAsync($"/api/question/{questionId}");
+
+			// Assert
+			Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+		}
+
+		[Fact]
+		public async Task QuestionController_DeleteQuestion_Returns401()
+		{
+			// Arrange
+			var questionId = Guid.NewGuid();
+
+			// Act
+			var response = await _client.DeleteAsync($"/api/question/{questionId}");
+
+			// Assert
+			Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+		}
+
+		[Fact]
+		public async Task QuestionController_DeleteQuestion_ReturnsBadRequest()
+		{
+			// Arrange
+			var questionId = Guid.NewGuid();
+
+			A.CallTo(() => _factory._questionService.Delete(questionId))
+				.Returns(new Response<QuestionResponseDto>
+				{
+					Status = ResponseStatusCodesConst.Error,
+					Message = "Error deleting question",
+				});
+
+			// Act
+			var response = await _privilegedClient.DeleteAsync($"/api/question/{questionId}");
+
+			// Assert
+			Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+		}
 	}
 }

@@ -95,5 +95,25 @@ namespace EasyTest.BLL.Services
 
 			return Response<QuestionResponseDto>.Success(_mapper.Map<QuestionResponseDto>(question), "Question updated successfully");
 		}
+
+		public async Task<Response<QuestionResponseDto>> Delete(Guid questionId)
+		{
+			var question = await _unitOfWork.QuestionRepository.GetById(questionId);
+
+			if (question == null) return Response<QuestionResponseDto>.Error("Question does not found");
+
+			var answers = await _unitOfWork.AnswerRepository.GetByQuestionId(questionId);
+			foreach (var answer in answers)
+			{
+				_unitOfWork.AnswerRepository.Remove(answer);
+			}
+
+			_unitOfWork.QuestionRepository.Remove(question);
+
+			await _unitOfWork.Save();
+
+			return Response<QuestionResponseDto>.Success(_mapper.Map<QuestionResponseDto>(question), "Question and associated answers deleted successfully");
+
+		}
 	}
 }

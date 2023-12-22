@@ -36,7 +36,7 @@ namespace EasyTest.WebAPI.Controllers
         [HttpPost("testId/{id}")]
         [ProducesResponseType(typeof(Response<IEnumerable<QuestionResponseDto>>), (int)HttpStatusCode.OK)]
 		[Authorize(Roles = $"{UserRolesConst.AdminRole},{UserRolesConst.TeacherRole}")]
-		public async Task<ActionResult> CreateTests(Guid id, [FromBody]IEnumerable<QuestionDto> questionsDto)
+		public async Task<ActionResult> CreateQuestions(Guid id, [FromBody]IEnumerable<QuestionDto> questionsDto)
         {
             var response = await _questionService.CreateMany(questionsDto, id);
 
@@ -51,9 +51,23 @@ namespace EasyTest.WebAPI.Controllers
 		[HttpPut("{id}")]
 		[ProducesResponseType(typeof(Response<QuestionResponseDto>), (int)HttpStatusCode.OK)]
 		[Authorize(Roles = $"{UserRolesConst.AdminRole},{UserRolesConst.TeacherRole}")]
-		public async Task<ActionResult> EditTest(Guid id, [FromBody] QuestionDto questionDto)
+		public async Task<ActionResult> EditQuestion(Guid id, [FromBody] QuestionDto questionDto)
 		{
 			var response = await _questionService.Edit(questionDto, id);
+
+			if (response.Status == ResponseStatusCodesConst.Success)
+			{
+				return Ok(response);
+			}
+
+			return BadRequest(response);
+		}
+		[HttpDelete("{id}")]
+		[ProducesResponseType(typeof(Response<QuestionResponseDto>), (int)HttpStatusCode.OK)]
+		[Authorize(Roles = $"{UserRolesConst.AdminRole},{UserRolesConst.TeacherRole}")]
+		public async Task<ActionResult> DeleteQuestion(Guid id)
+		{
+			var response = await _questionService.Delete(id);
 
 			if (response.Status == ResponseStatusCodesConst.Success)
 			{
