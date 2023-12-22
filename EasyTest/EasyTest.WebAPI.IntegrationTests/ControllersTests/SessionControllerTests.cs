@@ -32,7 +32,11 @@ namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 		public async Task SessionController_StartSession_ReturnsOk()
 		{
 			// Arrange
-			var sessionCreateDto = A.Fake<SessionCreateDto>();
+			var sessionCreateDto = new SessionCreateDto()
+			{
+				TestId = Guid.NewGuid(),
+				UserEmail = string.Empty
+			};
 
 			A.CallTo(() => _factory._sessionService.Create(A<SessionCreateDto>.Ignored))
 				.Returns(new Response<SessionDto>

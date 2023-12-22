@@ -26,6 +26,7 @@ namespace EasyTest.WebAPI.Controllers
 		[ProducesResponseType(typeof(Response<SessionDto>), (int)HttpStatusCode.OK)]
 		public async Task<ActionResult> StartSession([FromBody] SessionCreateDto sessionDto)
 		{
+			Console.WriteLine("StartSession method called!");
 			var response = await _sessionService.Create(sessionDto);
 
 			if (response.Status == ResponseStatusCodesConst.Success)

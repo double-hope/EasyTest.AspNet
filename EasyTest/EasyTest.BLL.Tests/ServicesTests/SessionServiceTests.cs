@@ -35,9 +35,10 @@ namespace EasyTest.BLL.Tests.Services
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
-            var sessionCreateDto = new SessionCreateDto { UserId = Guid.NewGuid(), TestId = Guid.NewGuid() };
+            var sessionCreateDto = new SessionCreateDto { UserEmail = string.Empty, TestId = Guid.NewGuid() };
 
-            A.CallTo(() => _unitOfWork.TestSessionRepository.GetInProgressSession(sessionCreateDto.UserId, sessionCreateDto.TestId)).Returns(Task.FromResult<TestSession>(null));
+            A.CallTo(() => _unitOfWork.UserRepository.GetByEmail(sessionCreateDto.UserEmail)).Returns(A.Fake<User>());
+            A.CallTo(() => _unitOfWork.TestSessionRepository.GetInProgressSession(A<Guid>.Ignored, sessionCreateDto.TestId)).Returns(Task.FromResult<TestSession>(null));
 
             // Act
             var result = await sessionService.Create(sessionCreateDto);
@@ -52,12 +53,13 @@ namespace EasyTest.BLL.Tests.Services
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
-            var sessionCreateDto = new SessionCreateDto { UserId = Guid.NewGuid(), TestId = Guid.NewGuid() };
+			var sessionCreateDto = new SessionCreateDto { UserEmail = string.Empty, TestId = Guid.NewGuid() };
 
-            A.CallTo(() => _unitOfWork.TestSessionRepository.GetInProgressSession(sessionCreateDto.UserId, sessionCreateDto.TestId)).Returns(Task.FromResult<TestSession>(A.Fake<TestSession>()));
+			A.CallTo(() => _unitOfWork.UserRepository.GetByEmail(sessionCreateDto.UserEmail)).Returns(A.Fake<User>());
+			A.CallTo(() => _unitOfWork.TestSessionRepository.GetInProgressSession(A<Guid>.Ignored, sessionCreateDto.TestId)).Returns(A.Fake<TestSession>());
 
-            // Act
-            var result = await sessionService.Create(sessionCreateDto);
+			// Act
+			var result = await sessionService.Create(sessionCreateDto);
 
             // Assert
             Assert.True(result.Status.Equals(ResponseStatusCodesConst.Success));
@@ -69,11 +71,11 @@ namespace EasyTest.BLL.Tests.Services
         {
             // Arrange
             var sessionService = new SessionService(_unitOfWork, _mapper);
-            var sessionCreateDto = new SessionCreateDto { UserId = Guid.NewGuid(), TestId = Guid.NewGuid() };
+			var sessionCreateDto = new SessionCreateDto { UserEmail = string.Empty, TestId = Guid.NewGuid() };
 
-            A.CallTo(() => _unitOfWork.TestSessionRepository.GetInProgressSession(sessionCreateDto.UserId, sessionCreateDto.TestId))
-                .Returns(Task.FromResult<TestSession>(null));
-            A.CallTo(() => _unitOfWork.TestSessionRepository.GetAllUserSessions(sessionCreateDto.UserId, sessionCreateDto.TestId))
+			A.CallTo(() => _unitOfWork.UserRepository.GetByEmail(sessionCreateDto.UserEmail)).Returns(A.Fake<User>());
+			A.CallTo(() => _unitOfWork.TestSessionRepository.GetInProgressSession(A<Guid>.Ignored, sessionCreateDto.TestId)).Returns(Task.FromResult<TestSession>(null));
+            A.CallTo(() => _unitOfWork.TestSessionRepository.GetAllUserSessions(A<Guid>.Ignored, sessionCreateDto.TestId))
                 .Returns(new List<TestSession>() { A.Fake<TestSession>() });
             A.CallTo(() => _unitOfWork.TestRepository.GetById(sessionCreateDto.TestId))
                 .Returns(Task.FromResult(A.Fake<Test>()));
