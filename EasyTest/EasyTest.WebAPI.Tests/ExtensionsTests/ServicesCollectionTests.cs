@@ -10,7 +10,8 @@ using FakeItEasy;
 
 namespace EasyTest.WebAPI.Extensions
 {
-    public class ServicesCollectionTests
+	[Trait("Category", "Unit")]
+	public class ServicesCollectionTests
     {
 		[Fact]
 		public void ServicesCollection_RegisterCustomServices_Adds_Services_To_Collection()

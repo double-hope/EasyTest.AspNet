@@ -12,7 +12,8 @@ using Mono.Reflection;
 
 namespace EasyTest.BLL.Tests.Services
 {
-    public class SessionServiceTests
+	[Trait("Category", "Unit")]
+	public class SessionServiceTests
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
