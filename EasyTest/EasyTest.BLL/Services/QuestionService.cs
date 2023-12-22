@@ -79,5 +79,21 @@ namespace EasyTest.BLL.Services
 			await _unitOfWork.Save();
 			return Response<QuestionResponseDto>.Success(_mapper.Map<QuestionResponseDto>(questionE));
 		}
-    }
+
+		public async Task<Response<QuestionResponseDto>> Edit(QuestionDto questionDto, Guid questionId)
+		{
+			var question = await _unitOfWork.QuestionRepository.GetById(questionId);
+
+			if (question == null) return Response<QuestionResponseDto>.Error("Question does not found");
+
+			_mapper.Map(questionDto, question);
+
+			question.UpdatedAt = DateTime.UtcNow;
+
+			_unitOfWork.QuestionRepository.Update(question);
+			await _unitOfWork.Save();
+
+			return Response<QuestionResponseDto>.Success(_mapper.Map<QuestionResponseDto>(question), "Question updated successfully");
+		}
+	}
 }

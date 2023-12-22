@@ -38,7 +38,9 @@ namespace EasyTest.BLL.Services
 
             if(test == null) return Response<TestDto>.Error("Test does not found");
 
-			test = _mapper.Map<Test>(testDto);
+			_mapper.Map(testDto, test);
+
+            test.UpdatedAt = DateTime.UtcNow;
 
 			_unitOfWork.TestRepository.Update(test);
 			await _unitOfWork.Save();

@@ -47,5 +47,20 @@ namespace EasyTest.WebAPI.Controllers
 
             return BadRequest(response);
         }
-    }
+
+		[HttpPut("{id}")]
+		[ProducesResponseType(typeof(Response<QuestionResponseDto>), (int)HttpStatusCode.OK)]
+		[Authorize(Roles = $"{UserRolesConst.AdminRole},{UserRolesConst.TeacherRole}")]
+		public async Task<ActionResult> EditTest(Guid id, [FromBody] QuestionDto questionDto)
+		{
+			var response = await _questionService.Edit(questionDto, id);
+
+			if (response.Status == ResponseStatusCodesConst.Success)
+			{
+				return Ok(response);
+			}
+
+			return BadRequest(response);
+		}
+	}
 }

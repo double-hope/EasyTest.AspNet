@@ -1,7 +1,10 @@
 ﻿using EasyTest.Shared.Constants;
+using EasyTest.Shared.DTO.Answer;
 using EasyTest.Shared.DTO.Question;
 using EasyTest.Shared.DTO.Response;
+using EasyTest.Shared.Helpers;
 using FakeItEasy;
+using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
 using System.Security.Claims;
@@ -109,5 +112,87 @@ namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 			Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 		}
 
+		[Fact]
+		public async Task QuestionController_EditTest_ReturnsOk()
+		{
+			// Arrange
+			var questionId = Guid.NewGuid();
+			var questionDto = new QuestionDto()
+			{
+				Title = "Title#1",
+				Text = "Test to check you...",
+				Answers = new List<AnswerDto>()
+				{
+					new AnswerDto()
+					{
+						Text = "First",
+						IsCorrect = true
+					}
+				}
+			};
+			var sampleData = A.Fake<QuestionResponseDto>();
+
+			A.CallTo(() => _factory._questionService.Edit(A<QuestionDto>._, questionId))
+				.Returns(new Response<QuestionResponseDto>
+				{
+					Status = ResponseStatusCodesConst.Success,
+					Data = sampleData,
+				});
+
+			// Act
+			var response = await _privilegedClient.PutAsync($"/api/question/{questionId}", JsonContent.Create(questionDto));
+
+			// Assert
+			Assert.True(response.IsSuccessStatusCode);
+		}
+
+		[Fact]
+		public async Task QuestionController_EditTest_Returns403()
+		{
+			// Arrange
+			var questionId = Guid.NewGuid();
+			var questionDto = A.Fake<QuestionDto>();
+
+			// Act
+			var response = await _authorizedClient.PutAsync($"/api/question/{questionId}", JsonContent.Create(questionDto));
+
+			// Assert
+			Assert.Equal(HttpStatusCode.Forbidden, response.StatusCode);
+		}
+
+		[Fact]
+		public async Task QuestionController_EditTest_Returns401()
+		{
+			// Arrange
+			var questionId = Guid.NewGuid();
+			var questionDto = A.Fake<QuestionDto>();
+
+			// Act
+			var response = await _client.PutAsync($"/api/question/{questionId}", JsonContent.Create(questionDto));
+
+			// Assert
+			Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
+		}
+
+		[Fact]
+		public async Task QuestionController_EditTest_ReturnsBadRequest()
+		{
+			// Arrange
+			var questionId = Guid.NewGuid();
+			var questionDto = A.Fake<QuestionDto>();
+
+			A.CallTo(() => _factory._questionService.Edit(questionDto, questionId))
+				.Returns(new Response<QuestionResponseDto>
+				{
+					Status = ResponseStatusCodesConst.Error,
+					Message = "Error editing question",
+				});
+
+			// Act
+			var response = await _privilegedClient.PutAsync($"/api/question/{questionId}", JsonContent.Create(questionDto));
+
+			// Assert
+			Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+		}
 	}
 }

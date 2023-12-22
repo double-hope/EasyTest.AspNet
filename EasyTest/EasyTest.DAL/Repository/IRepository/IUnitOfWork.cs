@@ -6,7 +6,7 @@ namespace EasyTest.DAL.Repository.IRepository
 	public interface IUnitOfWork
 	{
 		IAnswerRepository AnswerRepository { get; }
-		IRepository<Question> QuestionRepository { get; }
+		IQuestionRepository QuestionRepository { get; }
 		IQuestionTestRepository QuestionTestRepository { get; }
 		ISessionAnswerRepository SessionAnswerRepository { get; }
 		ISessionQuestionRepository SessionQuestionRepository { get; }
