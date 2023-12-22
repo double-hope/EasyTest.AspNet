@@ -1,13 +1,17 @@
 ﻿using EasyTest.BLL.Interfaces;
 using EasyTest.Shared.Constants;
+using EasyTest.Shared.DTO.Answer;
+using EasyTest.Shared.DTO.Question;
 using EasyTest.Shared.DTO.Response;
 using EasyTest.Shared.DTO.Session;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace EasyTest.WebAPI.Controllers
 {
 	[ApiController]
+	[Authorize]
 	[Route("/api/session")]
 	public class SessionController : ControllerBase
 	{
@@ -22,6 +26,7 @@ namespace EasyTest.WebAPI.Controllers
 		[ProducesResponseType(typeof(Response<SessionDto>), (int)HttpStatusCode.OK)]
 		public async Task<ActionResult> StartSession([FromBody] SessionCreateDto sessionDto)
 		{
+			Console.WriteLine("StartSession method called!");
 			var response = await _sessionService.Create(sessionDto);
 
 			if (response.Status == ResponseStatusCodesConst.Success)
@@ -33,7 +38,7 @@ namespace EasyTest.WebAPI.Controllers
 		}
 
 		[HttpGet("{id}/next")]
-		[ProducesResponseType(typeof(Response<SessionDto>), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(Response<QuestionNextDto>), (int)HttpStatusCode.OK)]
 		public async Task<ActionResult> GetNextQuestion(Guid id)
 		{
 			if (await _sessionService.IfGetResult(id))
@@ -50,8 +55,9 @@ namespace EasyTest.WebAPI.Controllers
 
 			return BadRequest(response);
 		}
+
 		[HttpPost("{id}/answer/{answerId}")]
-		[ProducesResponseType(typeof(Response<SessionDto>), (int)HttpStatusCode.OK)]
+		[ProducesResponseType(typeof(Response<SessionAnswerDto>), (int)HttpStatusCode.OK)]
 		public async Task<ActionResult> AnswerTheQuestion(Guid id, Guid answerId)
 		{
 			var response = await _sessionService.AnswerTheQuestion(id, answerId);

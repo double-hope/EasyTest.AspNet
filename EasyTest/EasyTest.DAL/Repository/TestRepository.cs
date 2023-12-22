@@ -11,7 +11,7 @@ namespace EasyTest.DAL.Repository
 		public async Task<Test> GetById(Guid id)
 		{
 			IQueryable<Test> query = dbSet;
-			query.Where(x => x.Id == id);
+			query = query.Where(x => x.Id == id);
 
 			return await query.FirstOrDefaultAsync();
 		}

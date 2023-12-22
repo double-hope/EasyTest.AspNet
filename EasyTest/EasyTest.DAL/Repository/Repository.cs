@@ -34,7 +34,7 @@ namespace EasyTest.DAL.Repository
         public async Task AddRange(IEnumerable<T> entities)
         {
             await dbSet.AddRangeAsync(entities);
-        }
+		}
 
         public void Update(T entity)
 		{

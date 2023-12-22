@@ -1,4 +1,6 @@
-﻿using EasyTest.BLL.Interfaces;
+﻿using FluentValidation.AspNetCore;
+using FluentValidation;
+using EasyTest.BLL.Interfaces;
 using EasyTest.BLL.Services;
 using EasyTest.DAL;
 using EasyTest.DAL.DbInitializer;
@@ -31,6 +33,7 @@ namespace EasyTest.WebAPI.Extensions
         public static void RegisterServices(this IServiceCollection services, IConfiguration config)
         {
 			services.Configure<AuthOptions>(config.GetSection("Jwt"));
+            ConfigureFluentValidation(services);
 			services.AddAutoMapper(conf =>
             {
                 conf.AddProfiles(
@@ -46,7 +49,12 @@ namespace EasyTest.WebAPI.Extensions
             });
         }
 
-        public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration config)
+		private static void ConfigureFluentValidation(IServiceCollection services)
+		{
+			services.AddFluentValidationAutoValidation();
+			services.AddValidatorsFromAssemblyContaining(typeof(Program));
+		}
+		public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration config)
         {
             services.AddAuthentication(options =>
             {
@@ -62,7 +70,7 @@ namespace EasyTest.WebAPI.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"])),
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidateLifetime = false,
+                    ValidateLifetime = true,
                     ValidateIssuerSigningKey = true
                 };
             });
