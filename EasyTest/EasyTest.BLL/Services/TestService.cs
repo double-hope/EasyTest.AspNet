@@ -34,12 +34,16 @@ namespace EasyTest.BLL.Services
         }
 		public async Task<Response<TestDto>> Edit(Guid testId, TestEditDto testDto)
 		{
-            var testE = _mapper.Map<Test>(testDto);
+            var test = await _unitOfWork.TestRepository.GetById(testId);
 
-			_unitOfWork.TestRepository.Update(testE);
+            if(test == null) return Response<TestDto>.Error("Test does not found");
+
+			test = _mapper.Map<Test>(testDto);
+
+			_unitOfWork.TestRepository.Update(test);
 			await _unitOfWork.Save();
 
-			return Response<TestDto>.Success(_mapper.Map<TestDto>(testE), "Test updated successfully");
+			return Response<TestDto>.Success(_mapper.Map<TestDto>(test), "Test updated successfully");
 		}
 	}
 }

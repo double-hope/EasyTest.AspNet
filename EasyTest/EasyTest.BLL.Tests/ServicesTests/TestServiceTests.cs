@@ -102,7 +102,8 @@ namespace EasyTest.BLL.Tests.Services
             var testEditDto = new TestEditDto { Title = "Title2", Description = "Description2" };
             var testEntity = _mapper.Map<Test>(testEditDto);
 
-            A.CallTo(() => _unitOfWork.TestRepository.Update(A<Test>.Ignored));
+			A.CallTo(() => _unitOfWork.TestRepository.GetById(A<Guid>.Ignored)).Returns(A.Fake<Test>());
+			A.CallTo(() => _unitOfWork.TestRepository.Update(A<Test>.Ignored));
             A.CallTo(() => _unitOfWork.Save());
 
             var testService = new TestService(_unitOfWork, _mapper);
@@ -115,5 +116,24 @@ namespace EasyTest.BLL.Tests.Services
             Assert.Equal(testEntity.Title, result.Data.Title);
             Assert.Equal("Test updated successfully", result.Message);
         }
-    }
+
+		[Fact]
+		public async Task TestService_Edit_ReturnsTestNotFound()
+		{
+			// Arrange
+			var testId = Guid.NewGuid();
+			var testEditDto = new TestEditDto { Title = "Title2", Description = "Description2" };
+
+			A.CallTo(() => _unitOfWork.TestRepository.GetById(A<Guid>.Ignored)).Returns(Task.FromResult<Test>(null));
+
+			var testService = new TestService(_unitOfWork, _mapper);
+
+			// Act
+			var result = await testService.Edit(testId, testEditDto);
+
+			// Assert
+			Assert.Null(result.Data);
+			Assert.Equal("Test does not found", result.Message);
+		}
+	}
 }
