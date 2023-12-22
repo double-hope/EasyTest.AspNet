@@ -9,7 +9,7 @@ namespace EasyTest.DAL.Repository
 		private readonly ApplicationDbContext _context;
 
 		private IAnswerRepository answerRepository;
-		private IRepository<Question> questionRepository;
+		private IQuestionRepository questionRepository;
 		private IQuestionTestRepository questionTestRepository;
 		private ISessionAnswerRepository sessionAnswerRepository;
 		private ISessionQuestionRepository sessionQuestionRepository;
@@ -33,13 +33,13 @@ namespace EasyTest.DAL.Repository
 				return answerRepository;
 			}
 		}
-		public IRepository<Question> QuestionRepository
+		public IQuestionRepository QuestionRepository
 		{
 			get
 			{
 				if (questionRepository == null)
 				{
-					questionRepository = new Repository<Question>(_context);
+					questionRepository = new QuestionRepository(_context);
 				}
 				return questionRepository;
 			}

@@ -7,5 +7,6 @@ namespace EasyTest.BLL.Interfaces
 	{
 		Task<Response<IEnumerable<QuestionResponseDto>>> CreateMany(IEnumerable<QuestionDto> questionsDto, Guid testId);
         Task<Response<QuestionResponseDto>> Create(QuestionDto questionDto, Guid testId);
+        Task<Response<QuestionResponseDto>> Edit(QuestionDto questionDto, Guid questionId);
 	}
 }

@@ -196,5 +196,43 @@ namespace EasyTest.BLL.Tests.Services
             // Assert
             Assert.True(result.Status.Equals(ResponseStatusCodesConst.Error));
         }
-    }
+
+		[Fact]
+		public async Task QuestionService_Edit_SuccessfullyEditsQuestion()
+		{
+			// Arrange
+			var questionService = new QuestionService(_unitOfWork, _mapper, _answerService);
+			var questionDto = A.Fake<QuestionDto>();
+			var questionId = Guid.NewGuid();
+			var question = A.Fake<Question>();
+
+			A.CallTo(() => _unitOfWork.QuestionRepository.GetById(questionId)).Returns(question);
+			A.CallTo(() => _unitOfWork.QuestionRepository.Update(A<Question>.Ignored)).DoesNothing();
+			A.CallTo(() => _unitOfWork.Save()).Returns(Task.CompletedTask);
+
+			// Act
+			var result = await questionService.Edit(questionDto, questionId);
+
+			// Assert
+			Assert.True(result.Status.Equals(ResponseStatusCodesConst.Success));
+		}
+
+		[Fact]
+		public async Task QuestionService_Edit_FailsWhenQuestionNotFound()
+		{
+			// Arrange
+			var questionService = new QuestionService(_unitOfWork, _mapper, _answerService);
+			var questionDto = A.Fake<QuestionDto>();
+			var questionId = Guid.NewGuid();
+
+			A.CallTo(() => _unitOfWork.QuestionRepository.GetById(questionId)).Returns(Task.FromResult<Question>(null));
+
+			// Act
+			var result = await questionService.Edit(questionDto, questionId);
+
+			// Assert
+			Assert.True(result.Status.Equals(ResponseStatusCodesConst.Error));
+			Assert.Equal("Question does not found", result.Message);
+		}
+	}
 }

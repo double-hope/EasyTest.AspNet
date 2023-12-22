@@ -72,5 +72,60 @@ namespace EasyTest.WebAPI.Tests.Controllers
 			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
 			Assert.Equal("Error creating questions", response.Message);
 		}
+
+		[Fact]
+		public async Task QuestionController_EditTest_ReturnsOk()
+		{
+			// Arrange
+			var controller = new QuestionController(_questionService);
+			var questionId = Guid.NewGuid();
+			var questionDto = A.Fake<QuestionDto>();
+
+			var sampleData = A.Fake<QuestionResponseDto>();
+
+			A.CallTo(() => _questionService.Edit(questionDto, questionId))
+				.Returns(new Response<QuestionResponseDto>
+				{
+					Status = ResponseStatusCodesConst.Success,
+					Data = sampleData,
+				});
+
+			// Act
+			var result = await controller.EditTest(questionId, questionDto);
+
+			// Assert
+			var okObjectResult = Assert.IsType<OkObjectResult>(result);
+			var response = Assert.IsType<Response<QuestionResponseDto>>(okObjectResult.Value);
+
+			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
+			Assert.NotNull(response.Data);
+			Assert.Equal(sampleData, response.Data);
+		}
+
+		[Fact]
+		public async Task QuestionController_EditTest_ReturnsBadRequest()
+		{
+			// Arrange
+			var controller = new QuestionController(_questionService);
+			var questionId = Guid.NewGuid();
+			var questionDto = A.Fake<QuestionDto>();
+
+			A.CallTo(() => _questionService.Edit(questionDto, questionId))
+				.Returns(new Response<QuestionResponseDto>
+				{
+					Status = ResponseStatusCodesConst.Error,
+					Message = "Error editing question",
+				});
+
+			// Act
+			var result = await controller.EditTest(questionId, questionDto);
+
+			// Assert
+			var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+			var response = Assert.IsType<Response<QuestionResponseDto>>(badRequestObjectResult.Value);
+
+			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
+			Assert.Equal("Error editing question", response.Message);
+		}
 	}
 }
