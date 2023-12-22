@@ -8,6 +8,7 @@ using System.Security.Claims;
 
 namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 {
+	[Trait("Category", "Integration")]
 	public class QuestionControllerTests : IClassFixture<CustomWebApplicationFactory>
 	{
 		private readonly CustomWebApplicationFactory _factory;

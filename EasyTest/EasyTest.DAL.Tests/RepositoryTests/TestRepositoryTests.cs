@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EasyTest.DAL.Tests.Repository
 {
+	[Trait("Category", "Unit")]
 	public class TestRepositoryTests
 	{
 		private async Task<ApplicationDbContext> GetApplicationDbContext()

@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 {
+	[Trait("Category", "Integration")]
 	public class CustomWebApplicationFactory : WebApplicationFactory<Program>
 	{
 		public readonly IAuthService _authService;

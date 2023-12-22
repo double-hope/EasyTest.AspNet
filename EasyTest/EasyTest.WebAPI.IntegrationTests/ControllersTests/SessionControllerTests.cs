@@ -12,6 +12,7 @@ using System.Net.Http.Json;
 
 namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 {
+	[Trait("Category", "Integration")]
 	public class SessionControllerTests : IClassFixture<CustomWebApplicationFactory>
 	{
 		private readonly CustomWebApplicationFactory _factory;
