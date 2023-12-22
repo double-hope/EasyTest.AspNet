@@ -43,7 +43,7 @@ namespace EasyTest.BLL.Services
 				AccessToken = await GenerateJwt(user)
 			};
 
-			return Response<UserResponseDto>.Success(userResponse, "You succesfully logged in");
+			return Response<UserResponseDto>.Success(userResponse, "You successfully logged in");
 		}
 
 		public async Task<Response<UserResponseDto>> Register(UserRegisterDto userDto)
@@ -79,13 +79,13 @@ namespace EasyTest.BLL.Services
 				AccessToken = await GenerateJwt(userE)
 			};
 
-			return Response<UserResponseDto>.Success(userResponse, "You succesfully register user");
+			return Response<UserResponseDto>.Success(userResponse, "You successfully register user");
 		}
 		private async Task<string> GenerateJwt(User user)
 		{
 			var userRoles = await _userManager.GetRolesAsync(user);
 
-			var claims = new List<Claim>
+            var claims = new List<Claim>
 			{
 				new Claim("name", user.Name),
 				new Claim("email", user.Email),

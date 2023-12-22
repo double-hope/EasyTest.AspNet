@@ -39,9 +39,13 @@ namespace EasyTest.BLL.Services
 
                 return Response<IEnumerable<QuestionResponseDto>>.Success(responses);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                await _unitOfWork.Rollback();
+				List<string>? errors = new List<string> { ex.Message };
+
+                return Response<IEnumerable<QuestionResponseDto>>.Error("An error occurred", errors);
+
             }
         }
 		public async Task<Response<QuestionResponseDto>> Create(QuestionDto questionDto, Guid testId)
