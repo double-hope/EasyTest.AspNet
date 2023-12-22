@@ -7,6 +7,7 @@ using System.Text.Encodings.Web;
 
 namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 {
+	[Trait("Category", "Integration")]
 	public class MockSchemeProvider : AuthenticationSchemeProvider
 	{
 		public MockSchemeProvider(IOptions<AuthenticationOptions> options) : base(options)

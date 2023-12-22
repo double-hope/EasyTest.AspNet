@@ -8,7 +8,8 @@ using FakeItEasy;
 
 namespace EasyTest.BLL.Tests.Services
 {
-    public class TestServiceTests
+	[Trait("Category", "Unit")]
+	public class TestServiceTests
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;

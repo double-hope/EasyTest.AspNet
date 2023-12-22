@@ -13,7 +13,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EasyTest.BLL.Tests.Services
 {
-    public class QuestionServiceTests
+	[Trait("Category", "Unit")]
+	public class QuestionServiceTests
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;

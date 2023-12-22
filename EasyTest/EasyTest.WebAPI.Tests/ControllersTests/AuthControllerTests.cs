@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTest.WebAPI.Tests.Controllers
 {
+	[Trait("Category", "Unit")]
 	public class AuthControllerTests
 	{
 		private readonly IAuthService _authService;

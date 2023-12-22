@@ -5,6 +5,7 @@ using EasyTest.DAL.Repository;
 
 namespace EasyTest.DAL.Tests.Repository
 {
+	[Trait("Category", "Unit")]
 	public class TestSessionRepositoryTests
 	{
 		private async Task<ApplicationDbContext> GetApplicationDbContext()

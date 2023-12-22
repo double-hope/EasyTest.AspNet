@@ -13,7 +13,8 @@ using Microsoft.Extensions.Options;
 
 namespace EasyTest.BLL.Tests.Services
 {
-    public class AuthServiceTests
+	[Trait("Category", "Unit")]
+	public class AuthServiceTests
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;

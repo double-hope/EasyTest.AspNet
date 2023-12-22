@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTest.WebAPI.Tests.Controllers
 {
+	[Trait("Category", "Unit")]
 	public class SessionControllerTests
 	{
 		private readonly ISessionService _sessionService;

@@ -10,6 +10,7 @@ using EasyTest.Shared.Enums;
 
 namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 {
+	[Trait("Category", "Integration")]
 	public class AuthControllerTests : IClassFixture<CustomWebApplicationFactory>
 	{
 		private readonly CustomWebApplicationFactory _factory;

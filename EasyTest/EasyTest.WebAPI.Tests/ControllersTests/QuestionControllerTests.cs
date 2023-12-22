@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTest.WebAPI.Tests.Controllers
 {
+	[Trait("Category", "Unit")]
 	public class QuestionControllerTests
 	{
 		private readonly IQuestionService _questionService;
