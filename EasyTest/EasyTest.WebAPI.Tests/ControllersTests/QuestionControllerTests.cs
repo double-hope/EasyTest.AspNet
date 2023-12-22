@@ -19,7 +19,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		}
 
 		[Fact]
-		public async Task QuestionController_CreateTests_ReturnsOk()
+		public async Task QuestionController_CreateQuestions_ReturnsOk()
         {
             // Arrange
             var controller = new QuestionController(_questionService);
@@ -36,7 +36,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 				});
 
             // Act
-            var result = await controller.CreateTests(testId, questionsDto);
+            var result = await controller.CreateQuestions(testId, questionsDto);
 
             // Assert
             var okObjectResult = Assert.IsType<OkObjectResult>(result);
@@ -48,7 +48,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		}
 
 		[Fact]
-		public async Task QuestionController_CreateTests_ReturnsBadRequest()
+		public async Task QuestionController_CreateQuestions_ReturnsBadRequest()
         {
             // Arrange
             var controller = new QuestionController(_questionService);
@@ -63,7 +63,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 				});
 
             // Act
-            var result = await controller.CreateTests(testId, questionsDto);
+            var result = await controller.CreateQuestions(testId, questionsDto);
 
             // Assert
             var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
@@ -74,7 +74,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		}
 
 		[Fact]
-		public async Task QuestionController_EditTest_ReturnsOk()
+		public async Task QuestionController_EditQuestion_ReturnsOk()
 		{
 			// Arrange
 			var controller = new QuestionController(_questionService);
@@ -91,7 +91,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 				});
 
 			// Act
-			var result = await controller.EditTest(questionId, questionDto);
+			var result = await controller.EditQuestion(questionId, questionDto);
 
 			// Assert
 			var okObjectResult = Assert.IsType<OkObjectResult>(result);
@@ -103,7 +103,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		}
 
 		[Fact]
-		public async Task QuestionController_EditTest_ReturnsBadRequest()
+		public async Task QuestionController_EditQuestion_ReturnsBadRequest()
 		{
 			// Arrange
 			var controller = new QuestionController(_questionService);
@@ -118,7 +118,7 @@ namespace EasyTest.WebAPI.Tests.Controllers
 				});
 
 			// Act
-			var result = await controller.EditTest(questionId, questionDto);
+			var result = await controller.EditQuestion(questionId, questionDto);
 
 			// Assert
 			var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
@@ -126,6 +126,57 @@ namespace EasyTest.WebAPI.Tests.Controllers
 
 			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
 			Assert.Equal("Error editing question", response.Message);
+		}
+
+
+		[Fact]
+		public async Task QuestionController_DeleteQuestion_ReturnsOk()
+		{
+			// Arrange
+			var controller = new QuestionController(_questionService);
+			var questionId = Guid.NewGuid();
+
+			A.CallTo(() => _questionService.Delete(questionId))
+				.Returns(new Response<QuestionResponseDto>
+				{
+					Status = ResponseStatusCodesConst.Success,
+					Data = A.Fake<QuestionResponseDto>(),
+				});
+
+			// Act
+			var result = await controller.DeleteQuestion(questionId);
+
+			// Assert
+			var okObjectResult = Assert.IsType<OkObjectResult>(result);
+			var response = Assert.IsType<Response<QuestionResponseDto>>(okObjectResult.Value);
+
+			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
+			Assert.NotNull(response.Data);
+		}
+
+		[Fact]
+		public async Task QuestionController_DeleteQuestion_ReturnsBadRequest()
+		{
+			// Arrange
+			var controller = new QuestionController(_questionService);
+			var questionId = Guid.NewGuid();
+
+			A.CallTo(() => _questionService.Delete(questionId))
+				.Returns(new Response<QuestionResponseDto>
+				{
+					Status = ResponseStatusCodesConst.Error,
+					Message = "Error deleting question",
+				});
+
+			// Act
+			var result = await controller.DeleteQuestion(questionId);
+
+			// Assert
+			var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+			var response = Assert.IsType<Response<QuestionResponseDto>>(badRequestObjectResult.Value);
+
+			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);
+			Assert.Equal("Error deleting question", response.Message);
 		}
 	}
 }

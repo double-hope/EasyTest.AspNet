@@ -234,5 +234,44 @@ namespace EasyTest.BLL.Tests.Services
 			Assert.True(result.Status.Equals(ResponseStatusCodesConst.Error));
 			Assert.Equal("Question does not found", result.Message);
 		}
+
+		[Fact]
+		public async Task QuestionService_Delete_SuccessfullyDeletesQuestion()
+		{
+			// Arrange
+			var questionService = new QuestionService(_unitOfWork, _mapper, _answerService);
+			var questionId = Guid.NewGuid();
+			var question = A.Fake<Question>();
+			var answers = new List<Answer> { A.Fake<Answer>(), A.Fake<Answer>() };
+
+			A.CallTo(() => _unitOfWork.QuestionRepository.GetById(questionId)).Returns(question);
+			A.CallTo(() => _unitOfWork.AnswerRepository.GetByQuestionId(questionId)).Returns(answers);
+			A.CallTo(() => _unitOfWork.AnswerRepository.Remove(A<Answer>._)).DoesNothing();
+			A.CallTo(() => _unitOfWork.QuestionRepository.Remove(A<Question>._)).DoesNothing();
+			A.CallTo(() => _unitOfWork.Save()).Returns(Task.CompletedTask);
+
+			// Act
+			var result = await questionService.Delete(questionId);
+
+			// Assert
+			Assert.True(result.Status.Equals(ResponseStatusCodesConst.Success));
+		}
+
+		[Fact]
+		public async Task QuestionService_Delete_FailsWhenQuestionNotFound()
+		{
+			// Arrange
+			var questionService = new QuestionService(_unitOfWork, _mapper, _answerService);
+			var questionId = Guid.NewGuid();
+
+			A.CallTo(() => _unitOfWork.QuestionRepository.GetById(questionId)).Returns(Task.FromResult<Question>(null));
+
+			// Act
+			var result = await questionService.Delete(questionId);
+
+			// Assert
+			Assert.True(result.Status.Equals(ResponseStatusCodesConst.Error));
+			Assert.Equal("Question does not found", result.Message);
+		}
 	}
 }
