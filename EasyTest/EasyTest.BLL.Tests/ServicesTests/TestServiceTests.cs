@@ -57,7 +57,24 @@ namespace EasyTest.BLL.Tests.Services
             Assert.Equal(testEntity.Title, result.Data.Title);
         }
 
-        [Fact]
+		[Fact]
+		public async Task TestService_Get_ReturnsTestNotFound()
+		{
+			// Arrange
+			var testId = Guid.NewGuid();
+			A.CallTo(() => _unitOfWork.TestRepository.GetById(testId)).Returns(Task.FromResult<Test>(null));
+			var testService = new TestService(_unitOfWork, _mapper);
+
+			// Act
+			var result = await testService.Get(testId);
+
+			// Assert
+			Assert.Null(result.Data);
+			Assert.Equal("Test does not found", result.Message);
+		}
+
+
+		[Fact]
         public async Task TestService_Create_ReturnsCreatedTest()
         {
             // Arrange

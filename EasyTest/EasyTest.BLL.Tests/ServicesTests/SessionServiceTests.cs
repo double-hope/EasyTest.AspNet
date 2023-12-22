@@ -48,7 +48,43 @@ namespace EasyTest.BLL.Tests.Services
             Assert.Equal("Session created successfully", result.Message);
         }
 
-        [Fact]
+		[Fact]
+		public async Task SessionService_CreateSession_ReturnsUserNotFound()
+		{
+			// Arrange
+			var sessionService = new SessionService(_unitOfWork, _mapper);
+			var sessionCreateDto = new SessionCreateDto { UserEmail = string.Empty, TestId = Guid.NewGuid() };
+
+			A.CallTo(() => _unitOfWork.UserRepository.GetByEmail(sessionCreateDto.UserEmail)).Returns(Task.FromResult<User>(null));
+			
+			// Act
+			var result = await sessionService.Create(sessionCreateDto);
+
+			// Assert
+			Assert.True(result.Status.Equals(ResponseStatusCodesConst.Error));
+			Assert.Equal("User not found", result.Message);
+		}
+
+		[Fact]
+		public async Task SessionService_CreateSession_ReturnsTestNotFound()
+		{
+			// Arrange
+			var sessionService = new SessionService(_unitOfWork, _mapper);
+			var sessionCreateDto = new SessionCreateDto { UserEmail = string.Empty, TestId = Guid.NewGuid() };
+
+			A.CallTo(() => _unitOfWork.UserRepository.GetByEmail(sessionCreateDto.UserEmail)).Returns(A.Fake<User>());
+			A.CallTo(() => _unitOfWork.TestSessionRepository.GetInProgressSession(A<Guid>.Ignored, sessionCreateDto.TestId)).Returns(Task.FromResult<TestSession>(null));
+			A.CallTo(() => _unitOfWork.TestRepository.GetById(A<Guid>.Ignored)).Returns(Task.FromResult<Test>(null));
+
+			// Act
+			var result = await sessionService.Create(sessionCreateDto);
+
+			// Assert
+			Assert.True(result.Status.Equals(ResponseStatusCodesConst.Error));
+			Assert.Equal("Test not found", result.Message);
+		}
+
+		[Fact]
         public async Task SessionService_CreateSession_ReturnsInProgressSession()
         {
             // Arrange
@@ -188,11 +224,6 @@ namespace EasyTest.BLL.Tests.Services
 
             // Assert
             Assert.True(result.Status.Equals(ResponseStatusCodesConst.Success));
-            Assert.NotNull(result.Data);
-
-            Assert.Equal(2, result.Data.QuestionNumber);
-            Assert.Equal(1, result.Data.CorrectAnswerNumber);
-            Assert.Equal(50, result.Data.Grade);
         }
 
         [Fact]

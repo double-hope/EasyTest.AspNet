@@ -4,6 +4,9 @@ using FakeItEasy;
 using System.Net.Http.Json;
 using EasyTest.Shared.DTO.Response;
 using System.Net;
+using EasyTest.Shared.Helpers;
+using Newtonsoft.Json;
+using EasyTest.Shared.Enums;
 
 namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 {
@@ -65,12 +68,17 @@ namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 			Assert.False(response.IsSuccessStatusCode);
 			Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 		}
-
 		[Fact]
 		public async Task AuthController_RegisterUser_ReturnsOk()
 		{
 			// Arrange
-			var userDto = A.Fake<UserRegisterDto>();
+			var userDto = new UserRegisterDto()
+			{
+				Name = "Some Name",
+				Email = "valid.email@gmail.com",
+				Password = "p@ssW0rd",
+				Role = UserRoles.Student
+			};
 
 			A.CallTo(() => _factory._authService.Register(A<UserRegisterDto>._))
 				.Returns(new Response<UserResponseDto>
@@ -84,6 +92,22 @@ namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 
 			// Assert
 			Assert.True(response.IsSuccessStatusCode);
+		}
+		[Fact]
+		public async Task AuthController_RegisterUser_ReturnsValidationError()
+		{
+			// Arrange
+			var userDto = A.Fake<UserRegisterDto>();
+
+			// Act
+			var response = await _client.PostAsync("/api/auth/register", JsonContent.Create(userDto));
+
+			// Assert
+			var content = await response.Content.ReadAsStringAsync();
+			var validationError = JsonConvert.DeserializeObject<ValidationError>(content);
+			Assert.NotNull(validationError);
+			Assert.Equal(400, validationError.Status);
+			Assert.NotNull(validationError.Errors);
 		}
 
 		[Fact]

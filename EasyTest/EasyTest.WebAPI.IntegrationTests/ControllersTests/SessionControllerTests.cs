@@ -3,8 +3,10 @@ using EasyTest.Shared.DTO.Answer;
 using EasyTest.Shared.DTO.Question;
 using EasyTest.Shared.DTO.Response;
 using EasyTest.Shared.DTO.Session;
+using EasyTest.Shared.Helpers;
 using FakeItEasy;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Net;
 using System.Net.Http.Json;
 
@@ -35,7 +37,7 @@ namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 			var sessionCreateDto = new SessionCreateDto()
 			{
 				TestId = Guid.NewGuid(),
-				UserEmail = string.Empty
+				UserEmail = "valid.email@gmail.com"
 			};
 
 			A.CallTo(() => _factory._sessionService.Create(A<SessionCreateDto>.Ignored))
@@ -50,6 +52,28 @@ namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 
 			// Assert
 			Assert.True(response.IsSuccessStatusCode);
+		}
+
+
+		[Fact]
+		public async Task SessionController_StartSession_ReturnsValidationError()
+		{
+			// Arrange
+			var sessionCreateDto = new SessionCreateDto()
+			{
+				TestId = Guid.NewGuid(),
+				UserEmail = string.Empty
+			};
+
+			// Act
+			var response = await _authorizedClient.PostAsync("/api/session", JsonContent.Create(sessionCreateDto));
+
+			// Assert
+			var content = await response.Content.ReadAsStringAsync();
+			var validationError = JsonConvert.DeserializeObject<ValidationError>(content);
+			Assert.NotNull(validationError);
+			Assert.Equal(400, validationError.Status);
+			Assert.NotNull(validationError.Errors);
 		}
 
 		[Fact]
