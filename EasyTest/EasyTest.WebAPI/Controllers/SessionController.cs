@@ -1,12 +1,15 @@
-﻿using EasyTest.BLL.Interfaces;
+﻿using System.Net;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+using EasyTest.BLL.Interfaces;
 using EasyTest.Shared.Constants;
 using EasyTest.Shared.DTO.Answer;
 using EasyTest.Shared.DTO.Question;
 using EasyTest.Shared.DTO.Response;
 using EasyTest.Shared.DTO.Session;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using System.Net;
+using EasyTest.Shared.DTO.Test;
 
 namespace EasyTest.WebAPI.Controllers
 {
@@ -26,15 +29,20 @@ namespace EasyTest.WebAPI.Controllers
 		[ProducesResponseType(typeof(Response<SessionDto>), (int)HttpStatusCode.OK)]
 		public async Task<ActionResult> StartSession([FromBody] SessionCreateDto sessionDto)
 		{
-			Console.WriteLine("StartSession method called!");
-			var response = await _sessionService.Create(sessionDto);
+            if (HttpContext.Items.TryGetValue("UserEmail", out var userEmailObj) && userEmailObj is string userEmail)
+            {
 
-			if (response.Status == ResponseStatusCodesConst.Success)
-			{
-				return Ok(response);
-			}
+                var response = await _sessionService.Create(sessionDto, userEmail);
 
-			return BadRequest(response);
+                if (response.Status == ResponseStatusCodesConst.Success)
+                {
+                    return Ok(response);
+                }
+
+                return BadRequest(response);
+            }
+
+            return Unauthorized(Response<UserTestDto>.Error("Token not found"));
 		}
 
 		[HttpGet("{id}/next")]
@@ -43,7 +51,7 @@ namespace EasyTest.WebAPI.Controllers
 		{
 			if (await _sessionService.IfGetResult(id))
 			{
-				return RedirectToAction(nameof(GetResult), new { id = id });
+				return RedirectToAction(nameof(GetResult), new { id });
 			}
 
 			var response = await _sessionService.NextQuestion(id);

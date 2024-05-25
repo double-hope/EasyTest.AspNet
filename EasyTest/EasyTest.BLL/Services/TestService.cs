@@ -15,6 +15,27 @@ namespace EasyTest.BLL.Services
             var res = await _unitOfWork.TestRepository.GetAll();
 			return Response<IEnumerable<TestDto>>.Success(_mapper.Map<IEnumerable<TestDto>>(res));
         }
+
+        public async Task<Response<IEnumerable<UserTestDto>>> GetAll(string userEmail)
+        {
+            var user = await _unitOfWork.UserRepository.GetByEmail(userEmail);
+
+            if (user == null)
+            {
+                return Response<IEnumerable<UserTestDto>>.Error("User does not found");
+            }
+
+            var dbTests = await _unitOfWork.TestRepository.GetAll();
+            var tests = _mapper.Map<IEnumerable<UserTestDto>>(dbTests);
+
+            foreach (var test in tests)
+            {
+                test.TookedAttempts = (await _unitOfWork.TestSessionRepository.GetAllUserSessions(user.Id, test.Id)).Count();
+            }
+
+            return Response<IEnumerable<UserTestDto>>.Success(tests);
+        }
+
         public async Task<Response<TestDto>> Get(Guid id)
         {
             var res = await _unitOfWork.TestRepository.GetById(id);

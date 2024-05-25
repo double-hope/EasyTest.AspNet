@@ -15,6 +15,8 @@ namespace EasyTest.BLL.Mappers
 			CreateMap<TestEditDto, Test>()
 				.ForMember(dest => dest.Questions, opt => opt.Ignore())
 				.ForMember(dest => dest.QuestionTests, opt => opt.Ignore());
-		}
+
+            CreateMap<Test, UserTestDto>().ReverseMap();
+        }
     }
 }

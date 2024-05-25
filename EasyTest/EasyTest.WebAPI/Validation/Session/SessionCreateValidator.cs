@@ -1,5 +1,6 @@
-﻿using EasyTest.Shared.DTO.Session;
-using FluentValidation;
+﻿using FluentValidation;
+
+using EasyTest.Shared.DTO.Session;
 
 namespace EasyTest.WebAPI.Validation.Session
 {
@@ -7,10 +8,6 @@ namespace EasyTest.WebAPI.Validation.Session
 	{
         public SessionCreateValidator()
         {
-			RuleFor(x => x.UserEmail)
-				.NotEmpty().WithMessage("User email is required.")
-				.EmailAddress().WithMessage("Invalid email address format.");
-
 			RuleFor(x => x.TestId)
 				.NotEmpty().WithMessage("Test ID is required.");
 		}

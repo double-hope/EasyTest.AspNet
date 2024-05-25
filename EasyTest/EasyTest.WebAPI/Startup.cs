@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 
 using EasyTest.DAL.DbInitializer;
 using EasyTest.WebAPI.Extensions;
+using EasyTest.WebAPI.Middlewares;
 
 namespace EasyTest.WebAPI
 {
@@ -66,6 +67,8 @@ namespace EasyTest.WebAPI
             app.UseCors("CorsPolicy");
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<ExtractUserMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

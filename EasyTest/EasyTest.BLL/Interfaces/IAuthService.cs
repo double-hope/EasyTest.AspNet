@@ -7,5 +7,6 @@ namespace EasyTest.BLL.Interfaces
     {
         Task<Response<UserResponseDto>> Login(UserLoginDto userDto);
         Task<Response<UserResponseDto>> Register(UserRegisterDto userDto);
+	    Task<Response<string>> GenerateToken(string inToken);
     }
 }

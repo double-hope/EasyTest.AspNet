@@ -7,7 +7,7 @@ namespace EasyTest.BLL.Interfaces
 {
 	public interface ISessionService
 	{
-		Task<Response<SessionDto>> Create(SessionCreateDto sessionDto);
+		Task<Response<SessionDto>> Create(SessionCreateDto sessionDto, string userEmail);
 		Task<Response<QuestionNextDto>> NextQuestion(Guid sessionId);
 		Task<Response<SessionAnswerDto>> AnswerTheQuestion(Guid sessionId, Guid answerId);
 		Task<bool> IfGetResult(Guid sessionId);

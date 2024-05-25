@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using EasyTest.BLL.Interfaces;
 using EasyTest.DAL.Entities;
 using EasyTest.DAL.Repository.IRepository;
@@ -14,9 +15,9 @@ namespace EasyTest.BLL.Services
 	{
 		public SessionService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper) { }
 
-		public async Task<Response<SessionDto>> Create(SessionCreateDto sessionDto)
+		public async Task<Response<SessionDto>> Create(SessionCreateDto sessionDto, string userEmail)
 		{
-			var user = (await _unitOfWork.UserRepository.GetByEmail(sessionDto.UserEmail));
+			var user = (await _unitOfWork.UserRepository.GetByEmail(userEmail));
 
 			if(user == null)
 			{

@@ -10,10 +10,10 @@ namespace EasyTest.DAL.Repository
 
 		public async Task<Test> GetById(Guid id)
 		{
-			IQueryable<Test> query = dbSet;
+			IQueryable<Test> query = dbSet.Include(x => x.Questions);
 			query = query.Where(x => x.Id == id);
 
 			return await query.FirstOrDefaultAsync();
 		}
-	}
+    }
 }
