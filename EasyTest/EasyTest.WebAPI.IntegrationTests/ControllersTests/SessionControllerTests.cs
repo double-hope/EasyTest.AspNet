@@ -37,11 +37,10 @@ namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 			// Arrange
 			var sessionCreateDto = new SessionCreateDto()
 			{
-				TestId = Guid.NewGuid(),
-				UserEmail = "valid.email@gmail.com"
+				TestId = Guid.NewGuid()
 			};
 
-			A.CallTo(() => _factory._sessionService.Create(A<SessionCreateDto>.Ignored))
+			A.CallTo(() => _factory._sessionService.Create(A<SessionCreateDto>.Ignored, A<string>._))
 				.Returns(new Response<SessionDto>
 				{
 					Status = ResponseStatusCodesConst.Success,
@@ -62,8 +61,7 @@ namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 			// Arrange
 			var sessionCreateDto = new SessionCreateDto()
 			{
-				TestId = Guid.NewGuid(),
-				UserEmail = string.Empty
+				TestId = Guid.NewGuid()
 			};
 
 			// Act
@@ -98,7 +96,7 @@ namespace EasyTest.WebAPI.IntegrationTests.ControllersTests
 			// Arrange
 			var sessionCreateDto = A.Fake<SessionCreateDto>();
 
-			A.CallTo(() => _factory._sessionService.Create(A<SessionCreateDto>.Ignored))
+			A.CallTo(() => _factory._sessionService.Create(A<SessionCreateDto>.Ignored, A<string>._))
 				.Returns(new Response<SessionDto>
 				{
 					Status = ResponseStatusCodesConst.Error,

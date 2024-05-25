@@ -6,6 +6,7 @@ using EasyTest.Shared.DTO.Response;
 using EasyTest.Shared.DTO.Session;
 using EasyTest.WebAPI.Controllers;
 using FakeItEasy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTest.WebAPI.Tests.Controllers
@@ -21,23 +22,30 @@ namespace EasyTest.WebAPI.Tests.Controllers
 
 		[Fact]
 		public async Task SessionController_StartSession_ReturnsOk()
-        {
-            // Arrange
-            var controller = new SessionController(_sessionService);
+		{
+			// Arrange
+			var controller = new SessionController(_sessionService);
 			var sessionCreateDto = A.Fake<SessionCreateDto>();
 
-			A.CallTo(() => _sessionService.Create(A<SessionCreateDto>.Ignored))
+			A.CallTo(() => _sessionService.Create(A<SessionCreateDto>.Ignored, A<string>._))
 				.Returns(new Response<SessionDto>
 				{
 					Status = ResponseStatusCodesConst.Success,
 					Data = new SessionDto(),
 				});
 
-            // Act
-            var result = await controller.StartSession(sessionCreateDto);
+			var httpContext = new DefaultHttpContext();
+			httpContext.Items["UserEmail"] = "test@example.com";
+			controller.ControllerContext = new ControllerContext
+			{
+				HttpContext = httpContext
+			};
 
-            // Assert
-            var okObjectResult = Assert.IsType<OkObjectResult>(result);
+			// Act
+			var result = await controller.StartSession(sessionCreateDto);
+
+			// Assert
+			var okObjectResult = Assert.IsType<OkObjectResult>(result);
 			var response = Assert.IsType<Response<SessionDto>>(okObjectResult.Value);
 
 			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
@@ -47,22 +55,29 @@ namespace EasyTest.WebAPI.Tests.Controllers
 		[Fact]
 		public async Task SessionController_StartSession_ReturnsBadRequest()
         {
-            // Arrange
-            var controller = new SessionController(_sessionService);
+			// Arrange
+			var controller = new SessionController(_sessionService);
 			var sessionCreateDto = A.Fake<SessionCreateDto>();
 
-			A.CallTo(() => _sessionService.Create(A<SessionCreateDto>.Ignored))
+			A.CallTo(() => _sessionService.Create(A<SessionCreateDto>.Ignored, A<string>._))
 				.Returns(new Response<SessionDto>
 				{
 					Status = ResponseStatusCodesConst.Error,
 					Message = "Invalid session data",
 				});
 
-            // Act
-            var result = await controller.StartSession(sessionCreateDto);
+			var httpContext = new DefaultHttpContext();
+			httpContext.Items["UserEmail"] = "test@example.com";
+			controller.ControllerContext = new ControllerContext
+			{
+				HttpContext = httpContext
+			};
 
-            // Assert
-            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+			// Act
+			var result = await controller.StartSession(sessionCreateDto);
+
+			// Assert
+			var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
 			var response = Assert.IsType<Response<SessionDto>>(badRequestObjectResult.Value);
 
 			Assert.Equal(ResponseStatusCodesConst.Error, response.Status);

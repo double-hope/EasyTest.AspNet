@@ -4,6 +4,7 @@ using EasyTest.Shared.DTO.Response;
 using EasyTest.Shared.DTO.User;
 using EasyTest.WebAPI.Controllers;
 using FakeItEasy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyTest.WebAPI.Tests.Controllers
@@ -19,27 +20,48 @@ namespace EasyTest.WebAPI.Tests.Controllers
 
 		[Fact]
 		public async Task AuthController_LoginUser_ReturnsOk()
-        {
-            // Arrange
-            var controller = new AuthController(_authService);
+		{
+			// Arrange
 			var userDto = A.Fake<UserLoginDto>();
+			var userResponseDto = A.Fake<UserResponseDto>();
 
-			A.CallTo(() => _authService.Login(userDto))
-				.Returns(new Response<UserResponseDto>
+			var authService = A.Fake<IAuthService>();
+
+			A.CallTo(() => authService.Login(userDto))
+				.Returns(Task.FromResult(new Response<UserResponseDto>
 				{
 					Status = ResponseStatusCodesConst.Success,
-					Data = new UserResponseDto(),
-				});
+					Data = userResponseDto,
+				}));
 
-            // Act
-            var result = await controller.LoginUser(userDto);
+			A.CallTo(() => authService.GenerateToken(A<string>._))
+				.Returns(Task.FromResult(new Response<string>
+				{
+					Status = ResponseStatusCodesConst.Success,
+					Data = "fake-refresh-token",
+				}));
 
-            // Assert
-            var okObjectResult = Assert.IsType<OkObjectResult>(result);
+			var controller = new AuthController(authService);
+
+			var httpContext = new DefaultHttpContext();
+			controller.ControllerContext = new ControllerContext
+			{
+				HttpContext = httpContext
+			};
+
+			// Act
+			var result = await controller.LoginUser(userDto);
+
+			// Assert
+			var okObjectResult = Assert.IsType<OkObjectResult>(result);
 			var response = Assert.IsType<Response<UserResponseDto>>(okObjectResult.Value);
 
 			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
 			Assert.NotNull(response.Data);
+
+			Assert.True(httpContext.Response.Headers.ContainsKey("Set-Cookie"));
+			var setCookieHeader = httpContext.Response.Headers["Set-Cookie"].ToString();
+			Assert.Contains("X-Refresh-Token=fake-refresh-token", setCookieHeader);
 		}
 
 		[Fact]
@@ -69,27 +91,48 @@ namespace EasyTest.WebAPI.Tests.Controllers
 
 		[Fact]
 		public async Task AuthController_RegisterUser_ReturnsOk()
-        {
-            // Arrange
-            var controller = new AuthController(_authService);
+		{
+			// Arrange
 			var userDto = A.Fake<UserRegisterDto>();
+			var userResponseDto = A.Fake<UserResponseDto>();
 
-			A.CallTo(() => _authService.Register(userDto))
-				.Returns(new Response<UserResponseDto>
+			var authService = A.Fake<IAuthService>();
+
+			A.CallTo(() => authService.Register(userDto))
+				.Returns(Task.FromResult(new Response<UserResponseDto>
 				{
 					Status = ResponseStatusCodesConst.Success,
-					Data = new UserResponseDto()
-				});
+					Data = userResponseDto
+				}));
 
-            // Act
-            var result = await controller.RegisterUser(userDto);
+			A.CallTo(() => authService.GenerateToken(A<string>._))
+				.Returns(Task.FromResult(new Response<string>
+				{
+					Status = ResponseStatusCodesConst.Success,
+					Data = "fake-refresh-token",
+				}));
 
-            // Assert
-            var okObjectResult = Assert.IsType<OkObjectResult>(result);
+			var controller = new AuthController(authService);
+
+			var httpContext = new DefaultHttpContext();
+			controller.ControllerContext = new ControllerContext
+			{
+				HttpContext = httpContext
+			};
+
+			// Act
+			var result = await controller.RegisterUser(userDto);
+
+			// Assert
+			var okObjectResult = Assert.IsType<OkObjectResult>(result);
 			var response = Assert.IsType<Response<UserResponseDto>>(okObjectResult.Value);
 
 			Assert.Equal(ResponseStatusCodesConst.Success, response.Status);
 			Assert.NotNull(response.Data);
+
+			Assert.True(httpContext.Response.Headers.ContainsKey("Set-Cookie"));
+			var setCookieHeader = httpContext.Response.Headers["Set-Cookie"].ToString();
+			Assert.Contains("X-Refresh-Token=fake-refresh-token", setCookieHeader);
 		}
 
 		[Fact]
