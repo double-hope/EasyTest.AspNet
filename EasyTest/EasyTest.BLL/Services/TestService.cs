@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+
 using EasyTest.BLL.Interfaces;
 using EasyTest.DAL.Entities;
 using EasyTest.DAL.Repository.IRepository;
 using EasyTest.Shared.DTO.Response;
 using EasyTest.Shared.DTO.Test;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace EasyTest.BLL.Services
 {
@@ -30,7 +32,11 @@ namespace EasyTest.BLL.Services
 
             foreach (var test in tests)
             {
-                test.TookedAttempts = (await _unitOfWork.TestSessionRepository.GetAllUserSessions(user.Id, test.Id)).Count();
+                var userTest = await _unitOfWork.UserTestRepository.GetByUserIdAndTestId(user.Id, test.Id);
+
+                test.TookedAttempts = userTest?.NumberOfAttempts ?? 0;
+                test.BestResult = userTest?.BestResult ?? 0;
+                test.CanContinue = userTest?.CanContinue ?? false;
             }
 
             return Response<IEnumerable<UserTestDto>>.Success(tests);
@@ -44,6 +50,31 @@ namespace EasyTest.BLL.Services
 
 			return Response<TestDto>.Success(_mapper.Map<TestDto>(res));
         }
+
+        public async Task<Response<UserTestDto>> Get(Guid id, string userEmail)
+        {
+            var user = await _unitOfWork.UserRepository.GetByEmail(userEmail);
+
+            if (user == null)
+            {
+                return Response<UserTestDto>.Error("User does not found");
+            }
+
+            var dbTest = await _unitOfWork.TestRepository.GetById(id);
+
+            if (dbTest == null) return Response<UserTestDto>.Error("Test does not found");
+
+            var test = _mapper.Map<UserTestDto>(dbTest);
+            
+            var userTest = await _unitOfWork.UserTestRepository.GetByUserIdAndTestId(user.Id, test.Id);
+
+            test.TookedAttempts = userTest?.NumberOfAttempts ?? 0;
+            test.BestResult = userTest?.BestResult ?? 0;
+            test.CanContinue = userTest?.CanContinue ?? false;
+
+            return Response<UserTestDto>.Success(test);
+        }
+
         public async Task<Response<TestDto>> Create(TestCreateDto testDto)
         {
             var testE = _mapper.Map<Test>(testDto);
@@ -68,5 +99,5 @@ namespace EasyTest.BLL.Services
 
 			return Response<TestDto>.Success(_mapper.Map<TestDto>(test), "Test updated successfully");
 		}
-	}
+    }
 }

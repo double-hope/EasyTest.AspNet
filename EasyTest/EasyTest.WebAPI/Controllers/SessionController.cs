@@ -42,7 +42,7 @@ namespace EasyTest.WebAPI.Controllers
                 return BadRequest(response);
             }
 
-            return Unauthorized(Response<UserTestDto>.Error("Token not found"));
+            return Unauthorized(Response<SessionDto>.Error("Token not found"));
 		}
 
 		[HttpGet("{id}/next")]

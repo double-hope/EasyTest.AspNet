@@ -11,5 +11,7 @@ namespace EasyTest.DAL.Entities
 		[ForeignKey(nameof(UserId))]
 		public User User { get; set; }
 		public required int NumberOfAttempts { get; set; } = 0;
-	}
+		public double BestResult { get; set; } = 0;
+		public bool CanContinue;
+    }
 }

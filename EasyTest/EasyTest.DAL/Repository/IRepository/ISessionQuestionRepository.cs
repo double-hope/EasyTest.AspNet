@@ -4,7 +4,7 @@ namespace EasyTest.DAL.Repository.IRepository
 {
 	public interface ISessionQuestionRepository : IRepository<SessionQuestion>
 	{
-
 		public Task<List<Guid>> GetAssignedQuestions(Guid sessionId);
-	}
+		public Task<SessionQuestion> GetByQuestionIdAndSessionId(Guid questionId, Guid sessionId);
+    }
 }

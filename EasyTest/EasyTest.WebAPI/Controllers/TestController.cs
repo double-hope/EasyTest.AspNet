@@ -66,6 +66,27 @@ namespace EasyTest.WebAPI.Controllers
 
             return BadRequest(response);
         }
+
+        [HttpGet("user/{id}")]
+        [ProducesResponseType(typeof(Response<IEnumerable<UserTestDto>>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult> GetUserTest(Guid id)
+        {
+            if (HttpContext.Items.TryGetValue("UserEmail", out var userEmailObj) && userEmailObj is string userEmail)
+            {
+                var response = await _testService.Get(id, userEmail);
+
+                if (response.Status == ResponseStatusCodesConst.Success)
+                {
+                    return Ok(response);
+                }
+
+                return BadRequest(response);
+            }
+
+            return Unauthorized(Response<UserTestDto>.Error("Token not found"));
+        }
+
+
         [HttpPost]
 		[ProducesResponseType(typeof(Response<TestDto>), (int)HttpStatusCode.OK)]
 		[Authorize(Roles = $"{UserRolesConst.AdminRole},{UserRolesConst.TeacherRole}")]

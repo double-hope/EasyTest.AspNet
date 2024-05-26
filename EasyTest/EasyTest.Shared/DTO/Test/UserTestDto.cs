@@ -8,5 +8,7 @@
         public int NumberOfAttempts { get; set; } = 1;
         public int TookedAttempts { get; set; } = 1;
         public int QuestionsAttempted { get; set; }
+        public double BestResult { get; set; }
+        public bool CanContinue { get; set; }
     }
 }

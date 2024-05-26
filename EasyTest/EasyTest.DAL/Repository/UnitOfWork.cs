@@ -1,5 +1,4 @@
-﻿using EasyTest.DAL.Entities;
-using EasyTest.DAL.Repository.IRepository;
+﻿using EasyTest.DAL.Repository.IRepository;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EasyTest.DAL.Repository
@@ -16,12 +15,14 @@ namespace EasyTest.DAL.Repository
 		private ITestRepository testRepository;
 		private ITestSessionRepository testSessionRepository;
 		private IUserRepository userRepository;
-		private IRepository<UserTest> userTestRepository;
+		private IUserTestRepository userTestRepository;
 		private IDbContextTransaction _transaction;
+
         public UnitOfWork(ApplicationDbContext context)
 		{
 			_context = context;
 		}
+		
 		public IAnswerRepository AnswerRepository
 		{
 			get
@@ -110,13 +111,13 @@ namespace EasyTest.DAL.Repository
 				return userRepository;
 			}
 		}
-		public IRepository<UserTest> UserTestRepository
+		public IUserTestRepository UserTestRepository
 		{
 			get
 			{
 				if (userTestRepository == null)
 				{
-					userTestRepository = new Repository<UserTest>(_context);
+					userTestRepository = new UserTestRepository(_context);
 				}
 				return userTestRepository;
 			}

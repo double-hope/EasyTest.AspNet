@@ -8,5 +8,7 @@ namespace EasyTest.DAL.Entities
 		public required string Name { get; set; }
 		[NotMapped]
 		public string Role { get; set; }
-	}
+        public List<Test> Tests { get; } = new();
+        public List<UserTest> UserTests { get; } = new();
+    }
 }

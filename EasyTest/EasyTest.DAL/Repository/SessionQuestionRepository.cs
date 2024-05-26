@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EasyTest.DAL.Repository
 {
-	public class SessionQuestionRepository : Repository<SessionQuestion>, ISessionQuestionRepository
+    public class SessionQuestionRepository : Repository<SessionQuestion>, ISessionQuestionRepository
 	{
 		public SessionQuestionRepository(ApplicationDbContext context) : base(context) { }
 
@@ -19,5 +19,14 @@ namespace EasyTest.DAL.Repository
 
 			return questions;
 		}
-	}
+
+        public async Task<SessionQuestion> GetByQuestionIdAndSessionId(Guid questionId, Guid sessionId)
+        {
+            IQueryable<SessionQuestion> query = dbSet;
+
+            query = query.Where(sq => sq.QuestionId == questionId && sq.SessionId == sessionId);
+
+            return await query.FirstOrDefaultAsync();
+        }
+    }
 }

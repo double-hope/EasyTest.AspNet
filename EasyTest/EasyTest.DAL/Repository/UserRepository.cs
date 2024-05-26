@@ -1,20 +1,21 @@
-﻿using EasyTest.DAL.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+
+using EasyTest.DAL.Entities;
 using EasyTest.DAL.Repository.IRepository;
-using Microsoft.EntityFrameworkCore;
 
 namespace EasyTest.DAL.Repository
 {
-	public class UserRepository : Repository<User>, IUserRepository
+	public class UserTestRepository : Repository<UserTest>, IUserTestRepository
 	{
-		public UserRepository(ApplicationDbContext context) : base(context) { }
+		public UserTestRepository(ApplicationDbContext context) : base(context) { }
 
-		public async Task<User> GetByEmail(string email)
-		{
-			IQueryable<User> query = dbSet;
+        public async Task<UserTest> GetByUserIdAndTestId(Guid userId, Guid testId)
+        {
+            IQueryable<UserTest> query = dbSet;
 
-			query = query.Where(x => x.Email.Equals(email));
+            query = query.Where(x => x.UserId.Equals(userId) && x.TestId.Equals(testId));
 
-			return await query.FirstOrDefaultAsync();
-		}
-	}
+            return await query.FirstOrDefaultAsync();
+        }
+    }
 }

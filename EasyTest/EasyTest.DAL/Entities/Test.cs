@@ -14,5 +14,7 @@ namespace EasyTest.DAL.Entities
 		public int QuestionsAttempted { get; set; }
 		public List<Question> Questions { get; } = new();
         public List<QuestionTest> QuestionTests { get; } = new();
+        public List<User> Users { get; } = new();
+        public List<UserTest> UserTests { get; } = new();
     }
 }

@@ -15,11 +15,10 @@ using EasyTest.DAL.Repository.IRepository;
 using EasyTest.Shared.Enums;
 using EasyTest.Shared.DTO.Response;
 using EasyTest.Shared.DTO.User;
-using Microsoft.EntityFrameworkCore;
 
 namespace EasyTest.BLL.Services
 {
-	public class AuthService : Service, IAuthService
+    public class AuthService : Service, IAuthService
 	{
 		private readonly UserManager<User> _userManager;
 		private readonly AuthOptions _authOptions;
@@ -84,7 +83,20 @@ namespace EasyTest.BLL.Services
 			};
 
 			return Response<UserResponseDto>.Success(userResponse, "You successfully register user");
-		}
+        }
+
+        public async Task<Response<UserDto>> GetUser(string userEmail)
+        {
+            var dbUser = await _unitOfWork.UserRepository.GetByEmail(userEmail);
+            if (dbUser != null)
+            {
+                return Response<UserDto>.Error("User with this email does not exist");
+            }
+
+            var user = _mapper.Map<UserDto>(dbUser);
+
+            return Response<UserDto>.Success(user, "Returning user");
+        }
 
         public async Task<Response<string>> GenerateToken(string inToken)
         {

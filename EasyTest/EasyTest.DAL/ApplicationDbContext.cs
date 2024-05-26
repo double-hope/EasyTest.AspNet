@@ -16,6 +16,7 @@ namespace EasyTest.DAL
 		public DbSet<SessionQuestion> SessionQuestions { get; set; }
 		public DbSet<Test> Tests { get; set; }
 		public DbSet<TestSession> TestSessions { get; set; }
+		public DbSet<UserTest> UserTests { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -24,22 +25,47 @@ namespace EasyTest.DAL
                 .HasMany(e => e.Tests)
                 .WithMany(e => e.Questions)
                 .UsingEntity<QuestionTest>(
-                    l => l.HasOne<Test>(e => e.Test).WithMany(e => e.QuestionTests),
-                    r => r.HasOne<Question>(e => e.Question).WithMany(e => e.QuestionTests));
+                    l => l.HasOne(e => e.Test).WithMany(e => e.QuestionTests),
+                    r => r.HasOne(e => e.Question).WithMany(e => e.QuestionTests));
 
             builder.Entity<Question>()
                 .HasMany(e => e.TestSessions)
                 .WithMany(e => e.Questions)
                 .UsingEntity<SessionQuestion>(
-                    l => l.HasOne<TestSession>(e => e.Session).WithMany(e => e.SessionQuestions),
-                    r => r.HasOne<Question>(e => e.Question).WithMany(e => e.SessionQuestions));
+                    l => l.HasOne(e => e.Session).WithMany(e => e.SessionQuestions),
+                    r => r.HasOne(e => e.Question).WithMany(e => e.SessionQuestions));
 
             builder.Entity<Answer>()
                 .HasMany(e => e.Sessions)
                 .WithMany(e => e.Answers)
                 .UsingEntity<SessionAnswer>(
-                    l => l.HasOne<TestSession>(e => e.Session).WithMany(e => e.SessionAnswers),
-                    r => r.HasOne<Answer>(e => e.Answer).WithMany(e => e.SessionAnswers));
+                    l => l.HasOne(e => e.Session).WithMany(e => e.SessionAnswers),
+                    r => r.HasOne(e => e.Answer).WithMany(e => e.SessionAnswers));
+
+            builder.Entity<Test>()
+                .HasMany(e => e.Users)
+                .WithMany(e => e.Tests)
+                .UsingEntity<UserTest>(
+                    l => l.HasOne(e => e.User).WithMany(e => e.UserTests),
+                    r => r.HasOne(e => e.Test).WithMany(e => e.UserTests));
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            foreach (var entry in ChangeTracker.Entries<BaseEntity<Guid>>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedAt = DateTime.Now;
+                        entry.Entity.UpdatedAt = DateTime.Now;
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.UpdatedAt = DateTime.Now;
+                        break;
+                }
+            }
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }
