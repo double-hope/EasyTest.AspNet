@@ -15,5 +15,13 @@ namespace EasyTest.DAL.Repository
 
 			return await query.FirstOrDefaultAsync();
 		}
-	}
+
+        public async Task<IEnumerable<Question>> GetByTestId(Guid id)
+        {
+            IQueryable<Question> query = dbSet;
+            query = query.Where(x => x.QuestionTests.All(x => x.TestId == id));
+
+            return await query.ToListAsync();
+        }
+    }
 }

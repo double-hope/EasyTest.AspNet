@@ -1,6 +1,4 @@
-﻿using EasyTest.Shared.DTO.Answer;
-
-namespace EasyTest.Shared.DTO.Question
+﻿namespace EasyTest.Shared.DTO.Question
 {
 	public class QuestionResponseDto
 	{

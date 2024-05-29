@@ -33,6 +33,21 @@ namespace EasyTest.WebAPI.Controllers
 
         //    return BadRequest(response);
         //}
+        [HttpGet("testId/{id}")]
+        [ProducesResponseType(typeof(Response<IEnumerable<QuestionDto>>), (int)HttpStatusCode.OK)]
+        [Authorize(Roles = $"{UserRolesConst.AdminRole},{UserRolesConst.TeacherRole}")]
+        public async Task<ActionResult> GetTestQuestions(Guid id)
+        {
+            var response = await _questionService.GetTestQuestions(id);
+
+            if (response.Status == ResponseStatusCodesConst.Success)
+            {
+                return Ok(response);
+            }
+
+            return BadRequest(response);
+        }
+
         [HttpPost("testId/{id}")]
         [ProducesResponseType(typeof(Response<IEnumerable<QuestionResponseDto>>), (int)HttpStatusCode.OK)]
 		[Authorize(Roles = $"{UserRolesConst.AdminRole},{UserRolesConst.TeacherRole}")]
@@ -62,6 +77,7 @@ namespace EasyTest.WebAPI.Controllers
 
 			return BadRequest(response);
 		}
+
 		[HttpDelete("{id}")]
 		[ProducesResponseType(typeof(Response<QuestionResponseDto>), (int)HttpStatusCode.OK)]
 		[Authorize(Roles = $"{UserRolesConst.AdminRole},{UserRolesConst.TeacherRole}")]

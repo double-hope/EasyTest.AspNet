@@ -92,8 +92,6 @@ namespace EasyTest.BLL.Services
 
 			_mapper.Map(testDto, test);
 
-            test.UpdatedAt = DateTime.UtcNow;
-
 			_unitOfWork.TestRepository.Update(test);
 			await _unitOfWork.Save();
 

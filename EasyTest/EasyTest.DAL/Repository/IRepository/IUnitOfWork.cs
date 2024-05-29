@@ -1,5 +1,4 @@
-﻿using EasyTest.DAL.Entities;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EasyTest.DAL.Repository.IRepository
 {
